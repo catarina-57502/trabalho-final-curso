@@ -125,8 +125,8 @@ class _HomeScreenState extends State<HomeScreen>{
               },
             ),
             ListTile(
-              leading: Icon(Icons.bar_chart),
-              title: Text('Statistics'),
+              leading: Icon(Icons.event),
+              title: Text('Events List'),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -139,8 +139,8 @@ class _HomeScreenState extends State<HomeScreen>{
               },
             ),
             ListTile(
-              leading: Icon(Icons.event),
-              title: Text('Events List'),
+              leading: Icon(Icons.bar_chart),
+              title: Text('Statistics'),
               onTap: () {
                 Navigator.pop(context);
               },
