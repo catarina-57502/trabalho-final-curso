@@ -166,6 +166,18 @@ class _HomeScreenState extends State<HomeScreen>{
                 Navigator.pop(context);
               },
             ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text(
+                'Logout',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
