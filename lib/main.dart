@@ -119,28 +119,48 @@ class _HomeScreenState extends State<HomeScreen>{
             ),
             ListTile(
               leading: Icon(Icons.home),
-              title: Text('Home'),
+              title: Text(
+                  'Home',
+                style: TextStyle(
+                fontSize: 16,
+              ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: Icon(Icons.event),
-              title: Text('Events List'),
+              title: Text(
+                'Events List',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: Icon(Icons.people),
-              title: Text('Members List'),
+              title: Text(
+                'Members List',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: Icon(Icons.bar_chart),
-              title: Text('Statistics'),
+              title: Text(
+                'Statistics',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
