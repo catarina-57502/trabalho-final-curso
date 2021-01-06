@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sistema de Gestão de Eventos',
       theme: ThemeData(
-        primarySwatch: Colors.cyan,
+          primarySwatch: Colors.cyan,
           primaryTextTheme: TextTheme(
               headline6: TextStyle(
                   color: Colors.white
@@ -85,14 +85,10 @@ class _HomeScreenState extends State<HomeScreen>{
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        leading: Icon(
-          Icons.menu,
-          color: Colors.white,
-        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search, color: Colors.white),
-            onPressed: null
+              icon: Icon(Icons.search, color: Colors.white),
+              onPressed: null
           )
         ],
       ),
@@ -101,6 +97,54 @@ class _HomeScreenState extends State<HomeScreen>{
         Stack(
           children: <Widget>[
             _buildList()
+          ],
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.cyan,
+              ),
+              child: Text(
+                'José António',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.bar_chart),
+              title: Text('Statistics'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.people),
+              title: Text('Members List'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.event),
+              title: Text('Events List'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
