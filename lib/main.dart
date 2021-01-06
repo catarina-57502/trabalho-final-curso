@@ -110,13 +110,21 @@ class _HomeScreenState extends State<HomeScreen>{
               decoration: BoxDecoration(
                 color: Colors.cyan,
               ),
-              child: Text(
-                'José António',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Material(
+                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      child: Icon(Icons.person, color: Colors.blueGrey, size: 80)
+                    ),
+                    Padding(padding: EdgeInsets.all(15.0), child:
+                    Text('José António',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                    )
+                  ]
                 ),
-              ),
+              )
             ),
             ListTile(
               leading: Icon(Icons.home),
