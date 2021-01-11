@@ -62,13 +62,13 @@ class _HomeScreenState extends State<HomeScreen>{
 
   Widget event(list) {
     return Padding(
-        padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
       child: RichText(
         text: TextSpan(
           text: '${list['name']}',
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
-            ),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+          ),
           children: <TextSpan>[
             TextSpan(text: '\n${list['local']}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
           ],
@@ -79,9 +79,9 @@ class _HomeScreenState extends State<HomeScreen>{
 
   Widget image(list) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Image(image: AssetImage('${list['image']}'), width: 100,
-        height: 150,)
+        padding: const EdgeInsets.all(15.0),
+        child: Image(image: AssetImage('${list['image']}'), width: 100,
+          height: 150,)
     );
   }
 
@@ -99,55 +99,55 @@ class _HomeScreenState extends State<HomeScreen>{
         ],
       ),
       body: ListView.builder(
-      itemCount: Events.getEvents.length, // the length
-    itemBuilder: (context, index) {
-    return Container(
-        padding: EdgeInsets.fromLTRB(15,15,15,0),
-        height: 200,
-        child: Card(
-          elevation: 7,
-          child: Row(
-              children: [
-                image(Events.getEvents[index]),
-                event(Events.getEvents[index])
-        ],
-          ),
-      ),
-    );
-    }),
+          itemCount: Events.getEvents.length, // the length
+          itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.fromLTRB(15,15,15,0),
+              height: 200,
+              child: Card(
+                elevation: 7,
+                child: Row(
+                  children: [
+                    image(Events.getEvents[index]),
+                    event(Events.getEvents[index])
+                  ],
+                ),
+              ),
+            );
+          }),
       drawer: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.cyan,
-              ),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Material(
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                      child: Icon(Icons.person, color: Colors.blueGrey, size: 80)
-                    ),
-                    Padding(padding: EdgeInsets.all(15.0), child:
-                    Text('José António',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    )
-                  ]
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
                 ),
+                child: Container(
+                  child: Column(
+                      children: <Widget>[
+                        Material(
+                            borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                            child: Icon(Icons.person, color: Colors.blueGrey, size: 80)
+                        ),
+                        Padding(padding: EdgeInsets.all(15.0), child:
+                        Text('José António',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        )
+                      ]
+                  ),
 
-              )
+                )
             ),
             ListTile(
               leading: Icon(Icons.home),
               title: Text(
-                  'Home',
+                'Home',
                 style: TextStyle(
-                fontSize: 16,
-              ),
+                  fontSize: 16,
+                ),
               ),
               onTap: () {
                 Navigator.pop(context);
