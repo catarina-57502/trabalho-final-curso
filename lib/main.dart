@@ -150,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 ),
               ),
               onTap: () {
+
                 Navigator.pop(context);
               },
             ),
@@ -198,6 +199,12 @@ class _HomeScreenState extends State<HomeScreen>{
                 ),
               ),
               onTap: () {
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+
                 Navigator.pop(context);
               },
             ),
