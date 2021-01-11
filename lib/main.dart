@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'events.dart';
 
 void main() => runApp(MyApp());
 
@@ -59,26 +60,30 @@ class _HomeScreenState extends State<HomeScreen>{
     super.dispose();
   }
 
-  Widget _buildList() => ListView(
-    children: [
-      _tile('Corrida 25 de Abril', 'Lisboa', 'assets/images/25abril.jpg'),
-      Divider(),
-      _tile('Maratona EDP', 'Lisboa', 'assets/images/edp.jpg'),
-      Divider(),
-      _tile('São Silvestre Amadora', 'Amadora', 'assets/images/saosilvestre.jpg'),
-      Divider(),
-    ],
-  );
+  Widget event(list) {
+    return Padding(
+        padding: const EdgeInsets.all(15.0),
+      child: RichText(
+        text: TextSpan(
+          text: '${list['name']}',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+            ),
+          children: <TextSpan>[
+            TextSpan(text: '\n${list['local']}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
+          ],
+        ),
+      ),
+    );
+  }
 
-  ListTile _tile(String title, String subtitle, String image) => ListTile(
-    title: Text(title,
-        style: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 20,
-        )),
-    subtitle: Text(subtitle),
-    leading: Image.asset(image),
-  );
+  Widget image(list) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Image(image: AssetImage('${list['image']}'), width: 100,
+        height: 150,)
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +98,23 @@ class _HomeScreenState extends State<HomeScreen>{
           )
         ],
       ),
-      body: Container(
-        child:
-        Stack(
-          children: <Widget>[
-            _buildList()
-          ],
-        ),
+      body: ListView.builder(
+      itemCount: Events.getEvents.length, // the length
+    itemBuilder: (context, index) {
+    return Container(
+        padding: EdgeInsets.fromLTRB(15,15,15,0),
+        height: 200,
+        child: Card(
+          elevation: 7,
+          child: Row(
+              children: [
+                image(Events.getEvents[index]),
+                event(Events.getEvents[index])
+        ],
+          ),
       ),
+    );
+    }),
       drawer: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.
@@ -124,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen>{
                     )
                   ]
                 ),
+
               )
             ),
             ListTile(
