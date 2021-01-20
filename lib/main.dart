@@ -445,12 +445,47 @@ class _EventsListScreenState extends State<EventsListScreen>{
           itemBuilder: (context, index) {
             return Container(
               padding: EdgeInsets.fromLTRB(15,15,15,0),
-              height: 200,
+              height: 240,
               child: Card(
                 elevation: 7,
-                child: Row(
-                  children: [
-                    eventToApprove(EventsToAprrove.getEvents[index]),
+                child: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: eventToApprove(EventsToAprrove.getEvents[index]),
+                    ),
+                    ButtonBar(
+                      alignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        RaisedButton(
+                          onPressed: (){
+
+                          },
+                          color: Colors.green,
+                          child: Text (
+                            'Approve',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20
+                            ),
+                          ),
+                        ),
+
+                        RaisedButton(
+                          onPressed: (){
+
+                          },
+                          color: Colors.red,
+                          child: Text (
+                            'Dismiss',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -502,9 +537,44 @@ class _MembersListScreenState extends State<MembersListScreen>{
               height: 200,
               child: Card(
                 elevation: 7,
-                child: Row(
-                  children: [
-                    memberToApprove(MembersToAprrove.getMember[index]),
+                child: Column(
+                  children: <Widget>[
+                Align(
+                alignment: Alignment.topLeft,
+                  child: memberToApprove(MembersToAprrove.getMember[index]),
+                ),
+                    ButtonBar(
+                      alignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        RaisedButton(
+                          onPressed: (){
+
+                          },
+                          color: Colors.green,
+                          child: Text (
+                            'Approve',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20
+                            ),
+                          ),
+                        ),
+
+                        RaisedButton(
+                          onPressed: (){
+
+                          },
+                          color: Colors.red,
+                          child: Text (
+                            'Dismiss',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -516,18 +586,6 @@ class _MembersListScreenState extends State<MembersListScreen>{
 
 class _StatsScreenState extends State<StatsScreen>{
 
-  TextEditingController _controller;
-
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -537,62 +595,4 @@ class _StatsScreenState extends State<StatsScreen>{
       ),
     );
   }
-}
-
-Widget slideRightBackground() {
-  return Container(
-    color: Colors.green,
-    child: Align(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(
-            width: 20,
-          ),
-          Icon(
-            Icons.check_circle_outline,
-            color: Colors.white,
-          ),
-          Text(
-            " Approve",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ],
-      ),
-      alignment: Alignment.centerLeft,
-    ),
-  );
-}
-
-Widget slideLeftBackground() {
-  return Container(
-    color: Colors.red,
-    child: Align(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Icon(
-            Icons.delete,
-            color: Colors.white,
-          ),
-          Text(
-            " Dimiss",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-            ),
-            textAlign: TextAlign.right,
-          ),
-          SizedBox(
-            width: 20,
-          ),
-        ],
-      ),
-      alignment: Alignment.centerRight,
-    ),
-  );
 }
