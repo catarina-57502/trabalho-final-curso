@@ -65,6 +65,16 @@ class MembersListScreen extends StatefulWidget {
 
 }
 
+class StatsScreen extends StatefulWidget {
+  StatsScreen({Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState(){
+    return _StatsScreenState();
+  }
+
+}
+
 class _HomeScreenState extends State<HomeScreen>{
 
   int _contador = 0;
@@ -215,7 +225,10 @@ class _HomeScreenState extends State<HomeScreen>{
                 ),
               ),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StatsScreen()),
+                );
               },
             ),
             ListTile(
@@ -360,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen>{
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  'Login',
+                  'LOGIN',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -493,6 +506,31 @@ class _MembersListScreenState extends State<MembersListScreen>{
               ),
             );
           }),
+    );
+  }
+}
+
+class _StatsScreenState extends State<StatsScreen>{
+
+  TextEditingController _controller;
+
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text('Statistics'),
+      ),
     );
   }
 }
