@@ -406,18 +406,6 @@ class _LoginScreenState extends State<LoginScreen>{
 
 class _EventsListScreenState extends State<EventsListScreen>{
 
-  TextEditingController _controller;
-
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   Widget eventToApprove(list) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
@@ -445,6 +433,12 @@ class _EventsListScreenState extends State<EventsListScreen>{
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text('Events List'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search, color: Colors.white),
+              onPressed: null
+          )
+        ],
       ),
       body: ListView.builder(
           itemCount: EventsToAprrove.getEvents.length, // the length
@@ -467,18 +461,6 @@ class _EventsListScreenState extends State<EventsListScreen>{
 }
 
 class _MembersListScreenState extends State<MembersListScreen>{
-
-  TextEditingController _controller;
-
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   Widget memberToApprove(list) {
     return Padding(
@@ -505,6 +487,12 @@ class _MembersListScreenState extends State<MembersListScreen>{
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text('Members List'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search, color: Colors.white),
+              onPressed: null
+          )
+        ],
       ),
       body: ListView.builder(
           itemCount: MembersToAprrove.getMember.length, // the length
