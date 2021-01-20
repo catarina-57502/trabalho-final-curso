@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_tfc/eventsToApprove.dart';
 import 'events.dart';
+import 'memberToApprove.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,7 +19,6 @@ class MyApp extends StatelessWidget {
               )
           )
       ),
-      //home: LoginScreen(),
       home: LoginScreen(),
     );
   }
@@ -40,6 +41,26 @@ class LoginScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState(){
     return _LoginScreenState();
+  }
+
+}
+
+class EventsListScreen extends StatefulWidget {
+  EventsListScreen({Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState(){
+    return _EventsListScreenState();
+  }
+
+}
+
+class MembersListScreen extends StatefulWidget {
+  MembersListScreen({Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState(){
+    return _MembersListScreenState();
   }
 
 }
@@ -131,8 +152,9 @@ class _HomeScreenState extends State<HomeScreen>{
                             borderRadius: BorderRadius.all(Radius.circular(50.0)),
                             child: Icon(Icons.person, color: Colors.blueGrey, size: 80)
                         ),
-                        Padding(padding: EdgeInsets.all(15.0), child:
-                        Text('José António',
+                        Padding(padding: EdgeInsets.all(15.0),
+                          child: Text(
+                            'José António',
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         )
@@ -163,7 +185,10 @@ class _HomeScreenState extends State<HomeScreen>{
                 ),
               ),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EventsListScreen()),
+                );
               },
             ),
             ListTile(
@@ -175,7 +200,10 @@ class _HomeScreenState extends State<HomeScreen>{
                 ),
               ),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MembersListScreen()),
+                );
               },
             ),
             ListTile(
@@ -343,6 +371,128 @@ class _LoginScreenState extends State<LoginScreen>{
             ),
           ],
         )
+    );
+  }
+}
+
+class _EventsListScreenState extends State<EventsListScreen>{
+
+  TextEditingController _controller;
+
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Widget eventToApprove(list) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: RichText(
+        text: TextSpan(
+          text: '${list['name']}',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+          ),
+          children: <TextSpan>[
+            TextSpan(text: '\n${list['date']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+            TextSpan(text: '\n${list['deadline']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+            TextSpan(text: '\n${list['local']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+            TextSpan(text: '\n${list['type']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+            TextSpan(text: '\n${list['cost']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text('Events List'),
+      ),
+      body: ListView.builder(
+          itemCount: EventsToAprrove.getEvents.length, // the length
+          itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.fromLTRB(15,15,15,0),
+              height: 200,
+              child: Card(
+                elevation: 7,
+                child: Row(
+                  children: [
+                    eventToApprove(EventsToAprrove.getEvents[index]),
+                  ],
+                ),
+              ),
+            );
+          }),
+    );
+  }
+}
+
+class _MembersListScreenState extends State<MembersListScreen>{
+
+  TextEditingController _controller;
+
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Widget memberToApprove(list) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: RichText(
+        text: TextSpan(
+          text: '${list['name']}',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+          ),
+          children: <TextSpan>[
+            TextSpan(text: '\n${list['CC']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+            TextSpan(text: '\n${list['office']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+            TextSpan(text: '\n${list['reg']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text('Members List'),
+      ),
+      body: ListView.builder(
+          itemCount: MembersToAprrove.getMember.length, // the length
+          itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.fromLTRB(15,15,15,0),
+              height: 200,
+              child: Card(
+                elevation: 7,
+                child: Row(
+                  children: [
+                    memberToApprove(MembersToAprrove.getMember[index]),
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }
