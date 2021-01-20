@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
           )
       ),
       //home: LoginScreen(),
-      home: HomeScreen(title: 'Sistema de Gestão de Eventos'),
+      home: LoginScreen(),
     );
   }
 }
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen>{
               fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
           ),
           children: <TextSpan>[
-            TextSpan(text: '\n${list['local']}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
+            TextSpan(text: '\n${list['date']}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
           ],
         ),
       ),
@@ -199,13 +199,10 @@ class _HomeScreenState extends State<HomeScreen>{
                 ),
               ),
               onTap: () {
-
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
-
-                Navigator.pop(context);
               },
             ),
           ],
@@ -232,32 +229,120 @@ class _LoginScreenState extends State<LoginScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-      Container(
-          alignment: Alignment.topCenter,
-          child:
-          RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(text: 'Sistema de Gestão', style: TextStyle(color: Colors.grey[850], height: 5, fontSize: 31, fontFamily: 'Arial')),
-                TextSpan(text: '\n       de Eventos', style: TextStyle(color: Colors.grey[850], height: 0.5, fontSize: 31, fontFamily: 'Arial'))
-              ],
+        body:
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(text: 'Sign In', style: TextStyle(color: Colors.grey[850], height: 5, fontSize: 40, fontFamily: 'Arial')),
+                ],
+              ),
             ),
-          )
-      ),
-      floatingActionButton: Stack(
-        children: <Widget>[
-          Align(
-              alignment: Alignment.center,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Name',
+            SizedBox(height: 50),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(padding: EdgeInsets.only(left: 20),
+                child: Text(
+                  'Username',
+                  style: TextStyle(
+                    color: Colors.cyan,
+                    fontSize: 17,
+                    fontFamily: 'Arial',
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              )
-          )
-        ],
-      ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              alignment: Alignment.centerLeft,
+              height: 60,
+              width: 380,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.black),
+              ),
+              child: TextField(
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 14.0),
+                  prefixIcon: Icon(
+                    Icons.person,
+                    color: Colors.cyan,
+                  ),
+                  hintText: 'Enter Username',
+                ),
+              ),
+            ),
+            SizedBox(height: 30),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(padding: EdgeInsets.only(left: 20),
+                child: Text(
+                  'Password',
+                  style: TextStyle(
+                    color: Colors.cyan,
+                    fontSize: 17,
+                    fontFamily: 'Arial',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              alignment: Alignment.centerLeft,
+              height: 60,
+              width: 380,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.black),
+              ),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 14.0),
+                  prefixIcon: Icon(
+                    Icons.lock,
+                    color: Colors.cyan,
+                  ),
+                  hintText: '**********',
+                ),
+              ),
+            ),
+            SizedBox(height: 40),
+            ButtonTheme(
+              minWidth: 380,
+              child: RaisedButton(
+                color: Colors.cyan,
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen(title: 'Sistema de Gestão de Eventos')),
+                  );
+                },
+                padding: EdgeInsets.all(15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'Login',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
     );
   }
 }

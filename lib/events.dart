@@ -4,19 +4,19 @@ class Events {
   static final getEvents = [
     {
       'name': 'Corrida 25 de Abril',
-      'local': 'Lisboa',
+      'date': '25/04/2021',
       'image': 'assets/images/25abril.jpg',
 
     },
     {
       'name': 'Maratona EDP',
-      'local': 'Lisboa',
+      'date': '10/05/2021',
       'image': 'assets/images/edp.jpg',
 
     },
     {
       'name': 'São Silvestre Amadora',
-      'local': 'Amadora',
+      'date': '31/12/2021',
       'image': 'assets/images/saosilvestre.jpg',
 
     },
