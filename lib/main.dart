@@ -255,17 +255,7 @@ class _HomeScreenState extends State<HomeScreen>{
 
 class _LoginScreenState extends State<LoginScreen>{
 
-  TextEditingController _controller;
-
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  bool _rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen>{
                     ],
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 40),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(padding: EdgeInsets.only(left: 20),
@@ -358,7 +348,31 @@ class _LoginScreenState extends State<LoginScreen>{
                     ),
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 10),
+                Container(
+                padding: EdgeInsets.only(left: 5),
+                  child: Row(
+                    children: <Widget>[
+                      Theme(
+                        data: ThemeData(unselectedWidgetColor: Colors.black),
+                        child: Checkbox(
+                          value: _rememberMe,
+                          checkColor: Colors.white,
+                          activeColor: Colors.cyan,
+                          onChanged: (value) {
+                            setState(() {
+                              _rememberMe = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Text(
+                        'Remember me',
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 30),
                 ButtonTheme(
                   minWidth: 380,
                   child: RaisedButton(
