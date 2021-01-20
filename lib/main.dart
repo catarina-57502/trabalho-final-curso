@@ -271,119 +271,121 @@ class _LoginScreenState extends State<LoginScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
         body:
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            RichText(
-              text: TextSpan(
-                children: <TextSpan>[
-                  TextSpan(text: 'Sign In', style: TextStyle(color: Colors.grey[850], height: 5, fontSize: 40, fontFamily: 'Arial')),
-                ],
-              ),
-            ),
-            SizedBox(height: 50),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(padding: EdgeInsets.only(left: 20),
-                child: Text(
-                  'Username',
-                  style: TextStyle(
-                    color: Colors.cyan,
-                    fontSize: 17,
-                    fontFamily: 'Arial',
-                    fontWeight: FontWeight.bold,
+        SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(text: 'Sign In', style: TextStyle(color: Colors.grey[850], height: 5, fontSize: 40, fontFamily: 'Arial')),
+                    ],
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              alignment: Alignment.centerLeft,
-              height: 60,
-              width: 380,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.black),
-              ),
-              child: TextField(
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 14.0),
-                  prefixIcon: Icon(
-                    Icons.person,
-                    color: Colors.cyan,
-                  ),
-                  hintText: 'Enter Username',
-                ),
-              ),
-            ),
-            SizedBox(height: 30),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(padding: EdgeInsets.only(left: 20),
-                child: Text(
-                  'Password',
-                  style: TextStyle(
-                    color: Colors.cyan,
-                    fontSize: 17,
-                    fontFamily: 'Arial',
-                    fontWeight: FontWeight.bold,
+                SizedBox(height: 50),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(padding: EdgeInsets.only(left: 20),
+                    child: Text(
+                      'Username',
+                      style: TextStyle(
+                        color: Colors.cyan,
+                        fontSize: 17,
+                        fontFamily: 'Arial',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              alignment: Alignment.centerLeft,
-              height: 60,
-              width: 380,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.black),
-              ),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 14.0),
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: Colors.cyan,
-                  ),
-                  hintText: '**********',
-                ),
-              ),
-            ),
-            SizedBox(height: 40),
-            ButtonTheme(
-              minWidth: 380,
-              child: RaisedButton(
-                color: Colors.cyan,
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen(title: 'Sistema de Gestão de Eventos')),
-                  );
-                },
-                padding: EdgeInsets.all(15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  'LOGIN',
-                  style: TextStyle(
+                SizedBox(height: 10),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  height: 60,
+                  width: 380,
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.black),
+                  ),
+                  child: TextField(
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.only(top: 14.0),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.cyan,
+                      ),
+                      hintText: 'Enter Username',
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(height: 30),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(padding: EdgeInsets.only(left: 20),
+                    child: Text(
+                      'Password',
+                      style: TextStyle(
+                        color: Colors.cyan,
+                        fontSize: 17,
+                        fontFamily: 'Arial',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  height: 60,
+                  width: 380,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.black),
+                  ),
+                  child: TextField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.only(top: 14.0),
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Colors.cyan,
+                      ),
+                      hintText: '**********',
+                    ),
+                  ),
+                ),
+                SizedBox(height: 40),
+                ButtonTheme(
+                  minWidth: 380,
+                  child: RaisedButton(
+                    color: Colors.cyan,
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen(title: 'Sistema de Gestão de Eventos')),
+                      );
+                    },
+                    padding: EdgeInsets.all(15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      'LOGIN',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        )
+        ),
     );
   }
 }
@@ -533,4 +535,62 @@ class _StatsScreenState extends State<StatsScreen>{
       ),
     );
   }
+}
+
+Widget slideRightBackground() {
+  return Container(
+    color: Colors.green,
+    child: Align(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            width: 20,
+          ),
+          Icon(
+            Icons.check_circle_outline,
+            color: Colors.white,
+          ),
+          Text(
+            " Approve",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ],
+      ),
+      alignment: Alignment.centerLeft,
+    ),
+  );
+}
+
+Widget slideLeftBackground() {
+  return Container(
+    color: Colors.red,
+    child: Align(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
+          Text(
+            " Dimiss",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
+            textAlign: TextAlign.right,
+          ),
+          SizedBox(
+            width: 20,
+          ),
+        ],
+      ),
+      alignment: Alignment.centerRight,
+    ),
+  );
 }
