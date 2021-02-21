@@ -597,7 +597,6 @@ class _StatsScreenState extends State<StatsScreen>{
         title: Text('Statistics'),
       ),
       body: Container(
-        height: 300,
         child: Center(
           child: Padding(
             padding: EdgeInsets.all(1.0),
@@ -623,6 +622,62 @@ class _StatsScreenState extends State<StatsScreen>{
                         pointsMode: PointsMode.all,
                         pointSize: 8.0,
                       ),
+                    ),
+                    SizedBox(height: 40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Card(
+                            elevation: 7,
+                            child: Padding(
+                                padding: const EdgeInsets.all(22.0),
+                                child: Column(
+                                    children: [
+                                      Text('Fastest Time',
+                                        style: TextStyle(
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 24,
+                                        width: 0,
+                                      ),
+                                      Text('35min',
+                                        style: TextStyle(
+                                            fontSize: 18
+                                        ),
+                                      ),
+                                    ]
+                                )
+                            )
+                        ),
+                        Card(
+                            elevation: 7,
+                            child: Padding(
+                                padding: const EdgeInsets.all(22.0),
+                                child: Column(
+                                    children: [
+                                      Text('Slowest Time',
+                                        style: TextStyle(
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 24,
+                                        width: 0,
+                                      ),
+                                      Text('5h56min',
+                                        style: TextStyle(
+                                            fontSize: 18
+                                        ),
+                                      ),
+                                    ]
+                                )
+                            )
+                        ),
+                        ],
                     ),
                   ],
                 ),
