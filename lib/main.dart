@@ -679,8 +679,24 @@ class _StatsScreenState extends State<StatsScreen>{
                         ),
                         ],
                     ),
+                    SizedBox(height: 70),
+                    FloatingActionButton.extended(
+                      onPressed: () {
+                      },
+                      label: Text('Add a Time',
+                        style: TextStyle(
+                            fontSize: 20,
+                          color: Colors.white
+                        ),
+                      ),
+                      icon: Icon(Icons.add,
+                      color: Colors.white
+                      ),
+                      backgroundColor: Colors.cyan,
+                    ),
                   ],
                 ),
+
               ],
             ),
           ),
