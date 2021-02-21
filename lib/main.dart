@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_tfc/eventsToApprove.dart';
 import 'events.dart';
 import 'memberToApprove.dart';
+import 'package:flutter_sparkline/flutter_sparkline.dart';
 
 void main() => runApp(MyApp());
 
@@ -586,6 +587,8 @@ class _MembersListScreenState extends State<MembersListScreen>{
 
 class _StatsScreenState extends State<StatsScreen>{
 
+  var data = [1.0, 1.30, 1.5, 2.50, 2.30, 0.59, 0.55, 1.40, 0.30, 0.31, 3.56];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -593,6 +596,41 @@ class _StatsScreenState extends State<StatsScreen>{
         iconTheme: IconThemeData(color: Colors.white),
         title: Text('Statistics'),
       ),
+      body: Container(
+        height: 300,
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(1.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Text("Your Race Finish Times", style: TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.black,
+                      ),),
+                    ),
+                    SizedBox(height: 35),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: new Sparkline(
+                        data: data,
+                        lineColor: Colors.green,
+                        pointsMode: PointsMode.all,
+                        pointSize: 8.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      )
     );
   }
 }
