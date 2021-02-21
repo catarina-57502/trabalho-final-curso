@@ -1,4 +1,24 @@
 class EventsToAprrove {
+
+  String name;
+  String date;
+  String deadline;
+  String local;
+  String type;
+  String cost;
+
+  EventsToAprrove(
+      this.name, this.date, this.deadline, this.local, this.type, this.cost);
+
+  EventsToAprrove.fromJson(Map<String, dynamic> json)
+      : name = json['name'].toString(),
+        date = json['date'].toString(),
+        deadline = json['deadline'].toString(),
+        local = json['local'].toString(),
+        type = json['type'].toString(),
+        cost = json['cost'].toString();
+
+
   static final getEvents = [
     {
       'name': 'III Dualto de Marvila',

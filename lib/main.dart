@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen>{
                         ),
                         Padding(padding: EdgeInsets.all(15.0),
                           child: Text(
-                            'José António',
+                            'John Doe',
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         )

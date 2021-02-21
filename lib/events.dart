@@ -1,4 +1,14 @@
 class Events {
+
+  String name;
+  String date;
+
+  Events(this.name, this.date);
+
+  Events.fromJson(Map<String, dynamic> json)
+      : name = json['name'].toString(),
+        date = json['date'].toString();
+
   static final getEvents = [
     {
       'name': 'Corrida 25 de Abril',

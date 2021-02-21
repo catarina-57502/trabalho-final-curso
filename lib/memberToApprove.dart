@@ -1,4 +1,19 @@
 class MembersToAprrove {
+
+  String name;
+  String cc;
+  String office;
+  String reg;
+
+  MembersToAprrove(this.name, this.cc, this.office, this.reg);
+
+  MembersToAprrove.fromJson(Map<String, dynamic> json)
+      : name = json['name'].toString(),
+        cc = json['cc'].toString(),
+        office = json['office'].toString(),
+        reg = json['reg'].toString();
+
+
   static final getMember = [
     {
       'name': 'António Fonseca',
