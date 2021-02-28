@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_tfc/eventsToApprove.dart';
+import 'package:fcharts/fcharts.dart';
+import 'package:projeto_tfc/times.dart';
 import 'events.dart';
 import 'memberToApprove.dart';
-import 'package:flutter_sparkline/flutter_sparkline.dart';
 
 void main() => runApp(MyApp());
 
@@ -585,123 +586,171 @@ class _MembersListScreenState extends State<MembersListScreen>{
   }
 }
 
-class _StatsScreenState extends State<StatsScreen>{
-
-  var data = [1.0, 1.30, 1.5, 2.50, 2.30, 0.59, 0.55, 1.40, 0.30, 0.31, 3.56];
+class SimpleLineChart extends StatelessWidget {
+  // X value -> Y value
+  static const myData = [
+    ["A", "✔"],
+    ["B", "❓"],
+    ["C", "✖"],
+    ["D", "❓"],
+    ["E", "✖"],
+    ["F", "✖"],
+    ["G", "✔"],
+  ];
 
   @override
   Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 4 / 3,
+      child: new LineChart(
+        lines: [
+          new Line<List<String>, String, String>(
+            data: myData,
+            xFn: (datum) => datum[0],
+            yFn: (datum) => datum[1],
+          ),
+        ],
+        chartPadding: new EdgeInsets.fromLTRB(30.0, 10.0, 10.0, 30.0),
+      ),
+    );
+  }
+}
+
+class ChartExample {
+  ChartExample(
+      this.name,
+      this.widget,
+      this.description,
+      );
+
+  final String name;
+  final Widget widget;
+  final String description;
+}
+
+final charts = [
+  new ChartExample(
+    'Simple Line Chart',
+    new SimpleLineChart(),
+    'Strings on the X-Axis and their index in the list on the Y-Axis.',
+  ),
+];
+
+class _StatsScreenState extends State<StatsScreen>{
+
+  var _chartIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+
+    final chart = charts[_chartIndex % charts.length];
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text('Statistics'),
       ),
-      body: Container(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(1.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text("Your Race Finish Times", style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.black,
-                      ),),
-                    ),
-                    SizedBox(height: 35),
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: new Sparkline(
-                        data: data,
-                        lineColor: Colors.green,
-                        pointsMode: PointsMode.all,
-                        pointSize: 8.0,
+        body: Container(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(1.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(1.0),
+                        child: Text("Your Race Finish Times", style: TextStyle(
+                          fontSize: 25.0,
+                          color: Colors.black,
+                        ),),
                       ),
-                    ),
-                    SizedBox(height: 40),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Card(
-                            elevation: 7,
-                            child: Padding(
-                                padding: const EdgeInsets.all(22.0),
-                                child: Column(
-                                    children: [
-                                      Text('Fastest Time',
-                                        style: TextStyle(
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.bold
+                      SizedBox(height: 35),
+                     Padding(
+                       padding: new EdgeInsets.all(20.0),
+                       child: chart.widget,
+                     ),
+                      SizedBox(height: 40),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Card(
+                              elevation: 7,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(22.0),
+                                  child: Column(
+                                      children: [
+                                        Text('Fastest Time',
+                                          style: TextStyle(
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.bold
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        height: 24,
-                                        width: 0,
-                                      ),
-                                      Text('35min',
-                                        style: TextStyle(
-                                            fontSize: 18
+                                        Container(
+                                          height: 24,
+                                          width: 0,
                                         ),
-                                      ),
-                                    ]
-                                )
-                            )
-                        ),
-                        Card(
-                            elevation: 7,
-                            child: Padding(
-                                padding: const EdgeInsets.all(22.0),
-                                child: Column(
-                                    children: [
-                                      Text('Slowest Time',
-                                        style: TextStyle(
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.bold
+                                        Text('35min',
+                                          style: TextStyle(
+                                              fontSize: 18
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        height: 24,
-                                        width: 0,
-                                      ),
-                                      Text('5h56min',
-                                        style: TextStyle(
-                                            fontSize: 18
+                                      ]
+                                  )
+                              )
+                          ),
+                          Card(
+                              elevation: 7,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(22.0),
+                                  child: Column(
+                                      children: [
+                                        Text('Slowest Time',
+                                          style: TextStyle(
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.bold
+                                          ),
                                         ),
-                                      ),
-                                    ]
-                                )
-                            )
-                        ),
+                                        Container(
+                                          height: 24,
+                                          width: 0,
+                                        ),
+                                        Text('5h56min',
+                                          style: TextStyle(
+                                              fontSize: 18
+                                          ),
+                                        ),
+                                      ]
+                                  )
+                              )
+                          ),
                         ],
-                    ),
-                    SizedBox(height: 70),
-                    FloatingActionButton.extended(
-                      onPressed: () {
-                      },
-                      label: Text('Add a Time',
-                        style: TextStyle(
-                            fontSize: 20,
-                          color: Colors.white
+                      ),
+                      SizedBox(height: 70),
+                      FloatingActionButton.extended(
+                        onPressed: () {
+                        },
+                        label: Text('Add a Time',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white
+                          ),
                         ),
+                        icon: Icon(Icons.add,
+                            color: Colors.white
+                        ),
+                        backgroundColor: Colors.cyan,
                       ),
-                      icon: Icon(Icons.add,
-                      color: Colors.white
-                      ),
-                      backgroundColor: Colors.cyan,
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      )
+        )
     );
   }
 }
