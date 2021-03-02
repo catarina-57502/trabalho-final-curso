@@ -134,18 +134,24 @@ class _HomeScreenState extends State<HomeScreen>{
       body: ListView.builder(
           itemCount: Events.getEvents.length, // the length
           itemBuilder: (context, index) {
-            return Container(
-              padding: EdgeInsets.fromLTRB(15,15,15,0),
-              height: 200,
-              child: Card(
-                elevation: 7,
-                child: Row(
-                  children: [
-                    image(Events.getEvents[index]),
-                    event(Events.getEvents[index])
-                  ],
+            return new GestureDetector(
+                onTap: (){
+                  print("Container clicked");
+                },
+              child: Container(
+                padding: EdgeInsets.fromLTRB(15,15,15,0),
+                height: 200,
+                child: Card(
+                  elevation: 7,
+                  child: Row(
+                    children: [
+                      image(Events.getEvents[index]),
+                      event(Events.getEvents[index])
+                    ],
+                  ),
                 ),
-              ),
+              )
+
             );
           }),
       drawer: Drawer(
