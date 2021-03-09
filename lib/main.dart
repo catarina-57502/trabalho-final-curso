@@ -77,9 +77,43 @@ class StatsScreen extends StatefulWidget {
 
 }
 
-class _HomeScreenState extends State<HomeScreen>{
+class DetailsScreen extends StatefulWidget {
 
-  int _contador = 0;
+  final event;
+
+  DetailsScreen(this.event);
+
+  @override
+  State<StatefulWidget> createState(){
+    return _DetailsScreenState(event);
+  }
+
+}
+
+class _DetailsScreenState extends State<DetailsScreen>{
+
+  final String event;
+
+  _DetailsScreenState(this.event);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text(
+              event
+          ),
+        ),
+        body: Text(
+          event
+        ),
+    );
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen>{
 
   TextEditingController _controller;
 
@@ -135,8 +169,12 @@ class _HomeScreenState extends State<HomeScreen>{
           itemCount: Events.getEvents.length, // the length
           itemBuilder: (context, index) {
             return new GestureDetector(
-                onTap: (){
-                  print("Container clicked");
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailsScreen(Events.getEvents[index].toString()),
+                      ));
                 },
               child: Container(
                 padding: EdgeInsets.fromLTRB(15,15,15,0),
