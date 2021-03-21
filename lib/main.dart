@@ -330,7 +330,8 @@ class _HomeScreenState extends State<HomeScreen>{
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.search, color: Colors.white),
-              onPressed: null
+              onPressed: (){
+              }
           )
         ],
       ),
@@ -879,11 +880,7 @@ class _StatsScreenState extends State<StatsScreen>{
                           color: Colors.black,
                         ),),
                       ),
-                      SizedBox(height: 35),
-                      Padding(
-                        padding: new EdgeInsets.all(20.0),
-                        child: chart.widget,
-                      ),
+
                       SizedBox(height: 40),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
