@@ -8,8 +8,11 @@ import 'login.dart';
 import 'memberstoapprove.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key, this.title}) : super(key: key);
   final String title;
+  final String name;
+  final String role;
+
+  HomeScreen(this.title, this.name, this.role);
 
   @override
   State<StatefulWidget> createState() {
@@ -113,10 +116,19 @@ class _HomeScreenState extends State<HomeScreen>{
                             borderRadius: BorderRadius.all(Radius.circular(50.0)),
                             child: Icon(Icons.person, color: Colors.blueGrey, size: 80)
                         ),
-                        Padding(padding: EdgeInsets.all(15.0),
-                          child: Text(
-                            'John Doe',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                        Padding(padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                widget.name,
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                widget.role,
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                              ),
+                            ]
                           ),
                         )
                       ]
@@ -140,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen>{
             ListTile(
               leading: Icon(Icons.event),
               title: Text(
-                'Events List',
+                'Approve Events',
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -155,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen>{
             ListTile(
               leading: Icon(Icons.people),
               title: Text(
-                'Members List',
+                'Approve Members',
                 style: TextStyle(
                   fontSize: 16,
                 ),
