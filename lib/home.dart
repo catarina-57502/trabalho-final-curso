@@ -100,116 +100,204 @@ class _HomeScreenState extends State<HomeScreen>{
 
             );
           }),
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Color().primaryColor,
-                ),
-                child: Container(
-                  child: Column(
-                      children: <Widget>[
-                        Material(
-                            borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                            child: Icon(Icons.person, color: Colors.blueGrey, size: 80)
-                        ),
-                        Padding(padding: EdgeInsets.all(10.0),
-                          child: Column(
+      drawer: roleMenu(context, widget.name, widget.role)
+    );
+  }
+}
+
+Widget roleMenu(context, name, role){
+  if(role == "Administrator"){
+    return Drawer(
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color().primaryColor,
+              ),
+              child: Container(
+                child: Column(
+                    children: <Widget>[
+                      Material(
+                          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                          child: Icon(Icons.person, color: Colors.blueGrey, size: 80)
+                      ),
+                      Padding(padding: EdgeInsets.all(10.0),
+                        child: Column(
                             children: <Widget>[
                               Text(
-                                widget.name,
+                                name,
                                 style: TextStyle(color: Colors.white, fontSize: 16),
                               ),
                               SizedBox(height: 4),
                               Text(
-                                widget.role,
+                                role,
                                 style: TextStyle(color: Colors.white, fontSize: 12),
                               ),
                             ]
-                          ),
-                        )
-                      ]
-                  ),
+                        ),
+                      )
+                    ]
+                ),
 
-                )
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text(
-                'Home',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+              )
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text(
+              'Home',
+              style: TextStyle(
+                fontSize: 16,
               ),
-              onTap: () {
+            ),
+            onTap: () {
 
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.event),
-              title: Text(
-                'Approve Events',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.event),
+            title: Text(
+              'Approve Events',
+              style: TextStyle(
+                fontSize: 16,
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => EventsListScreen()),
-                );
-              },
             ),
-            ListTile(
-              leading: Icon(Icons.people),
-              title: Text(
-                'Approve Members',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EventsListScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.people),
+            title: Text(
+              'Approve Members',
+              style: TextStyle(
+                fontSize: 16,
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MembersListScreen()),
-                );
-              },
             ),
-            ListTile(
-              leading: Icon(Icons.bar_chart),
-              title: Text(
-                'Statistics',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MembersListScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.bar_chart),
+            title: Text(
+              'Statistics',
+              style: TextStyle(
+                fontSize: 16,
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => StatsScreen()),
-                );
-              },
             ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => StatsScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 16,
               ),
-              onTap: () {
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                    LoginScreen()), (Route<dynamic> route) => false
-                );
-              },
             ),
-          ],
-        ),
+            onTap: () {
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  LoginScreen()), (Route<dynamic> route) => false
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }else{
+    return Drawer(
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color().primaryColor,
+              ),
+              child: Container(
+                child: Column(
+                    children: <Widget>[
+                      Material(
+                          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                          child: Icon(Icons.person, color: Colors.blueGrey, size: 80)
+                      ),
+                      Padding(padding: EdgeInsets.all(10.0),
+                        child: Column(
+                            children: <Widget>[
+                              Text(
+                                name,
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                role,
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                              ),
+                            ]
+                        ),
+                      )
+                    ]
+                ),
+
+              )
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text(
+              'Home',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            onTap: () {
+
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.bar_chart),
+            title: Text(
+              'Statistics',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => StatsScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  LoginScreen()), (Route<dynamic> route) => false
+              );
+            },
+          ),
+        ],
       ),
     );
   }
