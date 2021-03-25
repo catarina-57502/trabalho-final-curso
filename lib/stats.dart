@@ -98,6 +98,13 @@ class _StatsScreenState extends State<StatsScreen>{
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
           title: Text('Statistics'),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.filter_alt_sharp, color: Colors.white),
+                onPressed: (){
+                }
+            )
+          ],
         ),
         body: Container(
           child: Center(
