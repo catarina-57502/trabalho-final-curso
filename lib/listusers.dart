@@ -24,18 +24,21 @@ class Users {
       'password': 'qwerty',
       'role': 'Administrator',
       'name': 'Catarina Moita',
+      'inscricoes': "",
     },
     {
       'username': 'rodrigocorreia',
       'password': '1234',
       'role': 'Administrator',
       'name': 'Rodrigo Corrreia',
+      'inscricoes': "",
     },
     {
       'username': 'teste',
       'password': 'teste',
       'role': 'Member',
       'name': 'Teste',
+      'inscricoes': "",
     }
   ];
 

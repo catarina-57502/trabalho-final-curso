@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
+import 'package:share/share.dart';
+
+bool isReg = false;
 
 class DetailsScreen extends StatefulWidget {
 
@@ -29,6 +32,14 @@ class _DetailsScreenState extends State<DetailsScreen>{
         title: Text(
           titulo(event),
         ),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.share, color: Colors.white),
+              onPressed: (){
+                Share.share("Vou à prova ${titulo(event)} com a minha empresa :)");
+              }
+          )
+        ],
       ),
       body: new LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -69,19 +80,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                         ButtonTheme(
                           minWidth: 380.0,
                           height: 55.0,
-                          child: RaisedButton(
-                            color: Color().primaryColor,
-                            child: Text(
-                              'Register',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20
-                              ),
-                            ),
-                            onPressed: () {
-                              showAlertDialog(context);
-                            },
-                          ),
+                          child: isInscrito(),
                         ),
                       ]
                   ),
@@ -106,8 +105,10 @@ class _DetailsScreenState extends State<DetailsScreen>{
       child: Text("Register"),
       color: Colors.green,
       onPressed:  () {
+        setState(() {
+          isReg = true;
+        });
         Navigator.pop(context);
-        showAlertDialogSucesso(context);
       },
     );
 
@@ -130,21 +131,34 @@ class _DetailsScreenState extends State<DetailsScreen>{
     );
   }
 
-  void showAlertDialogSucesso(BuildContext context) {
+  void showAlertDialog2(BuildContext context) {
 
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = RaisedButton(
+      child: Text("Yes, Cancel"),
+      color: Colors.red,
+      onPressed:  () {
+        setState(() {
+          isReg = false;
+        });
         Navigator.pop(context);
       },
     );
 
+
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text('Successfully Registered'),
-      content: Text("You are registered in ${titulo(event)}."),
+      title: Text(titulo(event)),
+      content: Text("Are you sure you want to cancel you registration for this event?"),
       actions: [
-        okButton,
+        cancelButton,
+        continueButton,
       ],
     );
 
@@ -152,6 +166,37 @@ class _DetailsScreenState extends State<DetailsScreen>{
       context: context,
       builder: (BuildContext context) {
         return alert;
+      },
+    );
+  }
+
+  Widget isInscrito(){
+    if(isReg){
+      return RaisedButton(
+        color: Color().primaryColor,
+        child: Text(
+          'Cancel',
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 20
+          ),
+        ),
+        onPressed: () {
+          showAlertDialog2(context);
+        },
+      );
+    }
+    return RaisedButton(
+      color: Color().primaryColor,
+      child: Text(
+        'Register',
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: 20
+        ),
+      ),
+      onPressed: () {
+        showAlertDialog(context);
       },
     );
   }
