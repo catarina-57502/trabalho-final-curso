@@ -71,25 +71,122 @@ class _DetailsScreenState extends State<DetailsScreen>{
                             height: 150,),
                         ),
                         SizedBox(height: 50),
-                        Text(
-                            'Date: ' + data(event)
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                            'Deadline: ' + prazo(event)
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                            'Local: ' + local(event)
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                            'Type: ' + tipo(event)
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                            'Cost: ' + custo(event) + '€'
-                        ),
+                         Container(
+                           margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/3.5),
+                           child: Column(
+                             children: [
+                               Row(
+                                 children: [
+                                   Icon(
+                                       Icons.date_range
+                                   ),
+                                   SizedBox(width: 5),
+                                   Text(
+                                     'Date: ',
+                                     style: TextStyle(
+                                       fontWeight: FontWeight.bold,
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                   Text(
+                                     data(event),
+                                     style: TextStyle(
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                               SizedBox(height: 20),
+                               Row(
+                                 children: [
+                                   Icon(
+                                       Icons.lock_clock
+                                   ),
+                                   SizedBox(width: 5),
+                                   Text(
+                                     'Deadline: ',
+                                     style: TextStyle(
+                                       fontWeight: FontWeight.bold,
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                   Text(
+                                     prazo(event),
+                                     style: TextStyle(
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                               SizedBox(height: 20),
+                               Row(
+                                 children: [
+                                   Icon(
+                                       Icons.location_on
+                                   ),
+                                   SizedBox(width: 5),
+                                   Text(
+                                     'Local: ',
+                                     style: TextStyle(
+                                       fontWeight: FontWeight.bold,
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                   Text(
+                                     local(event),
+                                     style: TextStyle(
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                               SizedBox(height: 20),
+                               Row(
+                                 children: [
+                                   Icon(
+                                       Icons.directions_run
+                                   ),
+                                   SizedBox(width: 5),
+                                   Text(
+                                     'Type: ',
+                                     style: TextStyle(
+                                       fontWeight: FontWeight.bold,
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                   Text(
+                                     tipo(event),
+                                     style: TextStyle(
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                               SizedBox(height: 20),
+                               Row(
+                                 children: [
+                                   Icon(
+                                       Icons.monetization_on
+                                   ),
+                                   SizedBox(width: 5),
+                                   Text(
+                                     'Cost: ',
+                                     style: TextStyle(
+                                       fontWeight: FontWeight.bold,
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                   Text(
+                                     custo(event) + '€',
+                                     style: TextStyle(
+                                       fontSize: 17,
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                             ],
+                           ),
+                         ),
                         SizedBox(height: 50),
                         ButtonTheme(
                           minWidth: 380.0,
