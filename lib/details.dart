@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'package:share/share.dart';
 
+import 'login.dart';
+
 bool isReg = false;
 
 class DetailsScreen extends StatefulWidget {
@@ -49,9 +51,21 @@ class _DetailsScreenState extends State<DetailsScreen>{
                   minHeight: viewportConstraints.maxHeight,
                 ),
                 child: Container(
-                  margin: const EdgeInsets.all(20.0),
                   child: Column(
                       children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.all(15.0),
+                          height: 55.0,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Color().plafond)
+                          ),
+                          child: Text(
+                            'Plafond: $plafond€',
+                            style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: 10),
                         Center(
                           child: Image(image: AssetImage(imagem(event)), width: 200,
                             height: 150,),
@@ -74,7 +88,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                         ),
                         SizedBox(height: 20),
                         Text(
-                            'Cost: ' + custo(event)
+                            'Cost: ' + custo(event) + '€'
                         ),
                         SizedBox(height: 50),
                         ButtonTheme(
@@ -105,10 +119,15 @@ class _DetailsScreenState extends State<DetailsScreen>{
       child: Text("Register"),
       color: Colors.green,
       onPressed:  () {
-        setState(() {
-          isReg = true;
-        });
-        Navigator.pop(context);
+        if(plafond >= int.parse(custo(event))){
+          setState(() {
+            isReg = true;
+            plafond -= int.parse(custo(event));
+          });
+          Navigator.pop(context);
+        }else{
+          showAlertDialog3(context);
+        }
       },
     );
 
@@ -145,6 +164,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
       color: Colors.red,
       onPressed:  () {
         setState(() {
+          plafond += int.parse(custo(event));
           isReg = false;
         });
         Navigator.pop(context);
@@ -162,6 +182,35 @@ class _DetailsScreenState extends State<DetailsScreen>{
       ],
     );
 
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialog3(BuildContext context) {
+
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(titulo(event)),
+      content: Text("Your plafond is not enough to register for this event."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {

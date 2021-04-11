@@ -4,6 +4,8 @@ import 'colors.dart';
 import 'home.dart';
 import 'listusers.dart';
 
+int plafond = 0;
+
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
 
@@ -19,6 +21,16 @@ class _LoginScreenState extends State<LoginScreen>{
   String _username;
   String _password;
   final _formKey = GlobalKey<FormState>();
+
+  void getPlafond(name, pass) {
+    setState(() {
+      for(var i in Users.getUsers){
+        if('${i['username']}'== name && '${i['password']}'== pass){
+          plafond = i['plafond'];
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen>{
                                   if (_formKey.currentState.validate()) {
                                     _formKey.currentState.save();
                                     if(isCredentialsCorrect(_username, _password)){
+                                      getPlafond(_username, _password);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => HomeScreen('Sistema de Gestão de Eventos', getName(_username, _password), getRole(_username, _password))),

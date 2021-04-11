@@ -5,7 +5,7 @@ class Events {
   String deadline;
   String local;
   String type;
-  String cost;
+  int cost;
 
 
   Events.fromJson(Map<String, dynamic> json)
@@ -14,7 +14,7 @@ class Events {
         deadline = json['dealine'].toString(),
         local = json['local'].toString(),
         type = json['type'].toString(),
-        cost = json['cost'].toString();
+        cost = json['cost'];
 
   static final getEvents = [
     {
@@ -23,8 +23,8 @@ class Events {
       'deadline': '1/03/2021',
       'local': 'Lisboa',
       'type': '10km',
-      'cost': '5€',
-      'image': 'assets/images/25abril.jpg',
+      'cost': 5,
+      'image': 'assets/images/25abril.jpg'
 
     },
     {
@@ -33,7 +33,7 @@ class Events {
       'deadline': '15/04/2021',
       'local': 'Lisboa',
       'type': 'Maratona',
-      'cost': '10€',
+      'cost': 10,
       'image': 'assets/images/edp.jpg',
 
     },
@@ -43,9 +43,8 @@ class Events {
       'deadline': '1/12/2021',
       'local': 'Amadora',
       'type': '10km',
-      'cost': '7€',
+      'cost': 7,
       'image': 'assets/images/saosilvestre.jpg',
-
     },
   ];
 
