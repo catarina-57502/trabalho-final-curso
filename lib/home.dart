@@ -34,31 +34,6 @@ class _HomeScreenState extends State<HomeScreen>{
     super.dispose();
   }
 
-  Widget event(list) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: RichText(
-        text: TextSpan(
-          text: '${list['name']}',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
-          ),
-          children: <TextSpan>[
-            TextSpan(text: '\n${list['date']}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget image(list) {
-    return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Image(image: AssetImage('${list['image']}'), width: 100,
-          height: 150,)
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen>{
             IconButton(
                 icon: Icon(Icons.search, color: Colors.white),
                 onPressed: (){
+                  showSearch(context: context, delegate: EventsItemsSearch());
                 }
             )
           ],
@@ -134,6 +110,31 @@ class _HomeScreenState extends State<HomeScreen>{
         drawer: roleMenu(context, widget.name, widget.role)
     );
   }
+}
+
+Widget event(list) {
+  return Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: RichText(
+      text: TextSpan(
+        text: '${list['name']}',
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+        ),
+        children: <TextSpan>[
+          TextSpan(text: '\n${list['date']}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget image(list) {
+  return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Image(image: AssetImage('${list['image']}'), width: 100,
+        height: 150,)
+  );
 }
 
 Widget roleMenu(context, name, role){
@@ -346,4 +347,59 @@ Widget roleMenu(context, name, role){
       ),
     );
   }
+}
+
+class EventsItemsSearch extends SearchDelegate<Events>{
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [IconButton(icon: Icon(Icons.clear), onPressed:(){
+      query = "";
+    })];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(onPressed:(){
+      close(context, null);
+    }, icon: Icon(Icons.arrow_back));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final mylist = query.isEmpty ? Events.getEvents : Events.getEvents.where((p) => p['name'].toString().startsWith(query)).toList();
+    return mylist.isEmpty ? Text('No results found...', style: TextStyle(fontSize: 20)) : ListView.builder(
+        itemCount: mylist.length,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return new GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailsScreen(mylist[index].toString()),
+                    ));
+              },
+              child: Container(
+                padding: EdgeInsets.fromLTRB(15,15,15,0),
+                height: 200,
+                child: Card(
+                  elevation: 7,
+                  child: Row(
+                    children: [
+                      image(mylist[index]),
+                      event(mylist[index])
+                    ],
+                  ),
+                ),
+              )
+          );
+        });
+  }
+  
 }
