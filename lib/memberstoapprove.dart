@@ -15,25 +15,6 @@ class MembersListScreen extends StatefulWidget {
 
 class _MembersListScreenState extends State<MembersListScreen>{
 
-  Widget memberToApprove(list) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: RichText(
-        text: TextSpan(
-          text: '${list['name']}',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
-          ),
-          children: <TextSpan>[
-            TextSpan(text: '\n${list['CC']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-            TextSpan(text: '\n${list['office']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-            TextSpan(text: '\n${list['reg']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +24,9 @@ class _MembersListScreenState extends State<MembersListScreen>{
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.search, color: Colors.white),
-              onPressed: null
+              onPressed: (){
+                showSearch(context: context, delegate: MembersApproveItemsSearch());
+              }
           )
         ],
       ),
@@ -133,4 +116,103 @@ class _MembersListScreenState extends State<MembersListScreen>{
 
     );
   }
+}
+
+Widget memberToApprove(list) {
+  return Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: RichText(
+      text: TextSpan(
+        text: '${list['name']}',
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+        ),
+        children: <TextSpan>[
+          TextSpan(text: '\n${list['CC']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${list['office']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${list['reg']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+        ],
+      ),
+    ),
+  );
+}
+
+class MembersApproveItemsSearch extends SearchDelegate<MembersToAprrove>{
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [IconButton(icon: Icon(Icons.clear), onPressed:(){
+      query = "";
+    })];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(onPressed:(){
+      close(context, null);
+    }, icon: Icon(Icons.arrow_back));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final mylist = query.isEmpty ? MembersToAprrove.getMember : MembersToAprrove.getMember.where((p) => p['name'].toString().startsWith(query)).toList();
+    return mylist.isEmpty ? Text('No results found...', style: TextStyle(fontSize: 20)) : ListView.builder(
+        itemCount: mylist.length,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: EdgeInsets.fromLTRB(15,15,15,0),
+            height: 200,
+            child: Card(
+              elevation: 7,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: memberToApprove(mylist[index]),
+                  ),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: (){
+
+                        },
+                        color: Colors.green,
+                        child: Text (
+                          'Approve',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20
+                          ),
+                        ),
+                      ),
+
+                      RaisedButton(
+                        onPressed: (){
+
+                        },
+                        color: Colors.red,
+                        child: Text (
+                          'Dismiss',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
 }

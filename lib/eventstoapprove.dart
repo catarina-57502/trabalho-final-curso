@@ -16,27 +16,6 @@ class EventsListScreen extends StatefulWidget {
 
 class _EventsListScreenState extends State<EventsListScreen>{
 
-  Widget eventToApprove(list) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: RichText(
-        text: TextSpan(
-          text: '${list['name']}',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
-          ),
-          children: <TextSpan>[
-            TextSpan(text: '\n${list['date']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-            TextSpan(text: '\n${list['deadline']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-            TextSpan(text: '\n${list['local']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-            TextSpan(text: '\n${list['type']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-            TextSpan(text: '\n${list['cost']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +25,9 @@ class _EventsListScreenState extends State<EventsListScreen>{
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.search, color: Colors.white),
-              onPressed: null
+              onPressed: (){
+                showSearch(context: context, delegate: EventsApproveItemsSearch());
+              }
           )
         ],
       ),
@@ -136,4 +117,105 @@ class _EventsListScreenState extends State<EventsListScreen>{
 
     );
   }
+}
+
+Widget eventToApprove(list) {
+  return Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: RichText(
+      text: TextSpan(
+        text: '${list['name']}',
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+        ),
+        children: <TextSpan>[
+          TextSpan(text: '\n${list['date']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${list['deadline']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${list['local']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${list['type']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${list['cost']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+        ],
+      ),
+    ),
+  );
+}
+
+class EventsApproveItemsSearch extends SearchDelegate<EventsToAprrove>{
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [IconButton(icon: Icon(Icons.clear), onPressed:(){
+      query = "";
+    })];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(onPressed:(){
+      close(context, null);
+    }, icon: Icon(Icons.arrow_back));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final mylist = query.isEmpty ? EventsToAprrove.getEvents : EventsToAprrove.getEvents.where((p) => p['name'].toString().startsWith(query)).toList();
+    return mylist.isEmpty ? Text('No results found...', style: TextStyle(fontSize: 20)) : ListView.builder(
+        itemCount: mylist.length,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: EdgeInsets.fromLTRB(15,15,15,0),
+            height: 240,
+            child: Card(
+              elevation: 7,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: eventToApprove(mylist[index]),
+                  ),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: (){
+
+                        },
+                        color: Colors.green,
+                        child: Text (
+                          'Approve',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20
+                          ),
+                        ),
+                      ),
+
+                      RaisedButton(
+                        onPressed: (){
+
+                        },
+                        color: Colors.red,
+                        child: Text (
+                          'Dismiss',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
 }
