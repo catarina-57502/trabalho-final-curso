@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_tfc/plafond.dart';
+import 'package:provider/provider.dart';
 
 import 'colors.dart';
 import 'home.dart';
 import 'listusers.dart';
+import 'plafond.dart';
 
-int plafond = 0;
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -18,23 +20,27 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>{
 
+  void getPlafond(name, pass) {
+    final plafond = Provider.of<Plafond>(context);
+    for(var i in Users.getUsers){
+      if('${i['username']}'== name && '${i['password']}'== pass){
+        print(i['plafond']);
+        plafond.setPlafond(i['plafond']);
+      }
+    }
+  }
+
+
   String _username;
   String _password;
   final _formKey = GlobalKey<FormState>();
 
-  void getPlafond(name, pass) {
-    setState(() {
-      for(var i in Users.getUsers){
-        if('${i['username']}'== name && '${i['password']}'== pass){
-          plafond = i['plafond'];
-        }
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return ChangeNotifierProvider<Plafond>(
+        builder: (context) => Plafond(),
+      child: Scaffold(
       body: new LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
             return SingleChildScrollView(
@@ -172,6 +178,7 @@ class _LoginScreenState extends State<LoginScreen>{
               ),
             );
           }
+      ),
       ),
     );
   }

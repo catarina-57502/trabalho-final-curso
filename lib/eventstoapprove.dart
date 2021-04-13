@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'colors.dart';
 import 'listeventstoapprove.dart';
-import 'login.dart';
+import 'plafond.dart';
 
 class EventsListScreen extends StatefulWidget {
   EventsListScreen({Key key}) : super(key: key);
@@ -18,6 +19,7 @@ class _EventsListScreenState extends State<EventsListScreen>{
 
   @override
   Widget build(BuildContext context) {
+    final plafond = Provider.of<Plafond>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -48,9 +50,11 @@ class _EventsListScreenState extends State<EventsListScreen>{
                         decoration: BoxDecoration(
                             border: Border.all(color: Color().plafond),
                         ),
-                        child: Text(
-                          'Plafond: $plafond€',
-                          style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
+                        child: Consumer<Plafond>(
+                          builder: (context, plafond, child) => Text(
+                            'Plafond: ${plafond.value}€',
+                            style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -114,7 +118,6 @@ class _EventsListScreenState extends State<EventsListScreen>{
             );
           }
       ),
-
     );
   }
 }

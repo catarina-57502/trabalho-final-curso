@@ -6,6 +6,10 @@ import 'eventstoapprove.dart';
 import 'listevents.dart';
 import 'login.dart';
 import 'memberstoapprove.dart';
+import 'plafond.dart';
+import 'package:provider/provider.dart';
+
+List<bool> listEventsReg = List.filled(Events.getEvents.length, false);
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -22,20 +26,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>{
 
-  TextEditingController _controller;
-
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final plafond = Provider.of<Plafond>(context, listen: false);
+
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
@@ -66,9 +60,11 @@ class _HomeScreenState extends State<HomeScreen>{
                           decoration: BoxDecoration(
                               border: Border.all(color: Color().plafond)
                           ),
-                          child: Text(
-                            "Plafond: $plafond€",
-                            style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
+                          child: Consumer<Plafond>(
+                            builder: (context, plafond, child) => Text(
+                              'Plafond: ${plafond.value}€',
+                              style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
@@ -82,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen>{
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => DetailsScreen(Events.getEvents[index].toString()),
+                                          builder: (context) => DetailsScreen(Events.getEvents[index].toString(), index),
                                         ));
                                   },
                                   child: Container(
@@ -107,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen>{
             );
           },
         ),
-        drawer: roleMenu(context, widget.name, widget.role)
+        drawer: roleMenu(context, widget.name, widget.role),
     );
   }
 }
@@ -138,6 +134,8 @@ Widget image(list) {
 }
 
 Widget roleMenu(context, name, role){
+  final plafond = Provider.of<Plafond>(context, listen: false);
+
   if(role == "Administrator"){
     return Drawer(
       child: ListView(
@@ -170,10 +168,13 @@ Widget roleMenu(context, name, role){
                                   style: TextStyle(color: Colors.white, fontSize: 12),
                                 ),
                                 SizedBox(height: 10),
-                                Text(
-                                  'Plafond: $plafond€',
-                                  style: TextStyle(color: Colors.white, fontSize: 16),
+                                Consumer<Plafond>(
+                                  builder: (context, plafond, child) => Text(
+                                    'Plafond: ${plafond.value}€',
+                                    style: TextStyle(color: Colors.white, fontSize: 16),
+                                  ),
                                 )
+
                               ]
                           ),
                         )
@@ -289,9 +290,11 @@ Widget roleMenu(context, name, role){
                                   style: TextStyle(color: Colors.white, fontSize: 12),
                                 ),
                                 SizedBox(height: 10),
-                                Text(
-                                  'Plafond: $plafond€',
-                                  style: TextStyle(color: Colors.white, fontSize: 16),
+                                Consumer<Plafond>(
+                                  builder: (context, plafond, child) => Text(
+                                    'Plafond: ${plafond.value}€',
+                                    style: TextStyle(color: Colors.white, fontSize: 16),
+                                  ),
                                 )
                               ]
                           ),
@@ -382,7 +385,7 @@ class EventsItemsSearch extends SearchDelegate<Events>{
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailsScreen(mylist[index].toString()),
+                      builder: (context) => DetailsScreen(mylist[index].toString(), index),
                     ));
               },
               child: Container(
@@ -401,5 +404,5 @@ class EventsItemsSearch extends SearchDelegate<Events>{
           );
         });
   }
-  
+
 }

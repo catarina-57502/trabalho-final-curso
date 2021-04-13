@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_tfc/home.dart';
+import 'package:provider/provider.dart';
 import 'colors.dart';
 import 'package:share/share.dart';
-
-import 'login.dart';
+import 'plafond.dart';
 
 bool isReg = false;
 
 class DetailsScreen extends StatefulWidget {
 
   final event;
+  final index;
 
-  DetailsScreen(this.event);
+  DetailsScreen(this.event, this.index);
 
   @override
   State<StatefulWidget> createState(){
-    return _DetailsScreenState(event);
+    return _DetailsScreenState(event, index);
   }
 
 }
@@ -22,11 +24,13 @@ class DetailsScreen extends StatefulWidget {
 class _DetailsScreenState extends State<DetailsScreen>{
 
   final String event;
+  final int index;
 
-  _DetailsScreenState(this.event);
+  _DetailsScreenState(this.event, this.index);
 
   @override
   Widget build(BuildContext context) {
+    final plafond = Provider.of<Plafond>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -60,9 +64,11 @@ class _DetailsScreenState extends State<DetailsScreen>{
                           decoration: BoxDecoration(
                               border: Border.all(color: Color().plafond)
                           ),
-                          child: Text(
-                            'Plafond: $plafond€',
-                            style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
+                          child: Consumer<Plafond>(
+                            builder: (context, plafond, child) => Text(
+                              'Plafond: ${plafond.value}€',
+                              style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
@@ -204,7 +210,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
   }
 
   void showAlertDialog(BuildContext context) {
-
+    final plafond = Provider.of<Plafond>(context);
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
@@ -216,10 +222,11 @@ class _DetailsScreenState extends State<DetailsScreen>{
       child: Text("Register"),
       color: Colors.green,
       onPressed:  () {
-        if(plafond >= int.parse(custo(event))){
+        if(plafond.value >= int.parse(custo(event))){
           setState(() {
             isReg = true;
-            plafond -= int.parse(custo(event));
+            listEventsReg[index] = true;
+            plafond.decrementPlafond(int.parse(custo(event)));
           });
           Navigator.pop(context);
         }else{
@@ -248,7 +255,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
   }
 
   void showAlertDialog2(BuildContext context) {
-
+    final plafond = Provider.of<Plafond>(context);
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("No"),
@@ -261,7 +268,8 @@ class _DetailsScreenState extends State<DetailsScreen>{
       color: Colors.red,
       onPressed:  () {
         setState(() {
-          plafond += int.parse(custo(event));
+          plafond.incrementPlafond(int.parse(custo(event)));
+          listEventsReg[index] = false;
           isReg = false;
         });
         Navigator.pop(context);
@@ -317,7 +325,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
   }
 
   Widget isInscrito(){
-    if(isReg){
+    if(isReg && listEventsReg[index]==true){
       return RaisedButton(
         color: Color().primaryColor,
         child: Text(
