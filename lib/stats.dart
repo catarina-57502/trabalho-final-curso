@@ -265,6 +265,7 @@ class _StatsScreenState extends State<StatsScreen>{
   showAddTimeDialog(BuildContext context) {
     ActivityType _type = ActivityType.race;
     final time = Provider.of<Time>(context, listen: false);
+    var result = DateTime.now();
 
     // set up the button
     Widget okButton = FlatButton(
@@ -334,6 +335,48 @@ class _StatsScreenState extends State<StatsScreen>{
                               _type = value;
                             });
                           },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 25),
+                  Row(
+                    children: [
+                      Icon(
+                          Icons.calendar_today
+                      ),
+                      SizedBox(width: 3),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text('Date:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Container(
+                        width: 100.0,
+                        height: 30,
+                        padding: EdgeInsets.only(left: 7, top: 7),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Colors.grey)
+                        ),
+                        child: new GestureDetector(
+                          onTap:() async {
+                            var resultFuture = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2022));
+
+                          setState(() {
+                            result = resultFuture;
+                          });
+
+                          },
+                          child: Text('${result.toString()}'),
                         ),
                       ),
                     ],
@@ -418,6 +461,10 @@ class _StatsScreenState extends State<StatsScreen>{
                           child: Text('${time.value}'),
                           ),
                         ),
+                      SizedBox(width: 3),
+                      Text(
+                          'h'
+                      )
                     ],
                   ),
                 ],
@@ -436,7 +483,6 @@ class _StatsScreenState extends State<StatsScreen>{
       },
     );
   }
-
 
   Future<void> bottomSheet(BuildContext context, Widget child,
       {double height}) {
