@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_tfc/plafond.dart';
+import 'package:projeto_tfc/time.dart';
 import 'package:provider/provider.dart';
 
 import 'colors.dart';
@@ -24,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen>{
     final plafond = Provider.of<Plafond>(context);
     for(var i in Users.getUsers){
       if('${i['username']}'== name && '${i['password']}'== pass){
-        print(i['plafond']);
         plafond.setPlafond(i['plafond']);
       }
     }
@@ -38,149 +38,154 @@ class _LoginScreenState extends State<LoginScreen>{
   @override
   Widget build(BuildContext context) {
 
-    return ChangeNotifierProvider<Plafond>(
-        builder: (context) => Plafond(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Plafond>(
+          builder: (context) => Plafond(),
+        ),
+      ],
       child: Scaffold(
-      body: new LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.all(24),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                children: <TextSpan>[
-                                  TextSpan(text: 'Sign In', style: TextStyle(color: Colors.grey[850], height: 5, fontSize: 40, fontFamily: 'Arial')),
-                                ],
+        body: new LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints viewportConstraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: viewportConstraints.maxHeight,
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.all(24),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              RichText(
+                                text: TextSpan(
+                                  children: <TextSpan>[
+                                    TextSpan(text: 'Sign In', style: TextStyle(color: Colors.grey[850], height: 5, fontSize: 40, fontFamily: 'Arial')),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 30),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(padding: EdgeInsets.only(left: 10),
-                                child: Text(
-                                  'Username',
-                                  style: TextStyle(
-                                    color: Color().primaryColor,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
+                              SizedBox(height: 30),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Username',
+                                    style: TextStyle(
+                                      color: Color().primaryColor,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              keyboardType: TextInputType.name,
-                              decoration: InputDecoration(
-                                contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20.0)
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.person,
-                                  color: Color().primaryColor,
-                                ),
-                                hintText: 'Enter Username',
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Required field';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) => _username = value,
-                            ),
-                            SizedBox(height: 30),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(padding: EdgeInsets.only(left: 10),
-                                child: Text(
-                                  'Password',
-                                  style: TextStyle(
-                                    color: Color().primaryColor,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
+                              SizedBox(height: 10),
+                              TextFormField(
+                                keyboardType: TextInputType.name,
+                                decoration: InputDecoration(
+                                  contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0)
                                   ),
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: Color().primaryColor,
+                                  ),
+                                  hintText: 'Enter Username',
                                 ),
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20.0)
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.lock,
-                                  color: Color().primaryColor,
-                                ),
-                                hintText: '**********',
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Required field';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) => _password = value,
-                            ),
-                            SizedBox(height: 60),
-                            ButtonTheme(
-                              minWidth: 380,
-                              child: RaisedButton(
-                                color: Color().primaryColor,
-                                onPressed: (){
-                                  if (_formKey.currentState.validate()) {
-                                    _formKey.currentState.save();
-                                    if(isCredentialsCorrect(_username, _password)){
-                                      getPlafond(_username, _password);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => HomeScreen('Sistema de Gestão de Eventos', getName(_username, _password), getRole(_username, _password))),
-                                      );
-                                    }else{
-                                      showAlertDialog(context);
-                                    }
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Required field';
                                   }
+                                  return null;
                                 },
-                                padding: EdgeInsets.all(15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  'LOGIN',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                onSaved: (value) => _username = value,
+                              ),
+                              SizedBox(height: 30),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Password',
+                                    style: TextStyle(
+                                      color: Color().primaryColor,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 10),
+                              TextFormField(
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0)
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.lock,
+                                    color: Color().primaryColor,
+                                  ),
+                                  hintText: '**********',
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Required field';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) => _password = value,
+                              ),
+                              SizedBox(height: 60),
+                              ButtonTheme(
+                                minWidth: 380,
+                                child: RaisedButton(
+                                  color: Color().primaryColor,
+                                  onPressed: (){
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      if(isCredentialsCorrect(_username, _password)){
+                                        getPlafond(_username, _password);
+                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                            HomeScreen('Sistema de Gestão de Eventos', getName(_username, _password), getRole(_username, _password))), (Route<dynamic> route) => false
+                                        );
+                                      }else{
+                                        showAlertDialog(context);
+                                      }
+                                    }
+                                  },
+                                  padding: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    'LOGIN',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
-      ),
+              );
+            }
+        ),
       ),
     );
+
+
   }
 }
 

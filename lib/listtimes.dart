@@ -1,8 +1,8 @@
-class Time {
+class FinishTime {
   DateTime dateTime;
   double time;
 
-  Time(this.dateTime, this.time);
+  FinishTime(this.dateTime, this.time);
 
   static final getTime = [
     {
