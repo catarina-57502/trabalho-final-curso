@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_tfc/stats.dart';
-import 'colors.dart';
+import '../screens/stats.dart';
+import '../constants/colors.dart';
 import 'details.dart';
+import 'package:projeto_tfc/models/event.dart';
 import 'eventstoapprove.dart';
-import 'listevents.dart';
+import '../services/api.dart';
 import 'login.dart';
 import 'memberstoapprove.dart';
-import 'plafond.dart';
+import '../providers/plafond.dart';
 import 'package:provider/provider.dart';
 
-List<bool> listEventsReg = List.filled(Events.getEvents.length, false);
+Api _api = Api();
+
+List _events = _api.events;
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -25,6 +28,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>{
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen>{
             )
           ],
         ),
-        body:new LayoutBuilder(
+        body: new LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
@@ -69,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen>{
                         ),
                         SizedBox(height: 10),
                         ListView.builder(
-                            itemCount: Events.getEvents.length,
+                            itemCount: _events.length,
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
@@ -78,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen>{
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => DetailsScreen(Events.getEvents[index].toString(), index),
+                                          builder: (context) => DetailsScreen(_events[index], index),
                                         ));
                                   },
                                   child: Container(
@@ -88,8 +92,8 @@ class _HomeScreenState extends State<HomeScreen>{
                                       elevation: 7,
                                       child: Row(
                                         children: [
-                                          image(Events.getEvents[index]),
-                                          event(Events.getEvents[index])
+                                          image(_events[index]),
+                                          event(_events[index])
                                         ],
                                       ),
                                     ),
@@ -108,28 +112,34 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 }
 
-Widget event(list) {
+Widget event(Event event) {
   return Padding(
     padding: const EdgeInsets.all(15.0),
     child: RichText(
       text: TextSpan(
-        text: '${list['name']}',
+        text: '${event.name}',
         style: TextStyle(
             fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
         ),
         children: <TextSpan>[
-          TextSpan(text: '\n${list['date']}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
+          TextSpan(text: '\n${event.date}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
         ],
       ),
     ),
   );
 }
 
-Widget image(list) {
+Widget image(Event event) {
+  if(event.image!=null){
+    return Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Image(image: AssetImage('${event.image}'), width: 100,
+          height: 150,)
+    );
+  }
   return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Image(image: AssetImage('${list['image']}'), width: 100,
-        height: 150,)
+      child: SizedBox(width: 100, height: 150)
   );
 }
 
@@ -352,7 +362,8 @@ Widget roleMenu(context, name, role){
   }
 }
 
-class EventsItemsSearch extends SearchDelegate<Events>{
+class EventsItemsSearch extends SearchDelegate<Event>{
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [IconButton(icon: Icon(Icons.clear), onPressed:(){
@@ -374,7 +385,7 @@ class EventsItemsSearch extends SearchDelegate<Events>{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final mylist = query.isEmpty ? Events.getEvents : Events.getEvents.where((p) => p['name'].toString().startsWith(query)).toList();
+    final mylist = query.isEmpty ? _events : _events.where((p) => p.name.toString().startsWith(query)).toList();
     return mylist.isEmpty ? Text('No results found...', style: TextStyle(fontSize: 20)) : ListView.builder(
         itemCount: mylist.length,
         scrollDirection: Axis.vertical,
@@ -385,7 +396,7 @@ class EventsItemsSearch extends SearchDelegate<Events>{
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailsScreen(mylist[index].toString(), index),
+                      builder: (context) => DetailsScreen(mylist[index], index),
                     ));
               },
               child: Container(

@@ -1,12 +1,28 @@
 import 'package:flutter/cupertino.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:projeto_tfc/models/times.dart';
+import 'package:projeto_tfc/providers/time.dart';
+import 'package:projeto_tfc/screens/filters.dart';
+import 'package:projeto_tfc/services/api.dart';
 import 'package:provider/provider.dart';
-import 'colors.dart';
-import 'plafond.dart';
-import 'time.dart';
+import '../constants/colors.dart';
+import '../providers/plafond.dart';
+
+Api _api = Api();
+
+bool error = false;
 
 enum ActivityType { race, walk }
+
+var addType;
+var addDistance;
+var addTime;
+var addDate = DateTime.now();
+
+var filterDistance;
+var filterType;
 
 Duration initialtimer = new Duration();
 int selectitem = 1;
@@ -17,6 +33,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
   final bool animate;
 
   SimpleTimeSeriesChart(this.seriesList, {this.animate});
+
 
   factory SimpleTimeSeriesChart.withSampleData() {
     return new SimpleTimeSeriesChart(
@@ -36,13 +53,23 @@ class SimpleTimeSeriesChart extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
-    final data = [
+   static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+
+    var data = List();
+
+    for(var t in _api.userTimes){
+      data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+    }
+
+    /*
+     data = [
       new TimeSeriesSales(new DateTime(2017, 9, 19), 1.50),
       new TimeSeriesSales(new DateTime(2017, 9, 26),  3.50),
       new TimeSeriesSales(new DateTime(2017, 10, 3),  2.33),
       new TimeSeriesSales(new DateTime(2017, 10, 10),  5.01),
     ];
+     */
+
 
     return [
       new charts.Series<TimeSeriesSales, DateTime>(
@@ -77,14 +104,22 @@ class StatsScreen extends StatefulWidget {
 class _StatsScreenState extends State<StatsScreen>{
 
   String time;
+  final myController = TextEditingController();
 
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
-    final data = [
-      new TimeSeriesSales(new DateTime(2017, 9, 19), 1.50),
-      new TimeSeriesSales(new DateTime(2017, 9, 26),  3.50),
-      new TimeSeriesSales(new DateTime(2017, 10, 3),  2.33),
-      new TimeSeriesSales(new DateTime(2017, 10, 10),  5.01),
-    ];
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+
+   static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+    var data = List<TimeSeriesSales>();
+
+
+    for(var t in _api.userTimes){
+      data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+    }
 
 
     return [
@@ -96,6 +131,125 @@ class _StatsScreenState extends State<StatsScreen>{
         data: data,
       )
     ];
+  }
+
+  String getSlowestTime(var byType, var byDistance){
+    var valueTemp, arr;
+    List list;
+
+    if(byType==null && byDistance==null){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        valueTemp = _api.userTimes.map<double>((e) => e.time).reduce(max);
+      }
+    }else if(byDistance!=null){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.distance==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(max);
+        }
+      }
+    }else if(byType!=null){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(max);
+        }
+      }
+    }else if(byType!=null && byDistance!=null){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byDistance && i.distance==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(max);
+        }
+      }
+    }
+
+    arr = valueTemp.toString().split('.');
+    if(arr[0]=='0'){
+      return arr[1]+"min";
+    }
+    return arr[0]+"h"+arr[1]+"min";
+  }
+
+  String getFastestTime(var byType, var byDistance){
+    var valueTemp, arr;
+    List list;
+    if(byType==null && byDistance==null){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        valueTemp = _api.userTimes.map<double>((e) => e.time).reduce(min);
+      }
+    }else if(byDistance!=null){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.distance==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(min);
+        }
+      }
+    }else if(byType!=null){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(min);
+        }
+      }
+    }else if(byType!=null && byDistance!=null){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byDistance && i.distance==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(min);
+        }
+      }
+    }
+
+    arr = valueTemp.toString().split('.');
+    if(arr[0]=='0'){
+      return arr[1]+"min";
+    }
+    return arr[0]+"h"+arr[1]+"min";
+  }
+
+  Widget filters(){
+    if(filterDistance==null || filterType==null){
+      return Text(
+        'No filters applied'
+      );
+    }else if(filterDistance!=null && filterType==null){
+      return Text(
+        'Distance: $filterDistance'
+      );
+    }else if(filterDistance==null && filterType!=null){
+      return Text(
+          'Type: $filterType'
+      );
+    }else{
+      return Text(
+          'Distance: $filterDistance | Type: $filterType'
+      );
+    }
   }
 
   @override
@@ -116,6 +270,11 @@ class _StatsScreenState extends State<StatsScreen>{
             IconButton(
                 icon: Icon(Icons.filter_alt_sharp, color: Colors.white),
                 onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FiltersScreen(),
+                      ));
                 }
             )
           ],
@@ -152,10 +311,12 @@ class _StatsScreenState extends State<StatsScreen>{
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 20),
+                                    SizedBox(height: 5),
+                                    filters(),
+                                    SizedBox(height: 40),
                                     Padding(
                                       padding: EdgeInsets.all(1.0),
-                                      child: Text("Your Race Finish Times", style: TextStyle(
+                                      child: Text("Your Finish Times", style: TextStyle(
                                         fontSize: 25.0,
                                         color: Colors.black,
                                       ),),
@@ -190,7 +351,7 @@ class _StatsScreenState extends State<StatsScreen>{
                                                         height: 24,
                                                         width: 0,
                                                       ),
-                                                      Text('35min',
+                                                      Text(getFastestTime(filterType, filterDistance),
                                                         style: TextStyle(
                                                             fontSize: 18
                                                         ),
@@ -215,7 +376,7 @@ class _StatsScreenState extends State<StatsScreen>{
                                                         height: 24,
                                                         width: 0,
                                                       ),
-                                                      Text('5h56min',
+                                                      Text(getSlowestTime(filterType, filterDistance),
                                                         style: TextStyle(
                                                             fontSize: 18
                                                         ),
@@ -262,16 +423,39 @@ class _StatsScreenState extends State<StatsScreen>{
 
   }
 
-  showAddTimeDialog(BuildContext context) {
+  showAddTimeDialog(BuildContext context) async {
     ActivityType _type = ActivityType.race;
     final time = Provider.of<Time>(context, listen: false);
     var result = DateTime.now();
+
+    var addDistanceTemp;
+
+    double convertTime(String value){
+      var arr = value.split(':');
+
+      return double.parse(arr[0]+"."+arr[1]);
+    }
 
     // set up the button
     Widget okButton = FlatButton(
       child: Text("ADD"),
       onPressed: () {
-        Navigator.pop(context);
+        if(time.value!="0:0:0" && myController.text.isNotEmpty){
+          addDistanceTemp = myController.text;
+          addDistance = double.parse(addDistanceTemp);
+          print(_api.userTimes.length);
+          setState(() {
+            _api.userTimes.add(FinishTime(activityType: addType, distance: addDistance, dateTime: addDate.toString(), time: convertTime(addTime)));
+          });
+          setState(() {
+            error = false;
+          });
+          Navigator.pop(context);
+        }else{
+          setState(() {
+            error = true;
+          });
+        }
       },
     );
 
@@ -289,7 +473,7 @@ class _StatsScreenState extends State<StatsScreen>{
           ),
         ],
       child: StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
+        builder: (BuildContext context, StateSetter setState) {;
           return SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -321,6 +505,7 @@ class _StatsScreenState extends State<StatsScreen>{
                           onChanged: (ActivityType value) {
                             setState(() {
                               _type = value;
+                              addType = 'Race';
                             });
                           },
                         ),
@@ -333,6 +518,7 @@ class _StatsScreenState extends State<StatsScreen>{
                           onChanged: (ActivityType value) {
                             setState(() {
                               _type = value;
+                              addType = 'Walk';
                             });
                           },
                         ),
@@ -373,6 +559,7 @@ class _StatsScreenState extends State<StatsScreen>{
 
                           setState(() {
                             result = resultFuture;
+                            addDate = result;
                           });
 
                           },
@@ -401,6 +588,8 @@ class _StatsScreenState extends State<StatsScreen>{
                         width: 70.0,
                         height: 30,
                         child: TextField(
+                          controller: myController,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                           ),
@@ -452,6 +641,7 @@ class _StatsScreenState extends State<StatsScreen>{
                                            (changedtimer.inMinutes % 60).toString() +
                                            ':' +
                                            (changedtimer.inSeconds % 60).toString());
+                                       addTime = time.value;
                                      });
 
                                    },
@@ -467,6 +657,17 @@ class _StatsScreenState extends State<StatsScreen>{
                       )
                     ],
                   ),
+                  SizedBox(height: 10),
+                  error? Text(
+                    'Enter a valid Distance and Finish Time value',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ) :
+                  Text(
+                    '',
+                  ),
                 ],
               ),
           );
@@ -476,12 +677,13 @@ class _StatsScreenState extends State<StatsScreen>{
     );
 
     // show the dialog
-    showDialog(
+    await showDialog (
       context: context,
       builder: (BuildContext context) {
         return alert;
       },
     );
+
   }
 
   Future<void> bottomSheet(BuildContext context, Widget child,

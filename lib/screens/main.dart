@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_tfc/colors.dart';
-import 'package:projeto_tfc/plafond.dart';
+import '../constants/colors.dart';
+import '../providers/plafond.dart';
 import 'package:provider/provider.dart';
 import 'login.dart';
 

@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_tfc/models/event.dart';
+import 'package:projeto_tfc/services/api.dart';
 import 'package:provider/provider.dart';
-import 'colors.dart';
-import 'listmembertoapprove.dart';
-import 'plafond.dart';
+import '../constants/colors.dart';
+import '../providers/plafond.dart';
 
-Plafond _plafond = Plafond();
+Api _api = Api();
 
-class MembersListScreen extends StatefulWidget {
-  MembersListScreen({Key key}) : super(key: key);
+List<Event> _eventsApprove = _api.eventsApprove;
+
+class EventsListScreen extends StatefulWidget {
+  EventsListScreen({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState(){
-    return _MembersListScreenState();
+    return _EventsListScreenState();
   }
 
 }
 
-class _MembersListScreenState extends State<MembersListScreen>{
+class _EventsListScreenState extends State<EventsListScreen>{
+
 
   @override
   Widget build(BuildContext context) {
     final plafond = Provider.of<Plafond>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Members List'),
+        title: Text('Approve Events'),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.search, color: Colors.white),
               onPressed: (){
-                showSearch(context: context, delegate: MembersApproveItemsSearch());
+                showSearch(context: context, delegate: EventsApproveItemsSearch());
               }
           )
         ],
@@ -49,7 +54,7 @@ class _MembersListScreenState extends State<MembersListScreen>{
                         padding: const EdgeInsets.all(15.0),
                         height: 55.0,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Color().plafond)
+                            border: Border.all(color: Color().plafond),
                         ),
                         child: Consumer<Plafond>(
                           builder: (context, plafond, child) => Text(
@@ -62,25 +67,25 @@ class _MembersListScreenState extends State<MembersListScreen>{
                       ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
-                          itemCount: MembersToAprrove.getMember.length, // the length
+                          itemCount: _eventsApprove.length, // the length
                           itemBuilder: (context, index) {
                             return Container(
                               padding: EdgeInsets.fromLTRB(15,15,15,0),
-                              height: 200,
+                              height: 240,
                               child: Card(
                                 elevation: 7,
                                 child: Column(
                                   children: <Widget>[
                                     Align(
                                       alignment: Alignment.topLeft,
-                                      child: memberToApprove(MembersToAprrove.getMember[index]),
+                                      child: eventToApprove(_eventsApprove[index]),
                                     ),
                                     ButtonBar(
                                       alignment: MainAxisAlignment.center,
                                       children: <Widget>[
                                         RaisedButton(
                                           onPressed: (){
-
+                                            showAlertDialogApprove(context, _eventsApprove[index], index);
                                           },
                                           color: Colors.green,
                                           child: Text (
@@ -94,7 +99,7 @@ class _MembersListScreenState extends State<MembersListScreen>{
 
                                         RaisedButton(
                                           onPressed: (){
-
+                                            showAlertDialogDismiss(context, _eventsApprove[index], index);
                                           },
                                           color: Colors.red,
                                           child: Text (
@@ -119,31 +124,109 @@ class _MembersListScreenState extends State<MembersListScreen>{
             );
           }
       ),
-
     );
   }
+
+  void showAlertDialogApprove(BuildContext context, Event event, int index) {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = RaisedButton(
+        child: Text("Approve"),
+        color: Colors.green,
+        onPressed:  () {
+          setState(() {
+            _api.events.add(_eventsApprove[index]);
+            _eventsApprove.remove(_eventsApprove[index]);
+          });
+          Navigator.pop(context);
+        }
+    );
+
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(event.name),
+      content: Text("Are you sure you want to approve this event?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void showAlertDialogDismiss(BuildContext context, Event event, int index) {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = RaisedButton(
+        child: Text("Dismiss"),
+        color: Colors.red,
+        onPressed:  () {
+          setState(() {
+            _eventsApprove.remove(_eventsApprove[index]);
+          });
+         Navigator.pop(context);
+        }
+    );
+
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(event.name),
+      content: Text("Are you sure you want to dismiss this event?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 }
 
-Widget memberToApprove(list) {
+Widget eventToApprove(Event event) {
   return Padding(
     padding: const EdgeInsets.all(15.0),
     child: RichText(
       text: TextSpan(
-        text: '${list['name']}',
+        text: '${event.name}',
         style: TextStyle(
             fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
         ),
         children: <TextSpan>[
-          TextSpan(text: '\n${list['CC']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\n${list['office']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\n${list['reg']}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${event.date}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${event.deadline}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${event.local}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${event.type}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\n${event.cost}', style: TextStyle(color: Colors.grey, fontSize: 15)),
         ],
       ),
     ),
   );
 }
 
-class MembersApproveItemsSearch extends SearchDelegate<MembersToAprrove>{
+class EventsApproveItemsSearch extends SearchDelegate<Event>{
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [IconButton(icon: Icon(Icons.clear), onPressed:(){
@@ -165,7 +248,7 @@ class MembersApproveItemsSearch extends SearchDelegate<MembersToAprrove>{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final mylist = query.isEmpty ? MembersToAprrove.getMember : MembersToAprrove.getMember.where((p) => p['name'].toString().startsWith(query)).toList();
+    final mylist = query.isEmpty ? _eventsApprove : _eventsApprove.where((p) => p.name.toString().startsWith(query)).toList();
     return mylist.isEmpty ? Text('No results found...', style: TextStyle(fontSize: 20)) : ListView.builder(
         itemCount: mylist.length,
         scrollDirection: Axis.vertical,
@@ -173,21 +256,21 @@ class MembersApproveItemsSearch extends SearchDelegate<MembersToAprrove>{
         itemBuilder: (context, index) {
           return Container(
             padding: EdgeInsets.fromLTRB(15,15,15,0),
-            height: 200,
+            height: 240,
             child: Card(
               elevation: 7,
               child: Column(
                 children: <Widget>[
                   Align(
                     alignment: Alignment.topLeft,
-                    child: memberToApprove(mylist[index]),
+                    child: eventToApprove(mylist[index]),
                   ),
                   ButtonBar(
                     alignment: MainAxisAlignment.center,
                     children: <Widget>[
                       RaisedButton(
                         onPressed: (){
-
+                           showAlertDialogApprove(context, mylist[index], index);
                         },
                         color: Colors.green,
                         child: Text (
@@ -201,7 +284,7 @@ class MembersApproveItemsSearch extends SearchDelegate<MembersToAprrove>{
 
                       RaisedButton(
                         onPressed: (){
-
+                          showAlertDialogDismiss(context, mylist[index], index);
                         },
                         color: Colors.red,
                         child: Text (
@@ -219,6 +302,79 @@ class MembersApproveItemsSearch extends SearchDelegate<MembersToAprrove>{
             ),
           );
         });
+  }
+
+  void showAlertDialogApprove(BuildContext context, Event event, int index) {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = RaisedButton(
+        child: Text("Approve"),
+        color: Colors.green,
+        onPressed:  () {
+          _api.events.add(_eventsApprove[index]);
+          _eventsApprove.remove(_eventsApprove[index]);
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
+    );
+
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(event.name),
+      content: Text("Are you sure you want to approve this event?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void showAlertDialogDismiss(BuildContext context, Event event, int index) {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = RaisedButton(
+        child: Text("Dismiss"),
+        color: Colors.red,
+        onPressed:  () {
+          _eventsApprove.remove(_eventsApprove[index]);
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
+    );
+
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(event.name),
+      content: Text("Are you sure you want to dismiss this event?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
 }

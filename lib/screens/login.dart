@@ -1,13 +1,15 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:projeto_tfc/plafond.dart';
-import 'package:projeto_tfc/time.dart';
+import 'package:projeto_tfc/models/user.dart';
+import 'package:projeto_tfc/services/api.dart';
+import '../providers/plafond.dart';
 import 'package:provider/provider.dart';
-
-import 'colors.dart';
+import '../constants/colors.dart';
 import 'home.dart';
-import 'listusers.dart';
-import 'plafond.dart';
 
+Api _api = Api();
+
+List<User> _users = _api.usersAuth;
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -21,15 +23,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>{
 
-  void getPlafond(name, pass) {
-    final plafond = Provider.of<Plafond>(context);
-    for(var i in Users.getUsers){
-      if('${i['username']}'== name && '${i['password']}'== pass){
-        plafond.setPlafond(i['plafond']);
-      }
-    }
-  }
-
 
   String _username;
   String _password;
@@ -38,13 +31,7 @@ class _LoginScreenState extends State<LoginScreen>{
   @override
   Widget build(BuildContext context) {
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<Plafond>(
-          builder: (context) => Plafond(),
-        ),
-      ],
-      child: Scaffold(
+    return Scaffold(
         body: new LayoutBuilder(
             builder: (BuildContext context, BoxConstraints viewportConstraints) {
               return SingleChildScrollView(
@@ -149,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen>{
                                     if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
                                       if(isCredentialsCorrect(_username, _password)){
-                                        getPlafond(_username, _password);
+                                        getPlafond(_username, _password, context);
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                                             HomeScreen('Sistema de Gestão de Eventos', getName(_username, _password), getRole(_username, _password))), (Route<dynamic> route) => false
                                         );
@@ -182,40 +169,48 @@ class _LoginScreenState extends State<LoginScreen>{
               );
             }
         ),
-      ),
     );
-
-
   }
-}
 
-bool isCredentialsCorrect(name, pass) {
-
-  for(var i in Users.getUsers){
-    if('${i['username']}'== name && '${i['password']}'== pass){
-      return true;
+  void getPlafond(name, pass, context) {
+    final plafond = Provider.of<Plafond>(context);
+    for(var i in _users){
+      if('${i.username}'== name && '${i.password}'== pass){
+        plafond.setPlafond(i.plafond);
+      }
     }
   }
-  return false;
-}
 
-String getName(name, pass) {
+  bool isCredentialsCorrect(name, pass) {
+    for(var i in _users){
+      if('${i.username}'== name && '${i.password}'== pass){
+        return true;
+      }
+    }
+    return false;
+  }
 
-  for(var i in Users.getUsers){
-    if('${i['username']}'== name && '${i['password']}'== pass){
-      return '${i['name']}';
+  String getName(name, pass) {
+
+    for(var i in _users){
+      if('${i.username}'== name && '${i.password}'== pass){
+        return '${i.name}';
+      }
     }
   }
-}
 
-String getRole(name, pass) {
+  String getRole(name, pass) {
 
-  for(var i in Users.getUsers){
-    if('${i['username']}'== name && '${i['password']}'== pass){
-      return '${i['role']}';
+    for(var i in _users){
+      if('${i.username}'== name && '${i.password}'== pass){
+        return '${i.role}';
+      }
     }
   }
+
 }
+
+
 
 void showAlertDialog(BuildContext context) {
 

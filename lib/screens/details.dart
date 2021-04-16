@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_tfc/home.dart';
+import 'package:projeto_tfc/services/api.dart';
+import 'file:///C:/Users/PC/AndroidStudioProjects/projeto_tfc/lib/screens/home.dart';
 import 'package:provider/provider.dart';
-import 'colors.dart';
+import '../constants/colors.dart';
 import 'package:share/share.dart';
-import 'plafond.dart';
+import '../providers/plafond.dart';
+import 'package:projeto_tfc/models/event.dart';
 
-bool isReg = false;
+List<bool> listEventsReg = List.filled(Api().events.length, false);
 
 class DetailsScreen extends StatefulWidget {
 
@@ -23,7 +25,7 @@ class DetailsScreen extends StatefulWidget {
 
 class _DetailsScreenState extends State<DetailsScreen>{
 
-  final String event;
+  final Event event;
   final int index;
 
   _DetailsScreenState(this.event, this.index);
@@ -36,13 +38,13 @@ class _DetailsScreenState extends State<DetailsScreen>{
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          titulo(event),
+          event.name,
         ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.share, color: Colors.white),
               onPressed: (){
-                Share.share("Vou à prova ${titulo(event)} com a minha empresa :)");
+                Share.share("Vou à prova ${event.name} com a minha empresa :)");
               }
           )
         ],
@@ -73,8 +75,9 @@ class _DetailsScreenState extends State<DetailsScreen>{
                         ),
                         SizedBox(height: 10),
                         Center(
-                          child: Image(image: AssetImage(imagem(event)), width: 200,
-                            height: 150,),
+                          child: event.image!=null ? Image(image: AssetImage('${event.image}'), width: 200,
+                            height: 150,)
+                              : SizedBox(height: 120),
                         ),
                         SizedBox(height: 50),
                          Container(
@@ -95,7 +98,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     data(event),
+                                     event.date,
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -117,7 +120,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     prazo(event),
+                                     event.deadline,
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -139,7 +142,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     local(event),
+                                     event.local,
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -161,7 +164,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     tipo(event),
+                                     event.type,
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -183,7 +186,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     custo(event) + '€',
+                                     '${event.cost}€',
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -222,11 +225,10 @@ class _DetailsScreenState extends State<DetailsScreen>{
       child: Text("Register"),
       color: Colors.green,
       onPressed:  () {
-        if(plafond.value >= int.parse(custo(event))){
+        if(plafond.value >= event.cost){
           setState(() {
-            isReg = true;
             listEventsReg[index] = true;
-            plafond.decrementPlafond(int.parse(custo(event)));
+            plafond.decrementPlafond(event.cost);
           });
           Navigator.pop(context);
         }else{
@@ -238,7 +240,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(titulo(event)),
+      title: Text(event.name),
       content: Text("Are you sure you want to register for this event?"),
       actions: [
         cancelButton,
@@ -268,9 +270,8 @@ class _DetailsScreenState extends State<DetailsScreen>{
       color: Colors.red,
       onPressed:  () {
         setState(() {
-          plafond.incrementPlafond(int.parse(custo(event)));
+          plafond.incrementPlafond(event.cost);
           listEventsReg[index] = false;
-          isReg = false;
         });
         Navigator.pop(context);
       },
@@ -279,7 +280,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(titulo(event)),
+      title: Text(event.name),
       content: Text("Are you sure you want to cancel you registration for this event?"),
       actions: [
         cancelButton,
@@ -308,7 +309,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(titulo(event)),
+      title: Text(event.name),
       content: Text("Your plafond is not enough to register for this event."),
       actions: [
         okButton,
@@ -325,7 +326,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
   }
 
   Widget isInscrito(){
-    if(isReg && listEventsReg[index]==true){
+    if(listEventsReg[index]==true){
       return RaisedButton(
         color: Color().primaryColor,
         child: Text(
@@ -354,54 +355,4 @@ class _DetailsScreenState extends State<DetailsScreen>{
       },
     );
   }
-
-  String titulo(String event){
-    var arr = event.split(",");
-    var arr2 = arr[0].split(": ");
-
-    return arr2[1];
-  }
-
-  String data(String event){
-    var arr = event.split(",");
-    var arr2 = arr[1].split(": ");
-
-    return arr2[1];
-  }
-
-  String prazo(String event){
-    var arr = event.split(",");
-    var arr2 = arr[2].split(": ");
-
-    return arr2[1];
-  }
-
-  String local(String event){
-    var arr = event.split(",");
-    var arr2 = arr[3].split(": ");
-
-    return arr2[1];
-  }
-
-  String tipo(String event){
-    var arr = event.split(",");
-    var arr2 = arr[4].split(": ");
-
-    return arr2[1];
-  }
-
-  String custo(String event){
-    var arr = event.split(",");
-    var arr2 = arr[5].split(": ");
-
-    return arr2[1];
-  }
-
-  String imagem(String event){
-    var arr = event.split(",");
-    var arr2 = arr[6].split(": ");
-
-    return arr2[1].replaceAll('}', '');
-  }
-
 }
