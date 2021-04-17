@@ -87,7 +87,7 @@ class Api {
       date: '26/02/2021',
       deadline: '26/01/2021',
       local: 'Marvila',
-      type: 'Duatlo',
+      type: 'Race',
       cost: 10,
     ),
     Event(
@@ -95,7 +95,7 @@ class Api {
       date: '14/03/2021',
       deadline: '14/02/2021',
       local: 'Colares',
-      type: 'Caminhada',
+      type: 'Walk',
       cost: 3,
     ),
 
