@@ -217,9 +217,9 @@ Widget memberToApprove(User user) {
             fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
         ),
         children: <TextSpan>[
-          TextSpan(text: '\n${user.cc}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\n${user.office}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\n${user.regDate}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nCC: ${user.cc}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nOffice: ${user.office}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nRegistration Date: ${user.regDate}', style: TextStyle(color: Colors.grey, fontSize: 15)),
         ],
       ),
     ),

@@ -214,11 +214,11 @@ Widget eventToApprove(Event event) {
             fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
         ),
         children: <TextSpan>[
-          TextSpan(text: '\n${event.date}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\n${event.deadline}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\n${event.local}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\n${event.type}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\n${event.cost}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nDate: ${event.date}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nDeadline: ${event.deadline}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nLocal: ${event.local}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nType: ${event.type}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nCost: ${event.cost}€', style: TextStyle(color: Colors.grey, fontSize: 15)),
         ],
       ),
     ),
