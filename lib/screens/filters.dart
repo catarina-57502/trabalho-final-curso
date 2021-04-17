@@ -56,7 +56,7 @@ class _FiltersScreenState extends State<FiltersScreen>{
                                     dropdownValue1 = newValue;
                                   });
                                 },
-                                items: <String>['No filter applied', '5km', '10km', '21km', '42km']
+                                items: <String>['No filter applied', '5.0km', '10.0km', '21.0km', '42.0km']
                                     .map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
@@ -94,12 +94,12 @@ class _FiltersScreenState extends State<FiltersScreen>{
                                   color: Color().primaryColor,
                                   onPressed: (){
                                     if(dropdownValue1=='No filter applied'){
-                                      filterDistance = null;
+                                      filterDistance = "N/A";
                                     }else{
                                       filterDistance = dropdownValue1;
                                     }
                                     if(dropdownValue2=='No filter applied'){
-                                      filterType = null;
+                                      filterType = "N/A";
                                     }else{
                                       filterType = dropdownValue2;
                                     }

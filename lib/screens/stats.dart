@@ -21,8 +21,8 @@ var addDistance;
 var addTime;
 var addDate = DateTime.now();
 
-var filterDistance;
-var filterType;
+var filterDistance = "N/A";
+var filterType = "N/A";
 
 Duration initialtimer = new Duration();
 int selectitem = 1;
@@ -53,7 +53,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-   static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
 
     var data = List();
 
@@ -113,7 +113,7 @@ class _StatsScreenState extends State<StatsScreen>{
     super.dispose();
   }
 
-   static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
     var data = List<TimeSeriesSales>();
 
 
@@ -135,16 +135,16 @@ class _StatsScreenState extends State<StatsScreen>{
 
   String getSlowestTime(var byType, var byDistance){
     var valueTemp, arr;
-    List list;
+    List list = List();
 
-    if(byType==null && byDistance==null){
+    if(byType=="N/A" && byDistance=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         valueTemp = _api.userTimes.map<double>((e) => e.time).reduce(max);
       }
-    }else if(byDistance!=null){
+    }else if(byDistance!="N/A" && byType=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
-          if(i.distance==byDistance){
+          if("${i.distance}km"==byDistance){
             list.add(i);
           }
         }
@@ -152,10 +152,10 @@ class _StatsScreenState extends State<StatsScreen>{
           valueTemp = list.map<double>((e) => e.time).reduce(max);
         }
       }
-    }else if(byType!=null){
+    }else if(byType!="N/A" && byDistance=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
-          if(i.activityType==byDistance){
+          if(i.activityType==byType){
             list.add(i);
           }
         }
@@ -163,10 +163,10 @@ class _StatsScreenState extends State<StatsScreen>{
           valueTemp = list.map<double>((e) => e.time).reduce(max);
         }
       }
-    }else if(byType!=null && byDistance!=null){
+    }else if(byType!="N/A" && byDistance!="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
-          if(i.activityType==byDistance && i.distance==byDistance){
+          if(i.activityType==byType && "${i.distance}km"==byDistance){
             list.add(i);
           }
         }
@@ -175,25 +175,27 @@ class _StatsScreenState extends State<StatsScreen>{
         }
       }
     }
-
-    arr = valueTemp.toString().split('.');
-    if(arr[0]=='0'){
-      return arr[1]+"min";
+    if(valueTemp!=null){
+      arr = valueTemp.toString().split('.');
+      if(arr[0]=='0'){
+        return arr[1]+"min";
+      }
+      return arr[0]+"h"+arr[1]+"min";
     }
-    return arr[0]+"h"+arr[1]+"min";
+    return "N/A";
   }
 
   String getFastestTime(var byType, var byDistance){
     var valueTemp, arr;
-    List list;
-    if(byType==null && byDistance==null){
+    List list = List();
+    if(byType=="N/A" && byDistance=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         valueTemp = _api.userTimes.map<double>((e) => e.time).reduce(min);
       }
-    }else if(byDistance!=null){
+    }else if(byDistance!="N/A" && byType=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
-          if(i.distance==byDistance){
+          if("${i.distance}km"==byDistance){
             list.add(i);
           }
         }
@@ -201,10 +203,10 @@ class _StatsScreenState extends State<StatsScreen>{
           valueTemp = list.map<double>((e) => e.time).reduce(min);
         }
       }
-    }else if(byType!=null){
+    }else if(byType!="N/A" && byDistance=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
-          if(i.activityType==byDistance){
+          if(i.activityType==byType){
             list.add(i);
           }
         }
@@ -212,10 +214,10 @@ class _StatsScreenState extends State<StatsScreen>{
           valueTemp = list.map<double>((e) => e.time).reduce(min);
         }
       }
-    }else if(byType!=null && byDistance!=null){
+    }else if(byType!="N/A" && byDistance!="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
-          if(i.activityType==byDistance && i.distance==byDistance){
+          if(i.activityType==byType && "${i.distance}km"==byDistance){
             list.add(i);
           }
         }
@@ -224,24 +226,26 @@ class _StatsScreenState extends State<StatsScreen>{
         }
       }
     }
-
-    arr = valueTemp.toString().split('.');
-    if(arr[0]=='0'){
-      return arr[1]+"min";
+    if(valueTemp!=null){
+      arr = valueTemp.toString().split('.');
+      if(arr[0]=='0'){
+        return arr[1]+"min";
+      }
+      return arr[0]+"h"+arr[1]+"min";
     }
-    return arr[0]+"h"+arr[1]+"min";
+    return "N/A";
   }
 
   Widget filters(){
-    if(filterDistance==null || filterType==null){
+    if(filterDistance=="N/A" && filterType=="N/A"){
       return Text(
-        'No filters applied'
+          'No filters applied'
       );
-    }else if(filterDistance!=null && filterType==null){
+    }else if(filterDistance!="N/A" && filterType=="N/A"){
       return Text(
-        'Distance: $filterDistance'
+          'Distance: $filterDistance'
       );
-    }else if(filterDistance==null && filterType!=null){
+    }else if(filterDistance=="N/A" && filterType!="N/A"){
       return Text(
           'Type: $filterType'
       );
@@ -257,12 +261,12 @@ class _StatsScreenState extends State<StatsScreen>{
     final plafond = Provider.of<Plafond>(context, listen: false);
 
     return MultiProvider(
-        providers: [
-    ChangeNotifierProvider<Time>(
-    builder: (context) => Time(),
-    ),
-    ],
-    child: Scaffold(
+      providers: [
+        ChangeNotifierProvider<Time>(
+          builder: (context) => Time(),
+        ),
+      ],
+      child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
           title: Text('Statistics'),
@@ -417,8 +421,8 @@ class _StatsScreenState extends State<StatsScreen>{
                 ),
               );
             }
+        ),
       ),
-    ),
     );
 
   }
@@ -472,14 +476,14 @@ class _StatsScreenState extends State<StatsScreen>{
             builder: (context) => Time(),
           ),
         ],
-      child: StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {;
+        child: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {;
           return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 20),
-                  Row(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 20),
+                Row(
                     children: [
                       Icon(
                           Icons.directions_run
@@ -494,185 +498,185 @@ class _StatsScreenState extends State<StatsScreen>{
                         ),
                       ),
                     ]
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: RadioListTile<ActivityType>(
-                          title: const Text('Race'),
-                          value: ActivityType.race,
-                          groupValue: _type,
-                          onChanged: (ActivityType value) {
-                            setState(() {
-                              _type = value;
-                              addType = 'Race';
-                            });
-                          },
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: RadioListTile<ActivityType>(
+                        title: const Text('Race'),
+                        value: ActivityType.race,
+                        groupValue: _type,
+                        onChanged: (ActivityType value) {
+                          setState(() {
+                            _type = value;
+                            addType = 'Race';
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RadioListTile<ActivityType>(
+                        title: const Text('Walk'),
+                        value: ActivityType.walk,
+                        groupValue: _type,
+                        onChanged: (ActivityType value) {
+                          setState(() {
+                            _type = value;
+                            addType = 'Walk';
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 25),
+                Row(
+                  children: [
+                    Icon(
+                        Icons.calendar_today
+                    ),
+                    SizedBox(width: 3),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text('Date:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Expanded(
-                        child: RadioListTile<ActivityType>(
-                          title: const Text('Walk'),
-                          value: ActivityType.walk,
-                          groupValue: _type,
-                          onChanged: (ActivityType value) {
-                            setState(() {
-                              _type = value;
-                              addType = 'Walk';
-                            });
-                          },
-                        ),
+                    ),
+                    SizedBox(width: 5),
+                    Container(
+                      width: 100.0,
+                      height: 30,
+                      padding: EdgeInsets.only(left: 7, top: 7),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.grey)
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 25),
-                  Row(
-                    children: [
-                      Icon(
-                          Icons.calendar_today
-                      ),
-                      SizedBox(width: 3),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text('Date:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Container(
-                        width: 100.0,
-                        height: 30,
-                        padding: EdgeInsets.only(left: 7, top: 7),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: Colors.grey)
-                        ),
-                        child: new GestureDetector(
-                          onTap:() async {
-                            var resultFuture = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2022));
+                      child: new GestureDetector(
+                        onTap:() async {
+                          var resultFuture = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2022));
 
                           setState(() {
                             result = resultFuture;
                             addDate = result;
                           });
 
-                          },
-                          child: Text('${result.toString()}'),
-                        ),
+                        },
+                        child: Text('${result.toString()}'),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 25),
-                  Row(
-                    children: [
-                      Icon(
-                          Icons.assistant_photo
-                      ),
-                      SizedBox(width: 3),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text('Distance:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Container(
-                        width: 70.0,
-                        height: 30,
-                        child: TextField(
-                          controller: myController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 3),
-                      Text(
-                          'km'
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 25),
-                  Row(
-                    children: [
-                      Icon(
-                          Icons.timer,
-                      ),
-                      SizedBox(width: 3),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text('Finish Time:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Container(
-                        width: 80.0,
-                        height: 30,
-                        padding: EdgeInsets.only(left: 7, top: 7),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: Colors.grey)
-                        ),
-                        child: new GestureDetector(
-                          onTap:(){
-                             bottomSheet(context,
-                                 CupertinoTimerPicker(
-                                   mode: CupertinoTimerPickerMode.hms,
-                                   minuteInterval: 1,
-                                   secondInterval: 1,
-                                   initialTimerDuration: initialtimer,
-                                   onTimerDurationChanged: (Duration changedtimer) {
-                                     setState(() {
-                                       initialtimer = changedtimer;
-                                       time.setTime(changedtimer.inHours.toString() +
-                                           ':' +
-                                           (changedtimer.inMinutes % 60).toString() +
-                                           ':' +
-                                           (changedtimer.inSeconds % 60).toString());
-                                       addTime = time.value;
-                                     });
-
-                                   },
-                                 )
-                             );
-                          },
-                          child: Text('${time.value}'),
-                          ),
-                        ),
-                      SizedBox(width: 3),
-                      Text(
-                          'h'
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  error? Text(
-                    'Enter a valid Distance and Finish Time value',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
                     ),
-                  ) :
-                  Text(
-                    '',
+                  ],
+                ),
+                SizedBox(height: 25),
+                Row(
+                  children: [
+                    Icon(
+                        Icons.assistant_photo
+                    ),
+                    SizedBox(width: 3),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text('Distance:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Container(
+                      width: 70.0,
+                      height: 30,
+                      child: TextField(
+                        controller: myController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 3),
+                    Text(
+                        'km'
+                    )
+                  ],
+                ),
+                SizedBox(height: 25),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.timer,
+                    ),
+                    SizedBox(width: 3),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text('Finish Time:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Container(
+                      width: 80.0,
+                      height: 30,
+                      padding: EdgeInsets.only(left: 7, top: 7),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.grey)
+                      ),
+                      child: new GestureDetector(
+                        onTap:(){
+                          bottomSheet(context,
+                              CupertinoTimerPicker(
+                                mode: CupertinoTimerPickerMode.hms,
+                                minuteInterval: 1,
+                                secondInterval: 1,
+                                initialTimerDuration: initialtimer,
+                                onTimerDurationChanged: (Duration changedtimer) {
+                                  setState(() {
+                                    initialtimer = changedtimer;
+                                    time.setTime(changedtimer.inHours.toString() +
+                                        ':' +
+                                        (changedtimer.inMinutes % 60).toString() +
+                                        ':' +
+                                        (changedtimer.inSeconds % 60).toString());
+                                    addTime = time.value;
+                                  });
+
+                                },
+                              )
+                          );
+                        },
+                        child: Text('${time.value}'),
+                      ),
+                    ),
+                    SizedBox(width: 3),
+                    Text(
+                        'h'
+                    )
+                  ],
+                ),
+                SizedBox(height: 10),
+                error? Text(
+                  'Enter a valid Distance and Finish Time value',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 12,
                   ),
-                ],
-              ),
+                ) :
+                Text(
+                  '',
+                ),
+              ],
+            ),
           );
-        },
-      ),
+          },
+        ),
       ),
     );
 
