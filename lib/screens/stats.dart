@@ -342,14 +342,11 @@ class _StatsScreenState extends State<StatsScreen>{
                     minHeight: viewportConstraints.maxHeight,
                   ),
                   child: Container(
+                    width: MediaQuery.of(context).size.width,
                     child: Column(
                       children: [
                         Container(
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Column(
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Container(
@@ -398,7 +395,7 @@ class _StatsScreenState extends State<StatsScreen>{
                                                     children: [
                                                       Text('Fastest Time',
                                                         style: TextStyle(
-                                                            fontSize: 19,
+                                                            fontSize: (19 / 720) * MediaQuery.of(context).size.height,
                                                             fontWeight: FontWeight.bold
                                                         ),
                                                       ),
@@ -408,7 +405,7 @@ class _StatsScreenState extends State<StatsScreen>{
                                                       ),
                                                       Text(getFastestTime(filterType, filterDistance),
                                                         style: TextStyle(
-                                                            fontSize: 18
+                                                            fontSize: (18 / 720) * MediaQuery.of(context).size.height
                                                         ),
                                                       ),
                                                     ]
@@ -423,7 +420,7 @@ class _StatsScreenState extends State<StatsScreen>{
                                                     children: [
                                                       Text('Slowest Time',
                                                         style: TextStyle(
-                                                            fontSize: 19,
+                                                            fontSize: (19 / 720) * MediaQuery.of(context).size.height,
                                                             fontWeight: FontWeight.bold
                                                         ),
                                                       ),
@@ -433,7 +430,7 @@ class _StatsScreenState extends State<StatsScreen>{
                                                       ),
                                                       Text(getSlowestTime(filterType, filterDistance),
                                                         style: TextStyle(
-                                                            fontSize: 18
+                                                            fontSize: (18 / 720) * MediaQuery.of(context).size.height
                                                         ),
                                                       ),
                                                     ]
@@ -461,14 +458,10 @@ class _StatsScreenState extends State<StatsScreen>{
                                     SizedBox(height: 35),
                                   ],
                                 ),
-
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
                     ),
+                  ],
                   ),
+                ),
                 ),
               );
             }
@@ -545,6 +538,7 @@ class _StatsScreenState extends State<StatsScreen>{
                         child: Text('Activity Type:',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: (16 / 720) * MediaQuery.of(context).size.height
                           ),
                         ),
                       ),
@@ -554,7 +548,11 @@ class _StatsScreenState extends State<StatsScreen>{
                   children: [
                     Expanded(
                       child: RadioListTile<ActivityType>(
-                        title: const Text('Race'),
+                        title: Text('Race',
+                        style: TextStyle(
+                          fontSize: (15 / 720) * MediaQuery.of(context).size.height,
+                        ),
+                        ),
                         value: ActivityType.race,
                         groupValue: _type,
                         onChanged: (ActivityType value) {
@@ -567,7 +565,10 @@ class _StatsScreenState extends State<StatsScreen>{
                     ),
                     Expanded(
                       child: RadioListTile<ActivityType>(
-                        title: const Text('Walk'),
+                        title: Text('Walk',
+                        style: TextStyle(
+                          fontSize: (15 / 720) * MediaQuery.of(context).size.height
+                        )),
                         value: ActivityType.walk,
                         groupValue: _type,
                         onChanged: (ActivityType value) {
@@ -592,6 +593,7 @@ class _StatsScreenState extends State<StatsScreen>{
                       child: Text('Date:',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: (16 / 720) * MediaQuery.of(context).size.height
                         ),
                       ),
                     ),
@@ -635,6 +637,7 @@ class _StatsScreenState extends State<StatsScreen>{
                       child: Text('Distance:',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                            fontSize: (16 / 720) * MediaQuery.of(context).size.height
                         ),
                       ),
                     ),
@@ -668,6 +671,7 @@ class _StatsScreenState extends State<StatsScreen>{
                       child: Text('Finish Time:',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                            fontSize: (16 / 720) * MediaQuery.of(context).size.height
                         ),
                       ),
                     ),

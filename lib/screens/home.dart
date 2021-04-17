@@ -30,6 +30,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>{
 
 
+
   @override
   Widget build(BuildContext context) {
     final plafond = Provider.of<Plafond>(context, listen: false);
@@ -90,11 +91,12 @@ class _HomeScreenState extends State<HomeScreen>{
                                     padding: EdgeInsets.fromLTRB(15,15,15,0),
                                     height: 200,
                                     child: Card(
+
                                       elevation: 7,
                                       child: Row(
                                         children: [
-                                          image(_events[index]),
-                                          event(_events[index])
+                                          image(_events[index], context),
+                                          event(_events[index], context)
                                         ],
                                       ),
                                     ),
@@ -113,28 +115,28 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 }
 
-Widget event(Event event) {
+Widget event(Event event, context) {
   return Padding(
     padding: const EdgeInsets.all(15.0),
     child: RichText(
       text: TextSpan(
         text: '${event.name}',
         style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+            fontWeight: FontWeight.bold, color: Colors.black, fontSize: (20 / 720) * MediaQuery.of(context).size.height,
         ),
         children: <TextSpan>[
-          TextSpan(text: '\n${event.date}', style: TextStyle(color: Colors.grey, fontSize: 15,)),
+          TextSpan(text: '\n${event.date}', style: TextStyle(color: Colors.grey, fontSize: (15 / 720) * MediaQuery.of(context).size.height)),
         ],
       ),
     ),
   );
 }
 
-Widget image(Event event) {
+Widget image(Event event, context) {
   if(event.image!=null){
     return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Image(image: AssetImage('${event.image}'), width: 100,
+        padding: const EdgeInsets.only(left: 10.0, right: 5.0, top: 10.0, bottom: 10.0),
+        child: Image(image: AssetImage('${event.image}'), width: MediaQuery.of(context).size.width/4,
           height: 150,)
     );
   }
@@ -407,8 +409,8 @@ class EventsItemsSearch extends SearchDelegate<Event>{
                   elevation: 7,
                   child: Row(
                     children: [
-                      image(mylist[index]),
-                      event(mylist[index])
+                      image(mylist[index], context),
+                      event(mylist[index], context)
                     ],
                   ),
                 ),

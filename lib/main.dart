@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
-import '../providers/plafond.dart';
+import 'constants/colors.dart';
+import 'providers/plafond.dart';
 import 'package:provider/provider.dart';
-import 'login.dart';
+import 'screens/login.dart';
 
 void main() => runApp(MyApp());
 
