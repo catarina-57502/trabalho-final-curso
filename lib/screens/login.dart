@@ -9,6 +9,9 @@ import 'home.dart';
 
 Api _api = Api();
 
+String nameAuth;
+String roleAuth;
+
 List<User> _users = _api.usersAuth;
 
 class LoginScreen extends StatefulWidget {
@@ -194,6 +197,7 @@ class _LoginScreenState extends State<LoginScreen>{
 
     for(var i in _users){
       if('${i.username}'== name && '${i.password}'== pass){
+        nameAuth = i.name;
         return '${i.name}';
       }
     }
@@ -203,6 +207,7 @@ class _LoginScreenState extends State<LoginScreen>{
 
     for(var i in _users){
       if('${i.username}'== name && '${i.password}'== pass){
+        roleAuth = i.role;
         return '${i.role}';
       }
     }

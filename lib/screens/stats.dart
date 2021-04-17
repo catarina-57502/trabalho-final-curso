@@ -5,6 +5,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:projeto_tfc/models/times.dart';
 import 'package:projeto_tfc/providers/time.dart';
 import 'package:projeto_tfc/screens/filters.dart';
+import 'package:projeto_tfc/screens/home.dart';
+import 'package:projeto_tfc/screens/login.dart';
 import 'package:projeto_tfc/services/api.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
@@ -309,6 +311,14 @@ class _StatsScreenState extends State<StatsScreen>{
       ],
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () =>  Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen('Sistema de Gestão de Eventos', nameAuth, roleAuth),
+                )),
+          ),
           iconTheme: IconThemeData(color: Colors.white),
           title: Text('Statistics'),
           actions: <Widget>[
