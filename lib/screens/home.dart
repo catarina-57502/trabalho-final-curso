@@ -73,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen>{
                         ),
                         SizedBox(height: 10),
                         ListView.builder(
+                            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                             itemCount: _events.length,
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
