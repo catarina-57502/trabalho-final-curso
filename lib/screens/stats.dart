@@ -57,9 +57,30 @@ class SimpleTimeSeriesChart extends StatelessWidget {
 
     var data = List();
 
-    for(var t in _api.userTimes){
-      data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+    if(filterType=="N/A" && filterDistance=="N/A"){
+      for(var t in _api.userTimes){
+        data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+      }
+    }else if(filterDistance!="N/A" && filterType=="N/A"){
+      for(var t in _api.userTimes){
+        if('${t.distance}km'==filterDistance){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
+    }else if(filterDistance=="N/A" && filterType!="N/A"){
+      for(var t in _api.userTimes){
+        if(t.activityType==filterType){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
+    }else if(filterDistance!="N/A" && filterType!="N/A"){
+      for(var t in _api.userTimes){
+        if('${t.distance}km'==filterDistance && t.activityType==filterType){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
     }
+
 
     /*
      data = [
@@ -117,8 +138,28 @@ class _StatsScreenState extends State<StatsScreen>{
     var data = List<TimeSeriesSales>();
 
 
-    for(var t in _api.userTimes){
-      data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+    if(filterType=="N/A" && filterDistance=="N/A"){
+      for(var t in _api.userTimes){
+        data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+      }
+    }else if(filterDistance!="N/A" && filterType=="N/A"){
+      for(var t in _api.userTimes){
+        if('${t.distance}km'==filterDistance){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
+    }else if(filterDistance=="N/A" && filterType!="N/A"){
+      for(var t in _api.userTimes){
+        if(t.activityType==filterType){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
+    }else if(filterDistance!="N/A" && filterType!="N/A"){
+      for(var t in _api.userTimes){
+        if('${t.distance}km'==filterDistance && t.activityType==filterType){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
     }
 
 
