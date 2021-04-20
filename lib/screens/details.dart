@@ -225,13 +225,15 @@ class _DetailsScreenState extends State<DetailsScreen>{
       child: Text("Register"),
       color: Colors.green,
       onPressed:  () {
-        if(plafond.value >= event.cost){
+        if(DateTime.parse(event.deadline).isBefore(DateTime.now())){
+          showAlertDialog4(context);
+        }else if(plafond.value >= event.cost){
           setState(() {
             listEventsReg[index] = true;
             plafond.decrementPlafond(event.cost);
           });
           Navigator.pop(context);
-        }else{
+        }else if(plafond.value < event.cost){
           showAlertDialog3(context);
         }
       },
@@ -311,6 +313,35 @@ class _DetailsScreenState extends State<DetailsScreen>{
     AlertDialog alert = AlertDialog(
       title: Text(event.name),
       content: Text("Your plafond is not enough to register for this event."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialog4(BuildContext context) {
+
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(event.name),
+      content: Text("The deadline to register for this event has ended."),
       actions: [
         okButton,
       ],

@@ -53,8 +53,8 @@ class Api {
  List<Event> events = [
    Event(
      name: 'Corrida 25 de Abril',
-     date: '25/04/2021',
-     deadline: '1/03/2021',
+     date: '2021-04-25',
+     deadline: '2021-03-01',
      local: 'Lisboa',
      type: '10km',
      cost: 5,
@@ -62,8 +62,8 @@ class Api {
    ),
    Event(
      name: 'Maratona EDP',
-     date: '10/05/2021',
-     deadline: '15/04/2021',
+     date: '2021-06-10',
+     deadline: '2021-05-15',
      local: 'Lisboa',
      type: 'Maratona',
      cost: 10,
@@ -71,8 +71,8 @@ class Api {
    ),
    Event(
      name: 'São Silvestre Amadora',
-     date: '31/12/2021',
-     deadline: '1/12/2021',
+     date: '2021-12-31',
+     deadline: '2021-12-01',
      local: 'Amadora',
      type: '10km',
      cost: 7,
@@ -84,16 +84,16 @@ class Api {
   List<Event> eventsApprove = [
     Event(
       name: 'III Dualto de Marvila',
-      date: '26/02/2021',
-      deadline: '26/01/2021',
+      date: '2021-02-26',
+      deadline: '2021-01-26',
       local: 'Marvila',
       type: 'Race',
       cost: 10,
     ),
     Event(
       name: 'Trail da Costa Saloia',
-      date: '14/03/2021',
-      deadline: '14/02/2021',
+      date: '2021-02-14',
+      deadline: '2021-01-5',
       local: 'Colares',
       type: 'Walk',
       cost: 3,
@@ -106,13 +106,13 @@ class Api {
         name: 'António Fonseca',
         cc: '123456789',
         office: 'Porto',
-        regDate: '17/01/2021'
+        regDate: '2021-01-17'
     ),
     User(
         name: 'Maria Santos',
         cc: '987654321',
         office: 'Lisboa',
-        regDate: '04/01/2021'
+        regDate: '2021-04-21'
     )
   ];
 
