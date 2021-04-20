@@ -14,38 +14,38 @@ class Api {
  List<FinishTime> userTimes = [FinishTime(
    activityType: 'Race',
    distance: 10,
-   dateTime: '2020-01-17',
+   dateTime: '2021-01-17',
    time: 1.50,
  ),
    FinishTime(
      activityType: 'Race',
      distance: 12.5,
-     dateTime: '2020-01-18',
+     dateTime: '2021-01-18',
      time: 3.50,
    ),
    FinishTime(
      activityType: 'Race',
      distance: 42,
-     dateTime: '2020-01-19',
+     dateTime: '2021-01-19',
      time: 7.30,
    ),
    FinishTime(
      activityType: 'Walk',
      distance: 5,
-     dateTime: '2020-01-20',
+     dateTime: '2021-01-20',
      time: 3.40,
    ),
    FinishTime(
      activityType: 'Walk',
      distance: 7,
-     dateTime: '2020-01-21',
+     dateTime: '2021-01-21',
      time: 1.27,
    ),
 
    FinishTime(
      activityType: 'Race',
      distance: 10,
-     dateTime: '2020-01-22',
+     dateTime: '2021-01-22',
      time: 0.35,
    ),
  ];

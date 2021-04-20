@@ -14,7 +14,7 @@ import '../providers/plafond.dart';
 
 Api _api = Api();
 
-bool error = false;
+bool error = true;
 
 enum ActivityType { race, walk }
 
@@ -25,6 +25,7 @@ var addDate = DateTime.now();
 
 var filterDistance = "N/A";
 var filterType = "N/A";
+var filterDateRange = "N/A";
 
 Duration initialtimer = new Duration();
 int selectitem = 1;
@@ -140,30 +141,56 @@ class _StatsScreenState extends State<StatsScreen>{
     var data = List<TimeSeriesSales>();
 
 
-    if(filterType=="N/A" && filterDistance=="N/A"){
+    if(filterType=="N/A" && filterDistance=="N/A" && filterDateRange=="N/A"){
       for(var t in _api.userTimes){
         data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
       }
-    }else if(filterDistance!="N/A" && filterType=="N/A"){
+    }else if(filterDistance!="N/A" && filterType=="N/A" && filterDateRange=="N/A"){
       for(var t in _api.userTimes){
         if('${t.distance}km'==filterDistance){
           data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
         }
       }
-    }else if(filterDistance=="N/A" && filterType!="N/A"){
+    }else if(filterDistance=="N/A" && filterType!="N/A" && filterDateRange=="N/A"){
       for(var t in _api.userTimes){
         if(t.activityType==filterType){
           data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
         }
       }
-    }else if(filterDistance!="N/A" && filterType!="N/A"){
+    }else if(filterDistance!="N/A" && filterType!="N/A" && filterDateRange=="N/A"){
       for(var t in _api.userTimes){
         if('${t.distance}km'==filterDistance && t.activityType==filterType){
           data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
         }
       }
+    }else if(filterDistance=="N/A" && filterType=="N/A" && filterDateRange!="N/A"){
+      for(var t in _api.userTimes){
+        if(DateTime.parse(t.dateTime).isAfter(DateTime.parse(filterDateRange.split(' to ')[0])) && DateTime.parse(t.dateTime).isBefore(DateTime.parse(filterDateRange.split(' to ')[1])) || DateTime.parse(t.dateTime)==(DateTime.parse(filterDateRange.split(' to ')[0])) || DateTime.parse(t.dateTime)==(DateTime.parse(filterDateRange.split(' to ')[1]))){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
+    }else if(filterDistance!="N/A" && filterType=="N/A" && filterDateRange!="N/A"){
+      for(var t in _api.userTimes){
+        if('${t.distance}km'==filterDistance && (DateTime.parse(t.dateTime).isAfter(DateTime.parse(filterDateRange.split(' to ')[0])) && DateTime.parse(t.dateTime).isBefore(DateTime.parse(filterDateRange.split(' to ')[1])) || DateTime.parse(t.dateTime)==(DateTime.parse(filterDateRange.split(' to ')[0])) || DateTime.parse(t.dateTime)==(DateTime.parse(filterDateRange.split(' to ')[1])))){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
+    }else if(filterDistance=="N/A" && filterType!="N/A" && filterDateRange!="N/A"){
+      for(var t in _api.userTimes){
+        if(t.activityType==filterType && (DateTime.parse(t.dateTime).isAfter(DateTime.parse(filterDateRange.split(' to ')[0])) && DateTime.parse(t.dateTime).isBefore(DateTime.parse(filterDateRange.split(' to ')[1])) || DateTime.parse(t.dateTime)==(DateTime.parse(filterDateRange.split(' to ')[0])) || DateTime.parse(t.dateTime)==(DateTime.parse(filterDateRange.split(' to ')[1])))){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
+    }else if(filterDistance!="N/A" && filterType!="N/A" && filterDateRange!="N/A"){
+      for(var t in _api.userTimes){
+        if('${t.distance}km'==filterDistance && t.activityType==filterType && (DateTime.parse(t.dateTime).isAfter(DateTime.parse(filterDateRange.split(' to ')[0])) && DateTime.parse(t.dateTime).isBefore(DateTime.parse(filterDateRange.split(' to ')[1])) || DateTime.parse(t.dateTime)==(DateTime.parse(filterDateRange.split(' to ')[0])) || DateTime.parse(t.dateTime)==(DateTime.parse(filterDateRange.split(' to ')[1])))){
+          data.add(new TimeSeriesSales( DateTime.parse(t.dateTime), t.time));
+        }
+      }
     }
 
+
+    data.sort((a,b) => a.date.compareTo(b.date));
 
     return [
       new charts.Series<TimeSeriesSales, DateTime>(
@@ -280,21 +307,25 @@ class _StatsScreenState extends State<StatsScreen>{
   }
 
   Widget filters(){
-    if(filterDistance=="N/A" && filterType=="N/A"){
+    if(filterDistance=="N/A" && filterType=="N/A" && filterDateRange=="N/A"){
       return Text(
           'No filters applied'
       );
-    }else if(filterDistance!="N/A" && filterType=="N/A"){
+    }else if(filterDistance!="N/A" && filterType=="N/A" && filterDateRange=="N/A"){
       return Text(
           'Distance: $filterDistance'
       );
-    }else if(filterDistance=="N/A" && filterType!="N/A"){
+    }else if(filterDistance=="N/A" && filterType!="N/A" && filterDateRange=="N/A"){
       return Text(
           'Type: $filterType'
       );
+    }else if(filterDistance=="N/A" && filterType=="N/A" && filterDateRange!="N/A"){
+      return Text(
+          'Date Range: $filterDateRange'
+      );
     }else{
       return Text(
-          'Distance: $filterDistance | Type: $filterType'
+          'Distance: $filterDistance | Type: $filterType | Date Range: $filterDateRange'
       );
     }
   }
