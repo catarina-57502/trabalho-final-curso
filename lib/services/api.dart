@@ -30,10 +30,10 @@ class Api {
      time: 7.30,
    ),
    FinishTime(
-     activityType: 'Walk',
-     distance: 5,
+     activityType: 'Race',
+     distance: 10,
      dateTime: '2021-01-20',
-     time: 3.40,
+     time: 0.35,
    ),
    FinishTime(
      activityType: 'Walk',
@@ -41,12 +41,11 @@ class Api {
      dateTime: '2021-01-21',
      time: 1.27,
    ),
-
    FinishTime(
-     activityType: 'Race',
-     distance: 10,
+     activityType: 'Walk',
+     distance: 5,
      dateTime: '2021-01-22',
-     time: 0.35,
+     time: 3.40,
    ),
  ];
 
@@ -122,7 +121,7 @@ class Api {
         password: 'qwerty',
         role: 'Administrator',
         name: 'Catarina Moita',
-        plafond: 20
+        plafond: 10
     ),
     User(
         username: 'rodrigocorreia',
