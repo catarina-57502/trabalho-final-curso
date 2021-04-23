@@ -203,15 +203,17 @@ class _StatsScreenState extends State<StatsScreen>{
     ];
   }
 
-  String getSlowestTime(var byType, var byDistance){
-    var valueTemp, arr;
+  String getSlowestTime(var byType, var byDistance, var byDate){
+    var valueTemp=0.0, arr;
     List list = List();
 
-    if(byType=="N/A" && byDistance=="N/A"){
+    valueTemp = 0.0;
+
+    if(byType=="N/A" && byDistance=="N/A" && byDate=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         valueTemp = _api.userTimes.map<double>((e) => e.time).reduce(max);
       }
-    }else if(byDistance!="N/A" && byType=="N/A"){
+    }else if(byDistance!="N/A" && byType=="N/A" && byDate=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
           if("${i.distance}km"==byDistance){
@@ -222,7 +224,7 @@ class _StatsScreenState extends State<StatsScreen>{
           valueTemp = list.map<double>((e) => e.time).reduce(max);
         }
       }
-    }else if(byType!="N/A" && byDistance=="N/A"){
+    }else if(byType!="N/A" && byDistance=="N/A" && byDate=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
           if(i.activityType==byType){
@@ -233,7 +235,7 @@ class _StatsScreenState extends State<StatsScreen>{
           valueTemp = list.map<double>((e) => e.time).reduce(max);
         }
       }
-    }else if(byType!="N/A" && byDistance!="N/A"){
+    }else if(byType!="N/A" && byDistance!="N/A" && byDate=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
           if(i.activityType==byType && "${i.distance}km"==byDistance){
@@ -244,8 +246,52 @@ class _StatsScreenState extends State<StatsScreen>{
           valueTemp = list.map<double>((e) => e.time).reduce(max);
         }
       }
+    }else if(byType=="N/A" && byDistance=="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1]))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(max);
+        }
+      }
+    }else if(byType!="N/A" && byDistance=="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(max);
+        }
+      }
+    }else if(byType=="N/A" && byDistance!="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if("${i.distance}km"==byDistance && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(max);
+        }
+      }
+    }else if(byType!="N/A" && byDistance!="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && "${i.distance}km"==byDistance && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1])))  || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(max);
+        }
+      }
     }
-    if(valueTemp!=null){
+    if(valueTemp!=null && valueTemp!=0){
       arr = valueTemp.toString().split('.');
       if(arr[0]=='0'){
         return arr[1]+"min";
@@ -255,36 +301,38 @@ class _StatsScreenState extends State<StatsScreen>{
     return "N/A";
   }
 
-  String getFastestTime(var byType, var byDistance){
-    var valueTemp, arr;
+  String getFastestTime(var byType, var byDistance, var byDate){
+    var valueTemp = 0.0, arr;
     List list = List();
-    if(byType=="N/A" && byDistance=="N/A"){
+
+    if(byType=="N/A" && byDistance=="N/A" && byDate=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         valueTemp = _api.userTimes.map<double>((e) => e.time).reduce(min);
       }
-    }else if(byDistance!="N/A" && byType=="N/A"){
+    }else if(byDistance!="N/A" && byType=="N/A" && byDate=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
           if("${i.distance}km"==byDistance){
             list.add(i);
+            print("1");
           }
         }
         if(list!=null && list.isNotEmpty ){
           valueTemp = list.map<double>((e) => e.time).reduce(min);
         }
       }
-    }else if(byType!="N/A" && byDistance=="N/A"){
+    }else if(byType!="N/A" && byDistance=="N/A" && byDate=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
           if(i.activityType==byType){
             list.add(i);
           }
         }
-        if(list!=null && list.isNotEmpty ){
+        if(list!=null && list.isNotEmpty){
           valueTemp = list.map<double>((e) => e.time).reduce(min);
         }
       }
-    }else if(byType!="N/A" && byDistance!="N/A"){
+    }else if(byType!="N/A" && byDistance!="N/A" && byDate=="N/A"){
       if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
         for(FinishTime i in _api.userTimes){
           if(i.activityType==byType && "${i.distance}km"==byDistance){
@@ -295,13 +343,250 @@ class _StatsScreenState extends State<StatsScreen>{
           valueTemp = list.map<double>((e) => e.time).reduce(min);
         }
       }
+    }else if(byType=="N/A" && byDistance=="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1]))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(min);
+        }
+      }
+    }else if(byType!="N/A" && byDistance=="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(min);
+        }
+      }
+    }else if(byType=="N/A" && byDistance!="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if("${i.distance}km"==byDistance && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(min);
+        }
+      }
+    }else if(byType!="N/A" && byDistance!="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && "${i.distance}km"==byDistance && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          valueTemp = list.map<double>((e) => e.time).reduce(min);
+        }
+      }
     }
-    if(valueTemp!=null){
+
+    if(valueTemp!=null && valueTemp!=0){
       arr = valueTemp.toString().split('.');
       if(arr[0]=='0'){
         return arr[1]+"min";
       }
       return arr[0]+"h"+arr[1]+"min";
+    }
+    return "N/A";
+  }
+
+  String getTotalTime(var byType, var byDistance, var byDate){
+    var valueTemp=0.0, arr;
+    List list = List();
+
+    if(byType=="N/A" && byDistance=="N/A" && byDate=="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        _api.userTimes.forEach((e) => valueTemp += e.time);
+      }
+    }else if(byDistance!="N/A" && byType=="N/A" && byDate=="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if("${i.distance}km"==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.time);
+        }
+      }
+    }else if(byType!="N/A" && byDistance=="N/A" && byDate=="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.time);
+        }
+      }
+    }else if(byType!="N/A" && byDistance!="N/A" && byDate=="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && "${i.distance}km"==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.time);
+        }
+      }
+    }else if(byType=="N/A" && byDistance=="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1]))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.time);
+        }
+      }
+    }else if(byType!="N/A" && byDistance=="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.time);
+        }
+      }
+    }else if(byType=="N/A" && byDistance!="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if("${i.distance}km"==byDistance && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.time);
+        }
+      }
+    }else if(byType!="N/A" && byDistance!="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && "${i.distance}km"==byDistance && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.time);
+        }
+      }
+    }
+
+
+    if(valueTemp!=null && valueTemp!=0){
+      arr = valueTemp.toString().split('.');
+      if(arr[0]=='0'){
+        return arr[1]+"min";
+      }
+      return arr[0]+"h"+arr[1]+"min";
+    }
+    return "N/A";
+  }
+
+  String getTotalDistance(var byType, var byDistance, var byDate){
+    var valueTemp = 0.0, arr;
+    List list = List();
+
+    if(byType=="N/A" && byDistance=="N/A" && byDate=="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        _api.userTimes.forEach((e) => valueTemp += e.distance);
+      }
+    }else if(byDistance!="N/A" && byType=="N/A" && byDate=="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if("${i.distance}km"==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.distance);
+        }
+      }
+    }else if(byType!="N/A" && byDistance=="N/A" && byDate=="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.distance);
+        }
+      }
+    }else if(byType!="N/A" && byDistance!="N/A" && byDate=="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && "${i.distance}km"==byDistance){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.distance);
+        }
+      }
+    }else if(byType=="N/A" && byDistance=="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1]))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.distance);
+        }
+      }
+    }else if(byType!="N/A" && byDistance=="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1])))  || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.distance);
+        }
+      }
+    }else if(byType=="N/A" && byDistance!="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if("${i.distance}km"==byDistance && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.distance);
+        }
+      }
+    }else if(byType!="N/A" && byDistance!="N/A" && byDate!="N/A"){
+      if (_api.userTimes != null && _api.userTimes.isNotEmpty) {
+        for(FinishTime i in _api.userTimes){
+          if(i.activityType==byType && "${i.distance}km"==byDistance && ((DateTime.parse(i.dateTime).isAfter(DateTime.parse(byDate.split(' to ')[0])) && DateTime.parse(i.dateTime).isBefore(DateTime.parse(byDate.split(' to ')[1]))) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[0])) || DateTime.parse(i.dateTime)==(DateTime.parse(byDate.split(' to ')[1])))){
+            list.add(i);
+          }
+        }
+        if(list!=null && list.isNotEmpty ){
+          list.forEach((e) => valueTemp += e.distance);
+        }
+      }
+    }
+
+
+    if(valueTemp!=null && valueTemp!=0){
+      return '${valueTemp}km';
     }
     return "N/A";
   }
@@ -434,7 +719,7 @@ class _StatsScreenState extends State<StatsScreen>{
                                                         height: 24,
                                                         width: 0,
                                                       ),
-                                                      Text(getFastestTime(filterType, filterDistance),
+                                                      Text(getFastestTime(filterType, filterDistance, filterDateRange),
                                                         style: TextStyle(
                                                             fontSize: (18 / 720) * MediaQuery.of(context).size.height
                                                         ),
@@ -459,7 +744,63 @@ class _StatsScreenState extends State<StatsScreen>{
                                                         height: 24,
                                                         width: 0,
                                                       ),
-                                                      Text(getSlowestTime(filterType, filterDistance),
+                                                      Text(getSlowestTime(filterType, filterDistance, filterDateRange),
+                                                        style: TextStyle(
+                                                            fontSize: (18 / 720) * MediaQuery.of(context).size.height
+                                                        ),
+                                                      ),
+                                                    ]
+                                                )
+                                            )
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Card(
+                                            elevation: 7,
+                                            child: Padding(
+                                                padding: const EdgeInsets.only(left: 35, right: 35, bottom: 22, top:22),
+                                                child: Column(
+                                                    children: [
+                                                      Text('Total time',
+                                                        style: TextStyle(
+                                                            fontSize: (19 / 720) * MediaQuery.of(context).size.height,
+                                                            fontWeight: FontWeight.bold
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        height: 24,
+                                                        width: 0,
+                                                      ),
+                                                      Text(getTotalTime(filterType, filterDistance, filterDateRange),
+                                                        style: TextStyle(
+                                                            fontSize: (18 / 720) * MediaQuery.of(context).size.height
+                                                        ),
+                                                      ),
+                                                    ]
+                                                )
+                                            )
+                                        ),
+                                        Card(
+                                            elevation: 7,
+                                            child: Padding(
+                                                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 22, top:22),
+                                                child: Column(
+                                                    children: [
+                                                      Text('Total distance',
+                                                        style: TextStyle(
+                                                            fontSize: (19 / 720) * MediaQuery.of(context).size.height,
+                                                            fontWeight: FontWeight.bold
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        height: 24,
+                                                        width: 0,
+                                                      ),
+                                                      Text(getTotalDistance(filterType, filterDistance, filterDateRange),
                                                         style: TextStyle(
                                                             fontSize: (18 / 720) * MediaQuery.of(context).size.height
                                                         ),
