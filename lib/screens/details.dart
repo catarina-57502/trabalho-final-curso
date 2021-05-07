@@ -327,7 +327,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
   Widget isInscrito(){
     if(listEventsReg[index]==true && DateTime.parse(event.deadline).isAfter(DateTime.now())){
       return RaisedButton(
-        color: Color().primaryColor,
+        color: Colors.red,
         child: Text(
           'Cancel',
           style: TextStyle(
