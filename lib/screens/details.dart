@@ -211,97 +211,12 @@ class _DetailsScreenState extends State<DetailsScreen>{
     );
   }
 
-  void showAlertDialog(BuildContext context) {
-    final plafond = Provider.of<Plafond>(context);
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed:  () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = RaisedButton(
-      child: Text("Register"),
-      color: Colors.green,
-      onPressed:  () {
-        if(plafond.value >= event.cost){
-          setState(() {
-            listEventsReg[index] = true;
-            plafond.decrementPlafond(event.cost);
-          });
-          Navigator.pop(context);
-        }else if(plafond.value < event.cost){
-          showAlertDialog3(context);
-        }
-      },
-    );
-
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(event.name),
-      content: Text("Are you sure you want to register for this event?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  void showAlertDialog2(BuildContext context) {
-    final plafond = Provider.of<Plafond>(context);
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("No"),
-      onPressed:  () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = RaisedButton(
-      child: Text("Yes, Cancel"),
-      color: Colors.red,
-      onPressed:  () {
-        setState(() {
-          plafond.incrementPlafond(event.cost);
-          listEventsReg[index] = false;
-        });
-        Navigator.pop(context);
-      },
-    );
-
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(event.name),
-      content: Text("Are you sure you want to cancel you registration for this event?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  showAlertDialog3(BuildContext context) {
+  showAlertDialog(BuildContext context) {
 
     // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.pop(context);
         Navigator.pop(context);
       },
     );
@@ -325,6 +240,8 @@ class _DetailsScreenState extends State<DetailsScreen>{
   }
 
   Widget isInscrito(){
+    final plafond = Provider.of<Plafond>(context);
+
     if(listEventsReg[index]==true && DateTime.parse(event.deadline).isAfter(DateTime.now())){
       return RaisedButton(
         color: Colors.red,
@@ -336,7 +253,10 @@ class _DetailsScreenState extends State<DetailsScreen>{
           ),
         ),
         onPressed: () {
-          showAlertDialog2(context);
+          setState(() {
+            plafond.incrementPlafond(event.cost);
+            listEventsReg[index] = false;
+          });
         },
       );
     }else if(listEventsReg[index]==false && DateTime.parse(event.deadline).isAfter(DateTime.now())){
@@ -350,7 +270,14 @@ class _DetailsScreenState extends State<DetailsScreen>{
           ),
         ),
         onPressed: () {
-          showAlertDialog(context);
+          if(plafond.value >= event.cost){
+            setState(() {
+              listEventsReg[index] = true;
+              plafond.decrementPlafond(event.cost);
+            });
+          }else if(plafond.value < event.cost){
+            showAlertDialog(context);
+          }
         },
       );
     }else{
