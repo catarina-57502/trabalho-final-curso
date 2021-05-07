@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_tfc/services/api.dart';
-import 'file:///C:/Users/PC/AndroidStudioProjects/projeto_tfc/lib/screens/home.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import 'package:share/share.dart';

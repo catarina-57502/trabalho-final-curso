@@ -1,5 +1,3 @@
-import 'package:projeto_tfc/providers/time.dart';
-
 class FinishTime{
 
   String activityType;
