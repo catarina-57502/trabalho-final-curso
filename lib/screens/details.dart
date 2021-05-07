@@ -224,9 +224,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
       child: Text("Register"),
       color: Colors.green,
       onPressed:  () {
-        if(DateTime.parse(event.deadline).isBefore(DateTime.now())){
-          showAlertDialog4(context);
-        }else if(plafond.value >= event.cost){
+        if(plafond.value >= event.cost){
           setState(() {
             listEventsReg[index] = true;
             plafond.decrementPlafond(event.cost);
@@ -326,37 +324,8 @@ class _DetailsScreenState extends State<DetailsScreen>{
     );
   }
 
-  showAlertDialog4(BuildContext context) {
-
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(event.name),
-      content: Text("The deadline to register for this event has ended."),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   Widget isInscrito(){
-    if(listEventsReg[index]==true){
+    if(listEventsReg[index]==true && DateTime.parse(event.deadline).isAfter(DateTime.now())){
       return RaisedButton(
         color: Color().primaryColor,
         child: Text(
@@ -370,19 +339,22 @@ class _DetailsScreenState extends State<DetailsScreen>{
           showAlertDialog2(context);
         },
       );
-    }
-    return RaisedButton(
-      color: Color().primaryColor,
-      child: Text(
-        'Register',
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: 20
+    }else if(listEventsReg[index]==false && DateTime.parse(event.deadline).isAfter(DateTime.now())){
+      return RaisedButton(
+        color: Color().primaryColor,
+        child: Text(
+          'Register',
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 20
+          ),
         ),
-      ),
-      onPressed: () {
-        showAlertDialog(context);
-      },
-    );
+        onPressed: () {
+          showAlertDialog(context);
+        },
+      );
+    }else{
+      return SizedBox(height: MediaQuery.of(context).size.width);
+    }
   }
 }

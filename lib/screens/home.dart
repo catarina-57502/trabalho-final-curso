@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 Api _api = Api();
 
-List _events = _api.events;
+List<Event> _events = _api.events;
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -90,8 +90,7 @@ class _HomeScreenState extends State<HomeScreen>{
                                   child: Container(
                                     padding: EdgeInsets.fromLTRB(15,15,15,0),
                                     height: 200,
-                                    child: Card(
-
+                                    child: DateTime.parse(_events[index].deadline).isAfter(DateTime.now()) ? Card(
                                       elevation: 7,
                                       child: Row(
                                         children: [
@@ -99,8 +98,20 @@ class _HomeScreenState extends State<HomeScreen>{
                                           event(_events[index], context)
                                         ],
                                       ),
+                                    ) : Card(
+                                      color: Colors.grey.shade200,
+                                      elevation: 7,
+                                      child: Row(
+                                        children: [
+                                          ColorFiltered(
+                                            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                                            child: image(_events[index], context),
+                                          ),
+                                          event(_events[index], context),
+                                        ],
+                                      ),
                                     ),
-                                  )
+                                  ),
                               );
                             }),
                       ]
