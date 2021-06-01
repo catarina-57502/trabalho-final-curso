@@ -14,6 +14,8 @@ Api _api = Api();
 
 List<Event> _events = _api.events;
 
+List<bool> listEventsReg = List.filled(Api().events.length, false);
+
 class HomeScreen extends StatefulWidget {
   final String title;
   final String name;
@@ -29,7 +31,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>{
 
-
+  bool _isRegistered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +92,33 @@ class _HomeScreenState extends State<HomeScreen>{
                                   child: Container(
                                     padding: EdgeInsets.fromLTRB(15,15,15,0),
                                     height: 200,
-                                    child: DateTime.parse(_events[index].deadline).isAfter(DateTime.now()) ? Card(
+                                    child: DateTime.parse(_events[index].deadline).isBefore(DateTime.now()) ? Card(
                                       elevation: 7,
-                                      child: Row(
+                                      child: Column(
                                         children: [
-                                          image(_events[index], context),
-                                          event(_events[index], context)
-                                        ],
+                                          listEventsReg[index] ? Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Icon(
+                                                Icons.check_circle,
+                                                color: Color().primaryColor,
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.only(right: 10.0),
+                                                child: Text(
+                                                  'Registered',
+                                                ),
+                                              ),
+                                            ],
+                                          ) :
+                                              SizedBox(height: 10.0),
+                                          Row(
+                                            children: [
+                                              image(_events[index], context),
+                                              event(_events[index], context)
+                                            ],
+                                          ),
+                                        ]
                                       ),
                                     ) : Card(
                                       color: Colors.grey.shade200,
@@ -146,7 +168,7 @@ Widget event(Event event, context) {
 Widget image(Event event, context) {
   if(event.image!=null){
     return Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 5.0, top: 10.0, bottom: 10.0),
+        padding: const EdgeInsets.only(left: 10.0, right: 5.0),
         child: Image(image: AssetImage('${event.image}'), width: MediaQuery.of(context).size.width/4,
           height: 150,)
     );

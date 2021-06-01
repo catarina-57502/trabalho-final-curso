@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  ChangeNotifierProvider<Plafond>(
-      builder: (context) => Plafond(),
+      create: (context) => Plafond(),
         child: MaterialApp(
       title: 'Sistema de Gestão de Eventos',
       theme: ThemeData(

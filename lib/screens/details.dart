@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_tfc/services/api.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import 'package:share/share.dart';
 import '../providers/plafond.dart';
 import 'package:projeto_tfc/models/event.dart';
-
-List<bool> listEventsReg = List.filled(Api().events.length, false);
+import 'home.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DetailsScreen extends StatefulWidget {
 
@@ -26,8 +25,26 @@ class _DetailsScreenState extends State<DetailsScreen>{
 
   final Event event;
   final int index;
-
   _DetailsScreenState(this.event, this.index);
+
+  var _ratingController;
+  double _rating = 3.0;
+
+  double _userRating = 3.0;
+  int _ratingBarMode = 1;
+  double _initialRating = 2.0;
+  bool _isRTLMode = false;
+  bool _isVertical = false;
+
+  IconData _selectedIcon;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _ratingController = TextEditingController(text: '3.0');
+    _rating = _initialRating;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,8 +207,14 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                        fontSize: 17,
                                      ),
                                    ),
+                                   SizedBox(height: 50),
                                  ],
                                ),
+                Text(
+                  '${event.cost}€',
+                  style: TextStyle(
+                    fontSize: 17,
+                  )),
                              ],
                            ),
                          ),
@@ -284,4 +307,28 @@ class _DetailsScreenState extends State<DetailsScreen>{
       return SizedBox(height: MediaQuery.of(context).size.width);
     }
   }
+
+  Widget _ratingBar() {
+    return RatingBar.builder(
+      initialRating: _initialRating,
+      minRating: 1,
+      direction: _isVertical ? Axis.vertical : Axis.horizontal,
+      allowHalfRating: true,
+      unratedColor: Colors.amber.withAlpha(50),
+      itemCount: 5,
+      itemSize: 50.0,
+      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+      itemBuilder: (context, _) => Icon(
+        _selectedIcon ?? Icons.star,
+        color: Colors.amber,
+      ),
+      onRatingUpdate: (rating) {
+        setState(() {
+          _rating = rating;
+        });
+      },
+      updateOnDrag: true,
+    );
+  }
+
 }

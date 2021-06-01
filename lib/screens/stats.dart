@@ -622,7 +622,7 @@ class _StatsScreenState extends State<StatsScreen>{
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<Time>(
-          builder: (context) => Time(),
+          create: (context) => Time(),
         ),
       ],
       child: Scaffold(
@@ -889,7 +889,7 @@ class _StatsScreenState extends State<StatsScreen>{
       content:  MultiProvider(
         providers: [
           ChangeNotifierProvider<Time>(
-            builder: (context) => Time(),
+            create: (context) => Time(),
           ),
         ],
         child: StatefulBuilder(
