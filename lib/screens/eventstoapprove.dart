@@ -24,7 +24,6 @@ class _EventsListScreenState extends State<EventsListScreen>{
 
   @override
   Widget build(BuildContext context) {
-    final plafond = Provider.of<Plafond>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -49,20 +48,6 @@ class _EventsListScreenState extends State<EventsListScreen>{
                 child: Container(
                   child: Column(
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.all(15.0),
-                        height: 55.0,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Color().plafond),
-                        ),
-                        child: Consumer<Plafond>(
-                          builder: (context, plafond, child) => Text(
-                            'Plafond: ${plafond.value}€',
-                            style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 10),
                       ListView.builder(
                           scrollDirection: Axis.vertical,
