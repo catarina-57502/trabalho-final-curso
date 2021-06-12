@@ -193,7 +193,6 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                    Icon(
                                        Icons.monetization_on
                                    ),
-                                   SizedBox(width: 5),
                                    Text(
                                      'Cost: ',
                                      style: TextStyle(
@@ -207,23 +206,20 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                        fontSize: 17,
                                      ),
                                    ),
-                                   SizedBox(height: 50),
                                  ],
                                ),
-                Text(
-                  '${event.cost}€',
-                  style: TextStyle(
-                    fontSize: 17,
-                  )),
+                               SizedBox(height: 30),
                              ],
                            ),
                          ),
+                        _ratingBar(),
                         SizedBox(height: 50),
                         ButtonTheme(
                           minWidth: 380.0,
                           height: 55.0,
                           child: isInscrito(),
                         ),
+                        SizedBox(height: 30),
                       ]
                   ),
                 ),

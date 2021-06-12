@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen>{
   }
 
   void getPlafond(name, pass, context) {
-    final plafond = Provider.of<Plafond>(context);
+    final plafond = Provider.of<Plafond>(context, listen: false);
     for(var i in _users){
       if('${i.username}'== name && '${i.password}'== pass){
         plafond.setPlafond(i.plafond);

@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen>{
                                   child: Container(
                                     padding: EdgeInsets.fromLTRB(15,15,15,0),
                                     height: 200,
-                                    child: DateTime.parse(_events[index].deadline).isBefore(DateTime.now()) ? Card(
+                                    child: DateTime.parse(_events[index].deadline).isAfter(DateTime.now()) ? Card(
                                       elevation: 7,
                                       child: Column(
                                         children: [
