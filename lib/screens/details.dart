@@ -212,7 +212,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                              ],
                            ),
                          ),
-                        _ratingBar(),
+                        _ratingBar(event.rating),
                         SizedBox(height: 50),
                         ButtonTheme(
                           minWidth: 380.0,
@@ -304,9 +304,9 @@ class _DetailsScreenState extends State<DetailsScreen>{
     }
   }
 
-  Widget _ratingBar() {
+  Widget _ratingBar(double value) {
     return RatingBar.builder(
-      initialRating: _initialRating,
+      initialRating: value,
       minRating: 1,
       direction: _isVertical ? Axis.vertical : Axis.horizontal,
       allowHalfRating: true,
@@ -321,6 +321,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
       onRatingUpdate: (rating) {
         setState(() {
           _rating = rating;
+          event.rating = rating;
         });
       },
       updateOnDrag: true,

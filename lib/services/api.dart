@@ -58,6 +58,8 @@ class Api {
      type: '10km',
      cost: 5,
      image: 'assets/images/25abril.jpg',
+     link: 'https://acorrer.pt/eventos/info/2785',
+     rating: 2.0,
    ),
    Event(
      name: 'Maratona EDP',
@@ -67,6 +69,8 @@ class Api {
      type: 'Maratona',
      cost: 10,
      image: 'assets/images/edp.jpg',
+     link: 'http://www.running-portugal.com/lisbon/marathon/en/home.html',
+     rating: 2.0,
    ),
    Event(
      name: 'São Silvestre Amadora',
@@ -76,6 +80,8 @@ class Api {
      type: '10km',
      cost: 7,
      image: 'assets/images/saosilvestre.jpg',
+     link: 'https://www.saosilvestredaamadora.pt/site/',
+     rating: 2.0,
    ),
  ];
 
@@ -88,6 +94,8 @@ class Api {
       local: 'Marvila',
       type: 'Race',
       cost: 10,
+      link: 'https://www.federacao-triatlo.pt/ftp2015/events/ii-duatlo-de-marvila/',
+      rating: 2.0,
     ),
     Event(
       name: 'Trail da Costa Saloia',
@@ -96,6 +104,8 @@ class Api {
       local: 'Colares',
       type: 'Walk',
       cost: 3,
+      link: 'https://werun.pt/eventos/trail-da-costa-saloia/',
+      rating: 2.0,
     ),
 
   ];

@@ -7,9 +7,11 @@ class Event {
   String type;
   int cost;
   String image;
+  String link;
+  double rating;
 
 
-  Event({this.name, this.date, this.deadline, this.local, this.type, this.cost, this.image});
+  Event({this.name, this.date, this.deadline, this.local, this.type, this.cost, this.image, this.link, this.rating});
 
   Map toJson() =>  {
     'name': name,
@@ -19,6 +21,8 @@ class Event {
     'type': type,
     'cost': cost,
     'image': image,
+    'link': link,
+    'rating': rating
   };
 
   Event.fromJson(Map<String, dynamic> json)
@@ -28,6 +32,8 @@ class Event {
         local = json['local'].toString(),
         type = json['type'].toString(),
         cost = json['cost'],
-        image = json['image'].toString();
+        image = json['image'].toString(),
+        link = json['link'].toString(),
+        rating = json['rating'];
 
 }
