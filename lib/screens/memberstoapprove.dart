@@ -50,6 +50,7 @@ class _MembersListScreenState extends State<MembersListScreen>{
                   child: Column(
                     children: [
                       SizedBox(height: 10),
+                      _usersApprove.length!=0 ?
                       ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
@@ -102,7 +103,16 @@ class _MembersListScreenState extends State<MembersListScreen>{
                                 ),
                               ),
                             );
-                          }),
+                          }):
+                          Container(
+                            height: MediaQuery.of(context).size.width,
+                            alignment: Alignment.center,
+                            child:Text(
+                              'No Members to Approve',
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 22, color: Colors.orange, fontWeight: FontWeight.bold),
+                            ),
+                          ),
                     ],
                   ),
                 ),

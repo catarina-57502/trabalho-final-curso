@@ -49,6 +49,7 @@ class _EventsListScreenState extends State<EventsListScreen>{
                   child: Column(
                     children: [
                       SizedBox(height: 10),
+                      _eventsApprove.length!=0?
                       ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
@@ -101,7 +102,16 @@ class _EventsListScreenState extends State<EventsListScreen>{
                                 ),
                               ),
                             );
-                          }),
+                          }):
+                      Container(
+                        height: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        child:Text(
+                          'No Events to Approve',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 22, color: Colors.orange, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ],
                   ),
                 ),
