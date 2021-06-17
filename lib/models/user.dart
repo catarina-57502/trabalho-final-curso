@@ -1,45 +1,43 @@
 class User {
 
-  String username;
-  String password;
-  String role;
-  String name;
-  int plafond;
-  String eventsReg;
-  String cc;
-  String office;
-  String regDate;
+  final int id;
+  final String username;
+  //final String password;
+  final bool adminP;
+  final bool approvedP;
+  final int cc;
+  final String name;
+  final String email;
+  final String birthdate;
+  final String tshirt;
+  final String office;
+  final int plafond;
+  //final String regDate;
 
 
-  User({this.username, this.password, this.role, this.name, this.plafond,
-  this.eventsReg, this.cc, this.office, this.regDate});
+  User({this.id, this.username, this.adminP, this.approvedP, this.cc,
+  this.name, this.email, this.birthdate, this.tshirt, this.office, this.plafond});
+
 
   @override
   String toString() {
-    return '$username|$password|$role|$name|$plafond';
+    return 'User{id: $id, username: $username, adminP: $adminP, approvedP: $approvedP, cc: $cc, name: $name, email: $email, birthdate: $birthdate, tshirt: $tshirt, office: $office, plafond: $plafond}';
   }
 
-  Map toJson() =>  {
-    'username': username,
-    'password': password,
-    'role': role,
-    'name': name,
-    'pladond': plafond,
-    'eventsReg': eventsReg,
-    'cc': cc,
-    'office': office,
-    'regDate': regDate,
-  };
 
-
-  User.fromJson(Map<String, dynamic> json)
-      : username = json['username'].toString(),
-        password = json['password'].toString(),
-        role = json['role'].toString(),
-        name = json['name'].toString(),
-        plafond = json['plafond'],
-        eventsReg = json['eventReg'],
-        cc = json['cc'],
-        office = json['office'],
-        regDate = json['regDate'];
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      username: json['username'],
+      adminP: json['adminP'],
+      approvedP: json['approvedP'],
+      cc: json['cc'],
+      name: json['name'],
+      email: json['email'],
+      birthdate: json['birthdate'],
+      tshirt: json['tshirt'],
+      office: json['office'],
+      plafond: json['plafond'],
+    );
+  }
 }

@@ -6,6 +6,7 @@ import '../providers/plafond.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import 'home.dart';
+import 'dart:async';
 
 Api _api = Api();
 
@@ -25,6 +26,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen>{
+
+  Future<User> futureUsers;
+
+  @override
+  void initState() {
+    super.initState();
+    futureUsers = fetchUsers();
+  }
 
 
   String _username;
@@ -58,6 +67,18 @@ class _LoginScreenState extends State<LoginScreen>{
                                   ],
                                 ),
                               ),
+                              /*
+                              FutureBuilder<User>(
+                                future: futureUsers,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    print(snapshot.data.id.toString());
+                                  } else if (snapshot.hasError) {
+                                    print("${snapshot.error}");
+                                  }
+                                },
+                              ),
+                               */
                               SizedBox(height: 30),
                               Align(
                                 alignment: Alignment.centerLeft,
@@ -178,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen>{
   void getPlafond(name, pass, context) {
     final plafond = Provider.of<Plafond>(context, listen: false);
     for(var i in _users){
-      if('${i.username}'== name && '${i.password}'== pass){
+      if('${i.username}'== name /*&& '${i.password}'== pass*/){
         plafond.setPlafond(i.plafond);
       }
     }
@@ -186,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen>{
 
   bool isCredentialsCorrect(name, pass) {
     for(var i in _users){
-      if('${i.username}'== name && '${i.password}'== pass){
+      if('${i.username}'== name /*&& '${i.password}'== pass*/){
         return true;
       }
     }
@@ -196,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen>{
   String getName(name, pass) {
 
     for(var i in _users){
-      if('${i.username}'== name && '${i.password}'== pass){
+      if('${i.username}'== name/*&& '${i.password}'== pass*/){
         nameAuth = i.name;
         return '${i.name}';
       }
@@ -206,9 +227,13 @@ class _LoginScreenState extends State<LoginScreen>{
   String getRole(name, pass) {
 
     for(var i in _users){
-      if('${i.username}'== name && '${i.password}'== pass){
-        roleAuth = i.role;
-        return '${i.role}';
+      if('${i.username}'== name /*&& '${i.password}'== pass*/){
+        if(i.adminP){
+          roleAuth = 'Administrator';
+        }else{
+          roleAuth = 'Member';
+        }
+        return roleAuth;
       }
     }
   }

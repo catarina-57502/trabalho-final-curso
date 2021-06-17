@@ -213,7 +213,6 @@ Widget memberToApprove(User user) {
         children: <TextSpan>[
           TextSpan(text: '\nCC: ${user.cc}', style: TextStyle(color: Colors.grey, fontSize: 15)),
           TextSpan(text: '\nOffice: ${user.office}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\nRegistration Date: ${user.regDate}', style: TextStyle(color: Colors.grey, fontSize: 15)),
         ],
       ),
     ),

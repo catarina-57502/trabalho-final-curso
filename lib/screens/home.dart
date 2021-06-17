@@ -33,6 +33,14 @@ class _HomeScreenState extends State<HomeScreen>{
 
   bool _isRegistered = false;
 
+  Future<Event> futureEvents;
+
+  @override
+  void initState() {
+    super.initState();
+    futureEvents = fetchEvents();
+  }
+
   @override
   Widget build(BuildContext context) {
     final plafond = Provider.of<Plafond>(context, listen: false);
@@ -92,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen>{
                                   child: Container(
                                     padding: EdgeInsets.fromLTRB(15,15,15,0),
                                     height: 200,
-                                    child: DateTime.parse(_events[index].deadline).isAfter(DateTime.now()) ? Card(
+                                    child: DateTime.parse(_events[index].dueDate).isAfter(DateTime.now()) ? Card(
                                       elevation: 7,
                                       child: Column(
                                         children: [
@@ -166,10 +174,10 @@ Widget event(Event event, context) {
 }
 
 Widget image(Event event, context) {
-  if(event.image!=null){
+  if(event.img!=null){
     return Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 5.0),
-        child: Image(image: AssetImage('${event.image}'), width: MediaQuery.of(context).size.width/4,
+        child: Image(image: AssetImage('${event.img}'), width: MediaQuery.of(context).size.width/4,
           height: 150,)
     );
   }

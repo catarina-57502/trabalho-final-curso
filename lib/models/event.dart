@@ -1,39 +1,31 @@
 class Event {
 
-  String name;
-  String date;
-  String deadline;
-  String local;
-  String type;
-  int cost;
-  String image;
-  String link;
-  double rating;
+  final int idx;
+  final bool approvedP;
+  final String name;
+  final String location;
+  final String date;
+  final String dueDate;
+  final String url;
+  final String activities;
+  final String img;
 
+  Event({this.idx, this.approvedP, this.name, this.location, this.date, this.dueDate, this.url, this.activities, this.img});
 
-  Event({this.name, this.date, this.deadline, this.local, this.type, this.cost, this.image, this.link, this.rating});
-
-  Map toJson() =>  {
-    'name': name,
-    'date': date,
-    'deadline': deadline,
-    'local': local,
-    'type': type,
-    'cost': cost,
-    'image': image,
-    'link': link,
-    'rating': rating
-  };
+  @override
+  String toString() {
+    return 'Event{idx: $idx, approvedP: $approvedP, name: $name, location: $location, date: $date, dueDate: $dueDate, url: $url, activities: $activities, img: $img}';
+  }
 
   Event.fromJson(Map<String, dynamic> json)
-      : name = json['name'].toString(),
-        date = json['date'].toString(),
-        deadline = json['dealine'].toString(),
-        local = json['local'].toString(),
-        type = json['type'].toString(),
-        cost = json['cost'],
-        image = json['image'].toString(),
-        link = json['link'].toString(),
-        rating = json['rating'];
+      : idx = json['idx'],
+        approvedP = json['approvedP'],
+        name = json['name'],
+        location = json['location'],
+        date = json['date'],
+        dueDate = json['dueDate'],
+        url = json['url'],
+        activities = json['activities'],
+        img = json['img'];
 
 }

@@ -1,9 +1,32 @@
+import 'dart:convert';
+
 import 'package:projeto_tfc/models/user.dart';
 import '../models/event.dart';
 import '../models/times.dart';
+import 'package:http/http.dart' as http;
+
+Future<User> fetchUsers() async {
+  final response = await http.get(Uri.parse('http://192.168.56.1:8080/users/'));
+  if (response.statusCode == 200) {
+    return User.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load users');
+  }
+}
+
+Future<Event> fetchEvents() async {
+  final response = await http.get(Uri.parse('http://192.168.56.1:8080/events/'));
+
+  if (response.statusCode == 200) {
+    return Event.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load users');
+  }
+}
+
+
 
 class Api {
-
 
  static final Api _instance = Api._internal();
 
@@ -53,35 +76,35 @@ class Api {
    Event(
      name: 'Corrida 25 de Abril',
      date: '2021-04-25',
-     deadline: '2021-03-01',
-     local: 'Lisboa',
-     type: '10km',
-     cost: 5,
-     image: 'assets/images/25abril.jpg',
-     link: 'https://acorrer.pt/eventos/info/2785',
-     rating: 2.0,
+     dueDate: '2021-03-01',
+     location: 'Lisboa',
+     activities: '10km',
+     //cost: 5,
+     img: 'assets/images/25abril.jpg',
+     url: 'https://acorrer.pt/eventos/info/2785',
+     //rating: 2.0,
    ),
    Event(
      name: 'Maratona EDP',
      date: '2021-06-10',
-     deadline: '2021-05-15',
-     local: 'Lisboa',
-     type: 'Maratona',
-     cost: 10,
-     image: 'assets/images/edp.jpg',
-     link: 'http://www.running-portugal.com/lisbon/marathon/en/home.html',
-     rating: 2.0,
+     dueDate: '2021-05-15',
+     location: 'Lisboa',
+     activities: 'Maratona',
+    // cost: 10,
+     img: 'assets/images/edp.jpg',
+     url: 'http://www.running-portugal.com/lisbon/marathon/en/home.html',
+     //rating: 2.0,
    ),
    Event(
      name: 'São Silvestre Amadora',
      date: '2021-12-31',
-     deadline: '2021-12-01',
-     local: 'Amadora',
-     type: '10km',
-     cost: 7,
-     image: 'assets/images/saosilvestre.jpg',
-     link: 'https://www.saosilvestredaamadora.pt/site/',
-     rating: 2.0,
+     dueDate: '2021-12-01',
+     location: 'Amadora',
+     activities: '10km',
+     //cost: 7,
+     img: 'assets/images/saosilvestre.jpg',
+     url: 'https://www.saosilvestredaamadora.pt/site/',
+     //rating: 2.0,
    ),
  ];
 
@@ -90,62 +113,66 @@ class Api {
     Event(
       name: 'III Dualto de Marvila',
       date: '2021-02-26',
-      deadline: '2021-01-26',
-      local: 'Marvila',
-      type: 'Race',
-      cost: 10,
-      link: 'https://www.federacao-triatlo.pt/ftp2015/events/ii-duatlo-de-marvila/',
-      rating: 2.0,
+      dueDate: '2021-01-26',
+      location: 'Marvila',
+      activities: 'Race',
+      //cost: 10,
+      url: 'https://www.federacao-triatlo.pt/ftp2015/events/ii-duatlo-de-marvila/',
+      //rating: 2.0,
     ),
     Event(
       name: 'Trail da Costa Saloia',
       date: '2021-02-14',
-      deadline: '2021-01-5',
-      local: 'Colares',
-      type: 'Walk',
-      cost: 3,
-      link: 'https://werun.pt/eventos/trail-da-costa-saloia/',
-      rating: 2.0,
+      dueDate: '2021-01-5',
+      location: 'Colares',
+      activities: 'Walk',
+      //cost: 3,
+      url: 'https://werun.pt/eventos/trail-da-costa-saloia/',
+      //rating: 2.0,
     ),
 
   ];
 
+
   List<User> usersApprove = [
     User(
         name: 'António Fonseca',
-        cc: '123456789',
+      // cc: '123456789',
         office: 'Porto',
-        regDate: '2021-01-17'
+      //  regDate: '2021-01-17'
     ),
     User(
         name: 'Maria Santos',
-        cc: '987654321',
+      // cc: '987654321',
         office: 'Lisboa',
-        regDate: '2021-04-21'
+      //regDate: '2021-04-21'
     )
   ];
 
   List<User> usersAuth = [
     User(
         username: 'catarinamoita',
-        password: 'qwerty',
-        role: 'Administrator',
+        // password: 'qwerty',
+        //  role: 'Administrator',
         name: 'Catarina Moita',
-        plafond: 10
+        plafond: 10,
+      adminP: true,
     ),
     User(
         username: 'rodrigocorreia',
-        password: '1234',
-        role: 'Administrator',
+       // password: '1234',
+      //  role: 'Administrator',
         name: 'Rodrigo Corrreia',
-        plafond: 50
+        plafond: 50,
+      adminP: true,
     ),
     User(
         username: 'teste',
-        password: 'teste',
-        role: 'Member',
+        //password: 'teste',
+        //role: 'Member',
         name: 'Teste',
-        plafond: 50
+        plafond: 50,
+      adminP: false,
     ),
   ];
 

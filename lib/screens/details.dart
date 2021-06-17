@@ -91,7 +91,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                         ),
                         SizedBox(height: 10),
                         Center(
-                          child: event.image!=null ? Image(image: AssetImage('${event.image}'), width: 200,
+                          child: event.img!=null ? Image(image: AssetImage('${event.img}'), width: 200,
                             height: 150,)
                               : SizedBox(height: 120),
                         ),
@@ -136,7 +136,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     event.deadline,
+                                     event.dueDate,
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -158,7 +158,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     event.local,
+                                     event.location,
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -180,7 +180,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     event.type,
+                                     event.activities,
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -201,7 +201,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     '${event.cost}€',
+                                     '${event.idx}€',
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
@@ -212,7 +212,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                              ],
                            ),
                          ),
-                        _ratingBar(event.rating),
+                        //_ratingBar(event.rating),
                         SizedBox(height: 50),
                         ButtonTheme(
                           minWidth: 380.0,
@@ -261,7 +261,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
   Widget isInscrito(){
     final plafond = Provider.of<Plafond>(context);
 
-    if(listEventsReg[index]==true && DateTime.parse(event.deadline).isAfter(DateTime.now())){
+    if(listEventsReg[index]==true && DateTime.parse(event.dueDate).isAfter(DateTime.now())){
       return RaisedButton(
         color: Colors.red,
         child: Text(
@@ -273,12 +273,12 @@ class _DetailsScreenState extends State<DetailsScreen>{
         ),
         onPressed: () {
           setState(() {
-            plafond.incrementPlafond(event.cost);
+            //plafond.incrementPlafond(event.cost);
             listEventsReg[index] = false;
           });
         },
       );
-    }else if(listEventsReg[index]==false && DateTime.parse(event.deadline).isAfter(DateTime.now())){
+    }else if(listEventsReg[index]==false && DateTime.parse(event.dueDate).isAfter(DateTime.now())){
       return RaisedButton(
         color: Color().primaryColor,
         child: Text(
@@ -289,6 +289,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
           ),
         ),
         onPressed: () {
+          /*
           if(plafond.value >= event.cost){
             setState(() {
               listEventsReg[index] = true;
@@ -297,6 +298,8 @@ class _DetailsScreenState extends State<DetailsScreen>{
           }else if(plafond.value < event.cost){
             showAlertDialog(context);
           }
+           */
+
         },
       );
     }else{
@@ -321,7 +324,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
       onRatingUpdate: (rating) {
         setState(() {
           _rating = rating;
-          event.rating = rating;
+          //event.rating = rating;
         });
       },
       updateOnDrag: true,
