@@ -7,7 +7,7 @@ import '../providers/plafond.dart';
 
 Api _api = Api();
 
-List<Event> _eventsApprove = _api.eventsApprove;
+List<Event> _eventsApprove = [];
 
 class EventsListScreen extends StatefulWidget {
   EventsListScreen({Key key}) : super(key: key);
@@ -21,6 +21,13 @@ class EventsListScreen extends StatefulWidget {
 
 class _EventsListScreenState extends State<EventsListScreen>{
 
+  Future<List<Event>> futureEventsApprove;
+
+  @override
+  void initState() {
+    super.initState();
+    futureEventsApprove = fetchEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,69 +56,85 @@ class _EventsListScreenState extends State<EventsListScreen>{
                   child: Column(
                     children: [
                       SizedBox(height: 10),
-                      _eventsApprove.length!=0?
-                      ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: _eventsApprove.length, // the length
-                          itemBuilder: (context, index) {
-                            return Container(
-                              padding: EdgeInsets.fromLTRB(15,15,15,0),
-                              height: 240,
-                              child: Card(
-                                elevation: 7,
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: eventToApprove(_eventsApprove[index]),
-                                    ),
-                                    ButtonBar(
-                                      alignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        RaisedButton(
-                                          onPressed: (){
-                                            showAlertDialogApprove(context, _eventsApprove[index], index);
-                                          },
-                                          color: Colors.green,
-                                          child: Text (
-                                            'Approve',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20
+                      FutureBuilder<List<Event>>(
+                          future: futureEventsApprove,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              for (Event i in snapshot.data) {
+                                if (i.approvedP == null) { //quando é false mas imprime null nao sei bem porquê
+                                  _eventsApprove.add(i);
+                                }
+                            }
+                              return ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: _eventsApprove.length, // the length
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      padding: EdgeInsets.fromLTRB(15,15,15,0),
+                                      height: 240,
+                                      child: Card(
+                                        elevation: 7,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: eventToApprove(_eventsApprove[index]),
                                             ),
-                                          ),
-                                        ),
+                                            ButtonBar(
+                                              alignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                RaisedButton(
+                                                  onPressed: (){
+                                                    showAlertDialogApprove(context, _eventsApprove[index], index);
+                                                  },
+                                                  color: Colors.green,
+                                                  child: Text (
+                                                    'Approve',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20
+                                                    ),
+                                                  ),
+                                                ),
 
-                                        RaisedButton(
-                                          onPressed: (){
-                                            showAlertDialogDismiss(context, _eventsApprove[index], index);
-                                          },
-                                          color: Colors.red,
-                                          child: Text (
-                                            'Dismiss',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20
-                                            ),
-                                          ),
+                                                RaisedButton(
+                                                  onPressed: (){
+                                                    showAlertDialogDismiss(context, _eventsApprove[index], index);
+                                                  },
+                                                  color: Colors.red,
+                                                  child: Text (
+                                                    'Dismiss',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
                                         ),
-                                      ],
-                                    )
-                                  ],
+                                      ),
+                                    );
+                                  });
+                            }else if(snapshot.hasError){
+                              print("${snapshot.error}");
+                              return Container(
+                                height: MediaQuery.of(context).size.width,
+                                alignment: Alignment.center,
+                                child:Text(
+                                  'No Events to Approve',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 22, color: Colors.orange, fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                            );
-                          }):
-                      Container(
-                        height: MediaQuery.of(context).size.width,
-                        alignment: Alignment.center,
-                        child:Text(
-                          'No Events to Approve',
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 22, color: Colors.orange, fontWeight: FontWeight.bold),
-                        ),
+                              );
+                            }
+                            return CircularProgressIndicator();
+                          }
                       ),
+
+
                     ],
                   ),
                 ),
@@ -174,7 +197,7 @@ class _EventsListScreenState extends State<EventsListScreen>{
           setState(() {
             _eventsApprove.remove(_eventsApprove[index]);
           });
-         Navigator.pop(context);
+          Navigator.pop(context);
         }
     );
 
@@ -213,7 +236,7 @@ Widget eventToApprove(Event event) {
           TextSpan(text: '\nDeadline: ${event.dueDate}', style: TextStyle(color: Colors.grey, fontSize: 15)),
           TextSpan(text: '\nLocal: ${event.location}', style: TextStyle(color: Colors.grey, fontSize: 15)),
           TextSpan(text: '\nType: ${event.activities}', style: TextStyle(color: Colors.grey, fontSize: 15)),
-          TextSpan(text: '\nCost: ${event.idx}€', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nCost: ${event.cost}€', style: TextStyle(color: Colors.grey, fontSize: 15)),
         ],
       ),
     ),
@@ -265,7 +288,7 @@ class EventsApproveItemsSearch extends SearchDelegate<Event>{
                     children: <Widget>[
                       RaisedButton(
                         onPressed: (){
-                           showAlertDialogApprove(context, mylist[index], index);
+                          showAlertDialogApprove(context, mylist[index], index);
                         },
                         color: Colors.green,
                         child: Text (
