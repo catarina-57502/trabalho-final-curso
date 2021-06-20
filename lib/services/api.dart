@@ -14,16 +14,23 @@ Future<User> fetchUsers() async {
   }
 }
 
-Future<Event> fetchEvents() async {
+// A function that converts a response body into a List<Event>.
+List<Event> parseEvents(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return parsed.map<Event>((json) => Event.fromJson(json)).toList();
+}
+
+Future<List<Event>> fetchEvents() async {
   final response = await http.get(Uri.parse('http://192.168.56.1:8080/events/'));
 
   if (response.statusCode == 200) {
-    return Event.fromJson(jsonDecode(response.body));
+    return parseEvents(response.body);
   } else {
     throw Exception('Failed to load users');
   }
-}
 
+}
 
 
 class Api {

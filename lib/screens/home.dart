@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen>{
 
   bool _isRegistered = false;
 
-  Future<Event> futureEvents;
+  Future<List<Event>> futureEvents;
 
   @override
   void initState() {
@@ -46,112 +46,132 @@ class _HomeScreenState extends State<HomeScreen>{
     final plafond = Provider.of<Plafond>(context, listen: false);
 
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
-          title: Text(widget.title),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.search, color: Colors.white),
-                onPressed: (){
-                  showSearch(context: context, delegate: EventsItemsSearch());
-                }
-            )
-          ],
-        ),
-        body: new LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                ),
-                child: Container(
-                  child: Column(
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.all(15.0),
-                          height: 55.0,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Color().plafond)
-                          ),
-                          child: Consumer<Plafond>(
-                            builder: (context, plafond, child) => Text(
-                              'Plafond: ${plafond.value}€',
-                              style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
-                            ),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search, color: Colors.white),
+              onPressed: (){
+                showSearch(context: context, delegate: EventsItemsSearch());
+              }
+          )
+        ],
+      ),
+      body: new LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
+              ),
+              child: Container(
+                child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.all(15.0),
+                        height: 55.0,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color().plafond)
+                        ),
+                        child: Consumer<Plafond>(
+                          builder: (context, plafond, child) => Text(
+                            'Plafond: ${plafond.value}€',
+                            style: TextStyle(fontSize: 20.0, color: Colors.orange, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        SizedBox(height: 10),
-                        ListView.builder(
-                            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                            itemCount: _events.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return new GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => DetailsScreen(_events[index], index),
-                                        ));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.fromLTRB(15,15,15,0),
-                                    height: 200,
-                                    child: DateTime.parse(_events[index].dueDate).isAfter(DateTime.now()) ? Card(
-                                      elevation: 7,
-                                      child: Column(
-                                        children: [
-                                          listEventsReg[index] ? Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
+                      ),
+                      SizedBox(height: 10),
+                      FutureBuilder<List<Event>>(
+                        future: futureEvents,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            _events = snapshot.data;
+                            return ListView.builder(
+                                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                itemCount: _events.length,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return new GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DetailsScreen(_events[index], index),
+                                          ));
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.fromLTRB(15,15,15,0),
+                                      height: 200,
+                                      child: DateTime.parse(_events[index].dueDate).isAfter(DateTime.now()) ? Card(
+                                        elevation: 7,
+                                        child: Column(
                                             children: [
-                                              Icon(
-                                                Icons.check_circle,
-                                                color: Color().primaryColor,
-                                              ),
-                                              Container(
-                                                padding: EdgeInsets.only(right: 10.0),
-                                                child: Text(
-                                                  'Registered',
-                                                ),
-                                              ),
-                                            ],
-                                          ) :
+                                              listEventsReg[index] ? Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  Icon(
+                                                    Icons.check_circle,
+                                                    color: Color().primaryColor,
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.only(right: 10.0),
+                                                    child: Text(
+                                                      'Registered',
+                                                    ),
+                                                  ),
+                                                ],
+                                              ) :
                                               SizedBox(height: 10.0),
-                                          Row(
-                                            children: [
-                                              image(_events[index], context),
-                                              event(_events[index], context)
-                                            ],
-                                          ),
-                                        ]
-                                      ),
-                                    ) : Card(
-                                      color: Colors.grey.shade200,
-                                      elevation: 7,
-                                      child: Row(
-                                        children: [
-                                          ColorFiltered(
-                                            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                                            child: image(_events[index], context),
-                                          ),
-                                          event(_events[index], context),
-                                        ],
+                                              Row(
+                                                children: [
+                                                  image(_events[index], context),
+                                                  event(_events[index], context)
+                                                ],
+                                              ),
+                                            ]
+                                        ),
+                                      ) : Card(
+                                        color: Colors.grey.shade200,
+                                        elevation: 7,
+                                        child: Row(
+                                          children: [
+                                            ColorFiltered(
+                                              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                                              child: image(_events[index], context),
+                                            ),
+                                            event(_events[index], context),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                              );
-                            }),
-                      ]
-                  ),
+                                  );
+                                });
+                          } else if (snapshot.hasError) {
+                            print("${snapshot.error}");
+                            return Container(
+                              height: MediaQuery.of(context).size.width,
+                              alignment: Alignment.center,
+                              child:Text(
+                                'No Events to Approve',
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 22, color: Colors.orange, fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }
+                          return CircularProgressIndicator();
+                        },
+                      ),
+                    ]
                 ),
               ),
-            );
-          },
-        ),
-        drawer: roleMenu(context, widget.name, widget.role),
+            ),
+          );
+        },
+      ),
+      drawer: roleMenu(context, widget.name, widget.role),
     );
   }
 }
@@ -163,7 +183,7 @@ Widget event(Event event, context) {
       text: TextSpan(
         text: '${event.name}',
         style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.black, fontSize: (20 / 720) * MediaQuery.of(context).size.height,
+          fontWeight: FontWeight.bold, color: Colors.black, fontSize: (20 / 720) * MediaQuery.of(context).size.height,
         ),
         children: <TextSpan>[
           TextSpan(text: '\n${event.date}', style: TextStyle(color: Colors.grey, fontSize: (15 / 720) * MediaQuery.of(context).size.height)),
