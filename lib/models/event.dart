@@ -9,12 +9,14 @@ class Event {
   final String url;
   final String activities;
   final String img;
+  final int cost;
 
-  Event({this.idx, this.approvedP, this.name, this.location, this.date, this.dueDate, this.url, this.activities, this.img});
+  Event({this.idx, this.approvedP, this.name, this.location, this.date, this.dueDate, this.url, this.activities, this.img, this.cost});
+
 
   @override
   String toString() {
-    return 'Event{idx: $idx, approvedP: $approvedP, name: $name, location: $location, date: $date, dueDate: $dueDate, url: $url, activities: $activities, img: $img}';
+    return 'Event{idx: $idx, approvedP: $approvedP, name: $name, location: $location, date: $date, dueDate: $dueDate, url: $url, activities: $activities, img: $img, cost: $cost}';
   }
 
   Event.fromJson(Map<String, dynamic> json)
@@ -26,6 +28,7 @@ class Event {
         dueDate = json['dueDate'],
         url = json['url'],
         activities = json['activities'],
-        img = json['img'];
+        img = json['img'],
+        cost = json['cost'];
 
 }

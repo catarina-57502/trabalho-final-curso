@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 Api _api = Api();
 
-List<Event> _events = _api.events;
+List<Event> _events = [];
 
 List<bool> listEventsReg = List.filled(Api().events.length, false);
 
@@ -86,8 +86,12 @@ class _HomeScreenState extends State<HomeScreen>{
                       FutureBuilder<List<Event>>(
                         future: futureEvents,
                         builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            _events = snapshot.data;
+                         if (snapshot.hasData) {
+                           for(Event i in snapshot.data){
+                                if(i.approvedP==true){
+                                  _events.add(i);
+                              }
+                            }
                             return ListView.builder(
                                 physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                 itemCount: _events.length,
@@ -128,7 +132,9 @@ class _HomeScreenState extends State<HomeScreen>{
                                               Row(
                                                 children: [
                                                   image(_events[index], context),
-                                                  event(_events[index], context)
+                                                  Flexible(
+                                                      child: event(_events[index], context),
+                                                  )
                                                 ],
                                               ),
                                             ]

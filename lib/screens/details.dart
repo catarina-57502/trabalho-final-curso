@@ -201,7 +201,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                      ),
                                    ),
                                    Text(
-                                     '${event.idx}€',
+                                     '${event.cost}€',
                                      style: TextStyle(
                                        fontSize: 17,
                                      ),
