@@ -60,6 +60,7 @@ class _EventsListScreenState extends State<EventsListScreen>{
                           future: futureEventsApprove,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
+                              _eventsApprove.clear();
                               for (Event i in snapshot.data) {
                                 if (i.approvedP == null) { //quando é false mas imprime null nao sei bem porquê
                                   _eventsApprove.add(i);

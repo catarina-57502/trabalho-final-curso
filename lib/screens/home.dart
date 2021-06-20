@@ -87,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen>{
                         future: futureEvents,
                         builder: (context, snapshot) {
                          if (snapshot.hasData) {
+                           _events.clear();
                            for(Event i in snapshot.data){
                                 if(i.approvedP==true){
                                   _events.add(i);
@@ -477,7 +478,9 @@ class EventsItemsSearch extends SearchDelegate<Event>{
                   child: Row(
                     children: [
                       image(mylist[index], context),
-                      event(mylist[index], context)
+                      Flexible(
+                        child: event(mylist[index], context),
+                      )
                     ],
                   ),
                 ),
