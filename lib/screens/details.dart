@@ -273,7 +273,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
         ),
         onPressed: () {
           setState(() {
-            //plafond.incrementPlafond(event.cost);
+            plafond.incrementPlafond(event.cost);
             listEventsReg[index] = false;
           });
         },
@@ -289,7 +289,6 @@ class _DetailsScreenState extends State<DetailsScreen>{
           ),
         ),
         onPressed: () {
-          /*
           if(plafond.value >= event.cost){
             setState(() {
               listEventsReg[index] = true;
@@ -298,8 +297,6 @@ class _DetailsScreenState extends State<DetailsScreen>{
           }else if(plafond.value < event.cost){
             showAlertDialog(context);
           }
-           */
-
         },
       );
     }else{
@@ -307,6 +304,7 @@ class _DetailsScreenState extends State<DetailsScreen>{
     }
   }
 
+  /*
   Widget _ratingBar(double value) {
     return RatingBar.builder(
       initialRating: value,
@@ -324,11 +322,13 @@ class _DetailsScreenState extends State<DetailsScreen>{
       onRatingUpdate: (rating) {
         setState(() {
           _rating = rating;
-          //event.rating = rating;
+          event.rating = rating;
         });
       },
       updateOnDrag: true,
     );
   }
+   */
+
 
 }
