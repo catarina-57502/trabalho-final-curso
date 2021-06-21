@@ -13,7 +13,7 @@ Api _api = Api();
 String nameAuth;
 String roleAuth;
 
-List<User> _users = _api.usersAuth;
+List<User> _users = [];
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -27,7 +27,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>{
 
-  Future<User> futureUsers;
+  Future<List<User>> futureUsers;
 
   @override
   void initState() {
@@ -44,155 +44,158 @@ class _LoginScreenState extends State<LoginScreen>{
   Widget build(BuildContext context) {
 
     return Scaffold(
-        body: new LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints viewportConstraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: viewportConstraints.maxHeight,
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(24),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(text: 'Sign In', style: TextStyle(color: Colors.grey[850], height: 5, fontSize: 40, fontFamily: 'Arial')),
-                                  ],
-                                ),
+      body: new LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(24),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            RichText(
+                              text: TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(text: 'Sign In', style: TextStyle(color: Colors.grey[850], height: 5, fontSize: 40, fontFamily: 'Arial')),
+                                ],
                               ),
-                              /*
-                              FutureBuilder<User>(
+                            ),
+                            FutureBuilder<List<User>>(
                                 future: futureUsers,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    print(snapshot.data.id.toString());
-                                  } else if (snapshot.hasError) {
-                                    print("${snapshot.error}");
-                                  }
-                                },
-                              ),
-                               */
-                              SizedBox(height: 30),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(padding: EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    'Username',
-                                    style: TextStyle(
-                                      color: Color().primaryColor,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                keyboardType: TextInputType.name,
-                                decoration: InputDecoration(
-                                  contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20.0)
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.person,
-                                    color: Color().primaryColor,
-                                  ),
-                                  hintText: 'Enter Username',
-                                ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Required field';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value) => _username = value,
-                              ),
-                              SizedBox(height: 30),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(padding: EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    'Password',
-                                    style: TextStyle(
-                                      color: Color().primaryColor,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                  contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20.0)
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.lock,
-                                    color: Color().primaryColor,
-                                  ),
-                                  hintText: '**********',
-                                ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Required field';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value) => _password = value,
-                              ),
-                              SizedBox(height: 60),
-                              ButtonTheme(
-                                minWidth: 380,
-                                child: RaisedButton(
-                                  color: Color().primaryColor,
-                                  onPressed: (){
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-                                      if(isCredentialsCorrect(_username, _password)){
-                                        getPlafond(_username, _password, context);
-                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                                            HomeScreen('Sistema de Gestão de Eventos', getName(_username, _password), getRole(_username, _password))), (Route<dynamic> route) => false
-                                        );
-                                      }else{
-                                        showAlertDialog(context);
+                                    _users.clear();
+                                    for (User i in snapshot.data) {
+                                      if (i.approvedP == true) {
+                                        _users.add(i);
                                       }
                                     }
-                                  },
-                                  padding: EdgeInsets.all(15),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    'LOGIN',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  }else if (snapshot.hasError) {
+                                    print("${snapshot.error}");
+                                  }
+                                  return SizedBox(height: 30);
+                                }
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  'Username',
+                                  style: TextStyle(
+                                    color: Color().primaryColor,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.name,
+                              decoration: InputDecoration(
+                                contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0)
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.person,
+                                  color: Color().primaryColor,
+                                ),
+                                hintText: 'Enter Username',
+                              ),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Required field';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => _username = value,
+                            ),
+                            SizedBox(height: 30),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  'Password',
+                                  style: TextStyle(
+                                    color: Color().primaryColor,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0)
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Color().primaryColor,
+                                ),
+                                hintText: '**********',
+                              ),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Required field';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => _password = value,
+                            ),
+                            SizedBox(height: 60),
+                            ButtonTheme(
+                              minWidth: 380,
+                              child: RaisedButton(
+                                color: Color().primaryColor,
+                                onPressed: (){
+                                  if (_formKey.currentState.validate()) {
+                                    _formKey.currentState.save();
+                                    if(isCredentialsCorrect(_username, _password)){
+                                      getPlafond(_username, _password, context);
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                          HomeScreen('Sistema de Gestão de Eventos', getName(_username, _password), getRole(_username, _password))), (Route<dynamic> route) => false
+                                      );
+                                    }else{
+                                      showAlertDialog(context);
+                                    }
+                                  }
+                                },
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  'LOGIN',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              );
-            }
-        ),
+              ),
+            );
+          }
+      ),
     );
   }
 
@@ -207,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen>{
 
   bool isCredentialsCorrect(name, pass) {
     for(var i in _users){
-      if('${i.username}'== name /*&& '${i.password}'== pass*/){
+      if('${i.username}'== name && '${i.password}'== pass){
         return true;
       }
     }
@@ -217,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen>{
   String getName(name, pass) {
 
     for(var i in _users){
-      if('${i.username}'== name/*&& '${i.password}'== pass*/){
+      if('${i.username}'== name && '${i.password}'== pass){
         nameAuth = i.name;
         return '${i.name}';
       }
@@ -227,8 +230,8 @@ class _LoginScreenState extends State<LoginScreen>{
   String getRole(name, pass) {
 
     for(var i in _users){
-      if('${i.username}'== name /*&& '${i.password}'== pass*/){
-        if(i.adminP){
+      if('${i.username}'== name && '${i.password}'== pass){
+        if(i.adminP==true){
           roleAuth = 'Administrator';
         }else{
           roleAuth = 'Member';

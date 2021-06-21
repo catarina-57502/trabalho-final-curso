@@ -5,10 +5,18 @@ import '../models/event.dart';
 import '../models/times.dart';
 import 'package:http/http.dart' as http;
 
-Future<User> fetchUsers() async {
+// A function that converts a response body into a List<User>.
+List<User> parseUsers(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return parsed.map<User>((json) => User.fromJson(json)).toList();
+}
+
+
+Future<List<User>> fetchUsers() async {
   final response = await http.get(Uri.parse('http://192.168.56.1:8080/users/'));
   if (response.statusCode == 200) {
-    return User.fromJson(jsonDecode(response.body));
+    return parseUsers(response.body);
   } else {
     throw Exception('Failed to load users');
   }

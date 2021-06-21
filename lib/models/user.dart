@@ -2,7 +2,6 @@ class User {
 
   final int id;
   final String username;
-  //final String password;
   final bool adminP;
   final bool approvedP;
   final int cc;
@@ -12,18 +11,17 @@ class User {
   final String tshirt;
   final String office;
   final int plafond;
-  //final String regDate;
+  final String password;
 
 
   User({this.id, this.username, this.adminP, this.approvedP, this.cc,
-  this.name, this.email, this.birthdate, this.tshirt, this.office, this.plafond});
+  this.name, this.email, this.birthdate, this.tshirt, this.office, this.plafond, this.password});
 
 
   @override
   String toString() {
-    return 'User{id: $id, username: $username, adminP: $adminP, approvedP: $approvedP, cc: $cc, name: $name, email: $email, birthdate: $birthdate, tshirt: $tshirt, office: $office, plafond: $plafond}';
+    return 'User{id: $id, username: $username, adminP: $adminP, approvedP: $approvedP, cc: $cc, name: $name, email: $email, birthdate: $birthdate, tshirt: $tshirt, office: $office, plafond: $plafond, password: $password}';
   }
-
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -38,6 +36,7 @@ class User {
       tshirt: json['tshirt'],
       office: json['office'],
       plafond: json['plafond'],
+      password: json['password']
     );
   }
 }

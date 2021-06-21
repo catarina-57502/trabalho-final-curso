@@ -134,8 +134,6 @@ class _EventsListScreenState extends State<EventsListScreen>{
                             return CircularProgressIndicator();
                           }
                       ),
-
-
                     ],
                   ),
                 ),

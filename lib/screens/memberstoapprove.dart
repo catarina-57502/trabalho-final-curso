@@ -9,7 +9,7 @@ Plafond _plafond = Plafond();
 
 Api _api = Api();
 
-List<User> _usersApprove = _api.usersApprove;
+List<User> _usersApprove = [];
 
 class MembersListScreen extends StatefulWidget {
   MembersListScreen({Key key}) : super(key: key);
@@ -22,6 +22,14 @@ class MembersListScreen extends StatefulWidget {
 }
 
 class _MembersListScreenState extends State<MembersListScreen>{
+
+  Future<List<User>> futureUsersApprove;
+
+  @override
+  void initState() {
+    super.initState();
+    futureUsersApprove = fetchUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,69 +58,84 @@ class _MembersListScreenState extends State<MembersListScreen>{
                   child: Column(
                     children: [
                       SizedBox(height: 10),
-                      _usersApprove.length!=0 ?
-                      ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: _usersApprove.length, // the length
-                          itemBuilder: (context, index) {
-                            return Container(
-                              padding: EdgeInsets.fromLTRB(15,15,15,0),
-                              height: 200,
-                              child: Card(
-                                elevation: 7,
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: memberToApprove(_usersApprove[index]),
-                                    ),
-                                    ButtonBar(
-                                      alignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        RaisedButton(
-                                          onPressed: (){
-                                           showAlertDialogApprove(context, _usersApprove[index], index);
-                                          },
-                                          color: Colors.green,
-                                          child: Text (
-                                            'Approve',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20
+                      FutureBuilder<List<User>>(
+                          future: futureUsersApprove,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              _usersApprove.clear();
+                              for (User i in snapshot.data) {
+                                if (i.approvedP == null) { //quando é false mas imprime null nao sei bem porquê
+                                  _usersApprove.add(i);
+                                }
+                              }
+                              return ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: _usersApprove.length, // the length
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      padding: EdgeInsets.fromLTRB(15,15,15,0),
+                                      height: 240,
+                                      child: Card(
+                                        elevation: 7,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: memberToApprove(_usersApprove[index]),
                                             ),
-                                          ),
-                                        ),
+                                            ButtonBar(
+                                              alignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                RaisedButton(
+                                                  onPressed: (){
+                                                    showAlertDialogApprove(context, _usersApprove[index], index);
+                                                  },
+                                                  color: Colors.green,
+                                                  child: Text (
+                                                    'Approve',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20
+                                                    ),
+                                                  ),
+                                                ),
 
-                                        RaisedButton(
-                                          onPressed: (){
-                                           showAlertDialogDismiss(context, _usersApprove[index], index);
-                                          },
-                                          color: Colors.red,
-                                          child: Text (
-                                            'Dismiss',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20
-                                            ),
-                                          ),
+                                                RaisedButton(
+                                                  onPressed: (){
+                                                    showAlertDialogDismiss(context, _usersApprove[index], index);
+                                                  },
+                                                  color: Colors.red,
+                                                  child: Text (
+                                                    'Dismiss',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
                                         ),
-                                      ],
-                                    )
-                                  ],
+                                      ),
+                                    );
+                                  });
+                            }else if(snapshot.hasError){
+                              print("${snapshot.error}");
+                              return Container(
+                                height: MediaQuery.of(context).size.width,
+                                alignment: Alignment.center,
+                                child:Text(
+                                  'No Users to Approve',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 22, color: Colors.orange, fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                            );
-                          }):
-                          Container(
-                            height: MediaQuery.of(context).size.width,
-                            alignment: Alignment.center,
-                            child:Text(
-                              'No Members to Approve',
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 22, color: Colors.orange, fontWeight: FontWeight.bold),
-                            ),
-                          ),
+                              );
+                            }
+                            return CircularProgressIndicator();
+                          }
+                      ),
                     ],
                   ),
                 ),
@@ -213,6 +236,9 @@ Widget memberToApprove(User user) {
         children: <TextSpan>[
           TextSpan(text: '\nCC: ${user.cc}', style: TextStyle(color: Colors.grey, fontSize: 15)),
           TextSpan(text: '\nOffice: ${user.office}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nBirthdate: ${user.birthdate}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nE-mail: ${user.email}', style: TextStyle(color: Colors.grey, fontSize: 15)),
+          TextSpan(text: '\nT-shirt: ${user.tshirt}', style: TextStyle(color: Colors.grey, fontSize: 15)),
         ],
       ),
     ),
@@ -250,7 +276,7 @@ class MembersApproveItemsSearch extends SearchDelegate<User>{
         itemBuilder: (context, index) {
           return Container(
             padding: EdgeInsets.fromLTRB(15,15,15,0),
-            height: 200,
+            height: 240,
             child: Card(
               elevation: 7,
               child: Column(
