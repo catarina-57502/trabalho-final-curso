@@ -208,11 +208,9 @@ class _DetailsScreenState extends State<DetailsScreen>{
                                    ),
                                  ],
                                ),
-                               SizedBox(height: 30),
                              ],
                            ),
                          ),
-                        //_ratingBar(event.rating),
                         SizedBox(height: 50),
                         ButtonTheme(
                           minWidth: 380.0,
@@ -300,11 +298,11 @@ class _DetailsScreenState extends State<DetailsScreen>{
         },
       );
     }else{
-      return SizedBox(height: MediaQuery.of(context).size.width);
+      return _ratingBar(event.rating);
     }
   }
-
-  /*
+  
+  
   Widget _ratingBar(double value) {
     return RatingBar.builder(
       initialRating: value,
@@ -322,13 +320,12 @@ class _DetailsScreenState extends State<DetailsScreen>{
       onRatingUpdate: (rating) {
         setState(() {
           _rating = rating;
-          event.rating = rating;
+          //event.rating = rating;
         });
       },
       updateOnDrag: true,
     );
   }
-   */
 
 
 }

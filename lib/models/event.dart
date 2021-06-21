@@ -10,13 +10,14 @@ class Event {
   final String activities;
   final String img;
   final int cost;
+  final double rating;
 
-  Event({this.idx, this.approvedP, this.name, this.location, this.date, this.dueDate, this.url, this.activities, this.img, this.cost});
+  Event({this.idx, this.approvedP, this.name, this.location, this.date, this.dueDate, this.url, this.activities, this.img, this.cost, this.rating});
 
 
   @override
   String toString() {
-    return 'Event{idx: $idx, approvedP: $approvedP, name: $name, location: $location, date: $date, dueDate: $dueDate, url: $url, activities: $activities, img: $img, cost: $cost}';
+    return 'Event{idx: $idx, approvedP: $approvedP, name: $name, location: $location, date: $date, dueDate: $dueDate, url: $url, activities: $activities, img: $img, cost: $cost, rating: $rating}';
   }
 
   Event.fromJson(Map<String, dynamic> json)
@@ -29,6 +30,6 @@ class Event {
         url = json['url'],
         activities = json['activities'],
         img = json['img'],
-        cost = json['cost'];
-
+        cost = json['cost'],
+        rating = json['rating'];
 }
