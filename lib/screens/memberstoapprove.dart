@@ -157,10 +157,11 @@ class _MembersListScreenState extends State<MembersListScreen>{
     Widget continueButton = RaisedButton(
         child: Text("Approve"),
         color: Colors.green,
-        onPressed:  () {
+        onPressed:  () async {
+          final User userNew = await updateUser(user.id, true);
+          print(userNew.toString());
           setState(() {
-            _api.usersAuth.add(_usersApprove[index]);
-            _usersApprove.remove(_usersApprove[index]);
+            futureUsersApprove = fetchUsers();
           });
           Navigator.pop(context);
         }
@@ -197,7 +198,8 @@ class _MembersListScreenState extends State<MembersListScreen>{
         color: Colors.red,
         onPressed:  () {
           setState(() {
-            _usersApprove.remove(_usersApprove[index]);
+           // updateUser(user.id, false);
+            //futureUsersApprove = fetchUsers();
           });
           Navigator.pop(context);
         }

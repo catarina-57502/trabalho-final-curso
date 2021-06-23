@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:projeto_tfc/constants/serverAddress.dart';
 import 'package:projeto_tfc/models/user.dart';
 import '../models/event.dart';
 import '../models/times.dart';
@@ -14,7 +15,7 @@ List<User> parseUsers(String responseBody) {
 
 
 Future<List<User>> fetchUsers() async {
-  final response = await http.get(Uri.parse('http://192.168.56.1:8080/users/'));
+  final response = await http.get(Uri.parse('${serverAdress}users/'));
   if (response.statusCode == 200) {
     return parseUsers(response.body);
   } else {
@@ -30,7 +31,7 @@ List<Event> parseEvents(String responseBody) {
 }
 
 Future<List<Event>> fetchEvents() async {
-  final response = await http.get(Uri.parse('http://192.168.56.1:8080/events/'));
+  final response = await http.get(Uri.parse('${serverAdress}events/'));
 
   if (response.statusCode == 200) {
     return parseEvents(response.body);
@@ -40,6 +41,16 @@ Future<List<Event>> fetchEvents() async {
 
 }
 
+Future<User> updateUser(int id, bool approvedP) async {
+  final response = await http.post(Uri.parse('${serverAdress}update-user?id=$id&approved=$approvedP'));
+
+  if (response.statusCode == 200) {
+    return User.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('Failed to load users');
+  }
+
+}
 
 class Api {
 
