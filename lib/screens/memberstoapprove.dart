@@ -149,18 +149,21 @@ class _MembersListScreenState extends State<MembersListScreen>{
 
   void showAlertDialogApprove(BuildContext context, User user, int index) {
     Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(
+        color: Color().primaryColor,
+      )),
       onPressed:  () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = RaisedButton(
-        child: Text("Approve"),
+        child: Text("Approve", style: TextStyle(
+          color: Colors.white,
+        )),
         color: Colors.green,
-        onPressed:  () async {
-          final User userNew = await updateUser(user.id, true);
-          print(userNew.toString());
+        onPressed:  () {
           setState(() {
+            updateUser(user.id, true);
             futureUsersApprove = fetchUsers();
           });
           Navigator.pop(context);
@@ -188,18 +191,22 @@ class _MembersListScreenState extends State<MembersListScreen>{
 
   void showAlertDialogDismiss(BuildContext context, User user, int index) {
     Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(
+        color: Color().primaryColor,
+      )),
       onPressed:  () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = RaisedButton(
-        child: Text("Dismiss"),
+        child: Text("Dismiss", style: TextStyle(
+          color: Colors.white,
+        )),
         color: Colors.red,
         onPressed:  () {
           setState(() {
-           // updateUser(user.id, false);
-            //futureUsersApprove = fetchUsers();
+           updateUser(user.id, false);
+           futureUsersApprove = fetchUsers();
           });
           Navigator.pop(context);
         }
@@ -248,6 +255,8 @@ Widget memberToApprove(User user) {
 }
 
 class MembersApproveItemsSearch extends SearchDelegate<User>{
+
+  Future<List<User>> futureUsersApprove;
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -328,17 +337,20 @@ class MembersApproveItemsSearch extends SearchDelegate<User>{
 
   void showAlertDialogApprove(BuildContext context, User user, int index) {
     Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(
+        color: Color().primaryColor,
+      )),
       onPressed:  () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = RaisedButton(
-        child: Text("Approve"),
+        child: Text("Approve", style: TextStyle(
+          color: Colors.white,
+        )),
         color: Colors.green,
         onPressed:  () {
-          _api.usersAuth.add(_usersApprove[index]);
-          _usersApprove.remove(_usersApprove[index]);
+          updateUser(user.id, true);
           Navigator.pop(context);
           Navigator.pop(context);
         }
@@ -365,16 +377,20 @@ class MembersApproveItemsSearch extends SearchDelegate<User>{
 
   void showAlertDialogDismiss(BuildContext context, User user, int index) {
     Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(
+        color: Color().primaryColor,
+      )),
       onPressed:  () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = RaisedButton(
-        child: Text("Dismiss"),
+        child: Text("Dismiss", style: TextStyle(
+        color: Colors.white,
+        )),
         color: Colors.red,
         onPressed:  () {
-          _usersApprove.remove(_usersApprove[index]);
+          updateUser(user.id, false);
           Navigator.pop(context);
           Navigator.pop(context);
         }

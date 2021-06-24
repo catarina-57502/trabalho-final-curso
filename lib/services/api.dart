@@ -36,7 +36,7 @@ Future<List<Event>> fetchEvents() async {
   if (response.statusCode == 200) {
     return parseEvents(response.body);
   } else {
-    throw Exception('Failed to load users');
+    throw Exception('Failed to load events');
   }
 
 }
@@ -47,7 +47,18 @@ Future<User> updateUser(int id, bool approvedP) async {
   if (response.statusCode == 200) {
     return User.fromJson(json.decode(response.body));
   } else {
-    throw Exception('Failed to load users');
+    throw Exception('Failed to update user');
+  }
+
+}
+
+Future<Event> updateEvent(int id, bool approvedP) async {
+  final response = await http.post(Uri.parse('${serverAdress}update-event?id=$id&approved=$approvedP'));
+
+  if (response.statusCode == 200) {
+    return Event.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('Failed to update event');
   }
 
 }

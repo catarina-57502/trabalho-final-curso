@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_tfc/models/event.dart';
+import 'package:projeto_tfc/screens/home.dart';
 import 'package:projeto_tfc/services/api.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
@@ -146,18 +147,22 @@ class _EventsListScreenState extends State<EventsListScreen>{
 
   void showAlertDialogApprove(BuildContext context, Event event, int index) {
     Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(
+        color: Color().primaryColor,
+      )),
       onPressed:  () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = RaisedButton(
-        child: Text("Approve"),
+        child: Text("Approve", style: TextStyle(
+          color: Colors.white,
+        )),
         color: Colors.green,
         onPressed:  () {
           setState(() {
-            _api.events.add(_eventsApprove[index]);
-            _eventsApprove.remove(_eventsApprove[index]);
+            updateEvent(event.id, true);
+            futureEventsApprove = fetchEvents();
           });
           Navigator.pop(context);
         }
@@ -184,17 +189,22 @@ class _EventsListScreenState extends State<EventsListScreen>{
 
   void showAlertDialogDismiss(BuildContext context, Event event, int index) {
     Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(
+        color: Color().primaryColor,
+      )),
       onPressed:  () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = RaisedButton(
-        child: Text("Dismiss"),
+        child: Text("Dismiss", style: TextStyle(
+          color: Colors.white,
+        )),
         color: Colors.red,
         onPressed:  () {
           setState(() {
-            _eventsApprove.remove(_eventsApprove[index]);
+            updateEvent(event.id, false);
+            futureEventsApprove = fetchEvents();
           });
           Navigator.pop(context);
         }
@@ -323,17 +333,19 @@ class EventsApproveItemsSearch extends SearchDelegate<Event>{
 
   void showAlertDialogApprove(BuildContext context, Event event, int index) {
     Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(
+        color: Color().primaryColor,
+      )),
       onPressed:  () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = RaisedButton(
-        child: Text("Approve"),
+        child: Text("Approve", style: TextStyle(
+        color: Colors.white,
+        )),
         color: Colors.green,
         onPressed:  () {
-          _api.events.add(_eventsApprove[index]);
-          _eventsApprove.remove(_eventsApprove[index]);
           Navigator.pop(context);
           Navigator.pop(context);
         }
@@ -360,16 +372,19 @@ class EventsApproveItemsSearch extends SearchDelegate<Event>{
 
   void showAlertDialogDismiss(BuildContext context, Event event, int index) {
     Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(
+        color: Color().primaryColor,
+      )),
       onPressed:  () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = RaisedButton(
-        child: Text("Dismiss"),
+        child: Text("Dismiss", style: TextStyle(
+          color: Colors.white,
+        )),
         color: Colors.red,
         onPressed:  () {
-          _eventsApprove.remove(_eventsApprove[index]);
           Navigator.pop(context);
           Navigator.pop(context);
         }

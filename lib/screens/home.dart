@@ -14,7 +14,8 @@ Api _api = Api();
 
 List<Event> _events = [];
 
-List<bool> listEventsReg = List.filled(Api().events.length, false);
+
+List<bool> listEventsReg = [];
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -32,7 +33,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>{
 
   bool _isRegistered = false;
-
   Future<List<Event>> futureEvents;
 
   @override
@@ -60,11 +60,11 @@ class _HomeScreenState extends State<HomeScreen>{
       ),
       body: new LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: viewportConstraints.maxHeight,
-              ),
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: viewportConstraints.minHeight,
+                  ),
               child: Container(
                 child: Column(
                     children: <Widget>[
@@ -84,89 +84,92 @@ class _HomeScreenState extends State<HomeScreen>{
                       ),
                       SizedBox(height: 10),
                       FutureBuilder<List<Event>>(
-                        future: futureEvents,
+                        future: fetchEvents(),
                         builder: (context, snapshot) {
-                         if (snapshot.hasData) {
-                           _events.clear();
-                           for(Event i in snapshot.data){
-                                if(i.approvedP==true){
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            if (snapshot.hasData) {
+                              _events.clear();
+                              for (Event i in snapshot.data) {
+                                if (i.approvedP == true) {
                                   _events.add(i);
+                                }
                               }
-                            }
-                            return ListView.builder(
-                                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                itemCount: _events.length,
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return new GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DetailsScreen(_events[index], index),
-                                          ));
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.fromLTRB(15,15,15,0),
-                                      height: 200,
-                                      child: DateTime.parse(_events[index].dueDate).isAfter(DateTime.now()) ? Card(
-                                        elevation: 7,
-                                        child: Column(
+                              listEventsReg = List.filled(_events.length, false);
+                              return ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: _events.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return new GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailsScreen(
+                                                      _events[index], index),
+                                            ));
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.fromLTRB(
+                                            15, 15, 15, 0),
+                                        height: 200,
+                                        child: DateTime.parse(
+                                            _events[index].dueDate).isAfter(
+                                            DateTime.now()) ? Card(
+                                          elevation: 7,
+                                          child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    image(_events[index],
+                                                        context),
+                                                    Flexible(
+                                                      child: event(
+                                                          _events[index],
+                                                          context),
+                                                    )
+                                                  ],
+                                                ),
+                                              ]
+                                          ),
+                                        ) : Card(
+                                          color: Colors.grey.shade200,
+                                          elevation: 7,
+                                          child: Row(
                                             children: [
-                                              listEventsReg[index] ? Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  Icon(
-                                                    Icons.check_circle,
-                                                    color: Color().primaryColor,
-                                                  ),
-                                                  Container(
-                                                    padding: EdgeInsets.only(right: 10.0),
-                                                    child: Text(
-                                                      'Registered',
-                                                    ),
-                                                  ),
-                                                ],
-                                              ) :
-                                              SizedBox(height: 10.0),
-                                              Row(
-                                                children: [
-                                                  image(_events[index], context),
-                                                  Flexible(
-                                                      child: event(_events[index], context),
-                                                  )
-                                                ],
+                                              ColorFiltered(
+                                                colorFilter: ColorFilter.mode(
+                                                    Colors.black.withOpacity(
+                                                        0.2),
+                                                    BlendMode.dstATop),
+                                                child: image(
+                                                    _events[index], context),
                                               ),
-                                            ]
-                                        ),
-                                      ) : Card(
-                                        color: Colors.grey.shade200,
-                                        elevation: 7,
-                                        child: Row(
-                                          children: [
-                                            ColorFiltered(
-                                              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                                              child: image(_events[index], context),
-                                            ),
-                                            event(_events[index], context),
-                                          ],
+                                              event(_events[index], context),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                });
-                          } else if (snapshot.hasError) {
-                            print("${snapshot.error}");
-                            return Container(
-                              height: MediaQuery.of(context).size.width,
-                              alignment: Alignment.center,
-                              child:Text(
-                                'No Events to Approve',
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 22, color: Colors.orange, fontWeight: FontWeight.bold),
-                              ),
-                            );
+                                    );
+                                  });
+                            } else if (snapshot.hasError) {
+                              print("${snapshot.error}");
+                              return Container(
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'No Events to Approve',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 22,
+                                      color: Colors.orange,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }
                           }
                           return CircularProgressIndicator();
                         },
