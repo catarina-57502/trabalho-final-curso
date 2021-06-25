@@ -4,6 +4,8 @@ import 'package:projeto_tfc/services/api.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import '../providers/plafond.dart';
+import 'home.dart';
+import 'login.dart';
 
 Plafond _plafond = Plafond();
 
@@ -33,11 +35,18 @@ class _MembersListScreenState extends State<MembersListScreen>{
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
+    return new WillPopScope(
+        onWillPop: () async => false,
+    child: Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text('Approve Members'),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+              HomeScreen('Sistema de Gestão de Eventos', nameAuth, roleAuth)), (Route<dynamic> route) => false
+          ),
+        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.search, color: Colors.white),
@@ -143,7 +152,7 @@ class _MembersListScreenState extends State<MembersListScreen>{
             );
           }
       ),
-
+    ),
     );
   }
 
