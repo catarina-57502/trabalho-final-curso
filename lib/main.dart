@@ -12,18 +12,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  ChangeNotifierProvider<Plafond>(
       create: (context) => Plafond(),
-        child: MaterialApp(
-      title: 'Sistema de Gestão de Eventos',
-      theme: ThemeData(
-          primarySwatch: Color().primaryColor,
-          primaryTextTheme: TextTheme(
-              headline6: TextStyle(
-                  color: Colors.white
-              )
-          )
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Sistema de Gestão de Eventos',
+        theme: ThemeData(
+            primarySwatch: Color().primaryColor,
+            primaryTextTheme: TextTheme(
+                headline6: TextStyle(
+                    color: Colors.white
+                )
+            )
+        ),
+        home: LoginScreen(),
       ),
-      home: LoginScreen(),
-    ),
     );
   }
 }

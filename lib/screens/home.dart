@@ -14,7 +14,6 @@ Api _api = Api();
 
 List<Event> _events = [];
 
-
 List<bool> listEventsReg = [];
 
 class HomeScreen extends StatefulWidget {

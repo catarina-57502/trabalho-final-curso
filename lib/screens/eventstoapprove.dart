@@ -58,7 +58,7 @@ class _EventsListScreenState extends State<EventsListScreen>{
                     children: [
                       SizedBox(height: 10),
                       FutureBuilder<List<Event>>(
-                          future: futureEventsApprove,
+                          future: fetchEvents(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               _eventsApprove.clear();

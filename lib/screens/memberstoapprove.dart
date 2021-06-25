@@ -59,7 +59,7 @@ class _MembersListScreenState extends State<MembersListScreen>{
                     children: [
                       SizedBox(height: 10),
                       FutureBuilder<List<User>>(
-                          future: futureUsersApprove,
+                          future: fetchUsers(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               _usersApprove.clear();
