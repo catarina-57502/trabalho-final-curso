@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "username": "cmoita",
+    "adminP": true,
+    "approvedP": true,
+    "cc": 12345,
+    "name": "Catarina Moita",
+    "email": "catarina.moita@gmail.com",
+    "birthdate": "1999-10-10",
+    "tshirt": "M",
+    "office": "Lisboa",
+    "plafond": 10,
+    "password": "qwerty"
+  },
+  {
+    "id": 2,
+    "username": "drigoor",
+    "adminP": true,
+    "approvedP": true,
+    "cc": 9876,
+    "name": "Rodrigo Correia",
+    "email": "rodrigo.correia@gmail.com",
+    "birthdate": "2021-02-25",
+    "tshirt": "L",
+    "office": "Lisboa",
+    "plafond": 50,
+    "password": "qwerty"
+  },
+  {
+    "id": 3,
+    "username": "joliveira",
+    "adminP": false,
+    "approvedP": false,
+    "cc": 6945,
+    "name": "Jose Oliveira",
+    "email": "jose.oliveira@gmail.com",
+    "birthdate": "1975-08-15",
+    "tshirt": "M",
+    "office": "Porto",
+    "plafond": 50,
+    "password": "qwerty"
+  },
+  {
+    "id": 4,
+    "username": "msantos",
+    "adminP": false,
+    "approvedP": false,
+    "cc": 12348,
+    "name": "Maria Santos",
+    "email": "maria.santos@gmail.com",
+    "birthdate": "1988-01-01",
+    "tshirt": "S",
+    "office": "Porto",
+    "plafond": 50,
+    "password": "qwerty"
+  },
+  {
+    "id": 5,
+    "username": "bmanuel",
+    "adminP": false,
+    "approvedP": true,
+    "cc": 12348,
+    "name": "Bruno Manuel",
+    "email": "bruno.manuel@gmail.com",
+    "birthdate": "2021-03-21",
+    "tshirt": "M",
+    "office": "Lisboa",
+    "plafond": 10,
+    "password": "qwerty"
+  }
+]

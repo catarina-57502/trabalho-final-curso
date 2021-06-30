@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block title %}Users{% endblock %}
+
+
+{% block top %}
+{% include "toolbar.html" :active "users" %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid p-3">
+
+  {% if users %}
+  <ul class="list-group list-group-flush">
+    {% for user in users %}
+    <li class="list-group-item">{{user.username}}</li>
+    {% endfor %}
+  </ul>
+
+{% else %}
+No users available.
+{% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+
+  # mongo:
+  #   image: mongo
+  #   container_name: mongo
+  #   hostname: mongo
+  #   volumes:
+  #     - ./db:/data/db
+  #   ports:
+  #     - 27017:27017
+  #   restart: unless-stopped
+
+  # mongo-express:
+  #   image: mongo-express
+  #   container_name: mongo-express
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - mongo
+  #   restart: unless-stopped
+
+  lisp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SBCL_VERSION: ${SBCL_VERSION}
+        PROJECT_NAME: ${PROJECT_NAME}
+        PROJECT_ROOT: ${PROJECT_ROOT}
+    image: ${DOCKER_TAG}
+    container_name: lisp-sbcl
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    volumes:
+      - .:${PROJECT_ROOT}
+    ports:
+      - 4005:4005
+      - 8080:8080
+    restart: unless-stopped
+    # depends_on:
+    #   - mongo-express

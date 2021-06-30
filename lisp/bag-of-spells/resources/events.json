@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "approvedP": true,
+    "name": "Corrida de Belem",
+    "location": "Estadio do Restelo",
+    "date": "2021-04-25",
+    "dueDate": "2021-04-01",
+    "url": "nowhere",
+    "activities": "4km | 10km",
+    "img": "assets/images/belem.jpg",
+    "cost": 4,
+    "rating": 3
+  },
+  {
+    "id": 2,
+    "approvedP": true,
+    "name": "Maratona Lisboa",
+    "location": "Lisboa",
+    "date": "2021-12-02",
+    "dueDate": "2021-11-29",
+    "url": "somewhere.over.the.rainbow",
+    "activities": "42km",
+    "img": "assets/images/edp.jpg",
+    "cost": 10,
+    "rating": 3
+  },
+  {
+    "id": 3,
+    "approvedP": false,
+    "name": "S. Silvestre Amadora",
+    "location": "Amadora",
+    "date": "2021-12-31",
+    "dueDate": "2021-12-02",
+    "url": "nowhere",
+    "activities": "10km",
+    "img": "assets/images/saosilvestre.jpg",
+    "cost": 7,
+    "rating": 3
+  },
+  {
+    "id": 4,
+    "approvedP": true,
+    "name": "Meia Maratona Douro Vinhateiro",
+    "location": "Abrantes",
+    "date": "2021-10-04",
+    "dueDate": "2021-09-15",
+    "url": "nowhere",
+    "activities": "21km | 5km | Caminhada",
+    "img": "assets/images/maratonadouro.jpg",
+    "cost": 15,
+    "rating": 3
+  },
+  {
+    "id": 5,
+    "approvedP": false,
+    "name": "Meia Maratona de Abrantes",
+    "location": "Abrantes",
+    "date": "2021-11-14",
+    "dueDate": "2021-10-15",
+    "url": "nowhere",
+    "activities": "21km",
+    "img": "assets/images/maratonaabrantes.jpg",
+    "cost": 7,
+    "rating": 3
+  }
+]
